@@ -1,8 +1,8 @@
 language: node_js
 node_js: 14.3.0
 stages:
-  - deploy
-  - tests
+- deploy
+- tests
 jobs:
   include:
   - stage: tests
@@ -14,7 +14,7 @@ jobs:
     deploy:
       provider: heroku
       api_key:
-        secure: gvpFhCCECBKvIrcnJZ//HChSehYJM9c77oesXHcrvgVr6WBlbQK1ok09d+qknXEiQR3zsNO6Ti5POCdCGFKCquXgvjtaMAPmdMu5z3x80/RPaujSbQvcNHj1Hrye4P7GI6dXv8ZLLy5TsJ+LkTyXSF8BhyLHc77Vns45dIVT4zzKGjkEzsOrKFo3PkIZTtxbGGJGrF5sLupsSmoD49BRl1CsP5pFjC7zJ92PVzKDjtK/B4Q97ZoV0NvV2RT0Z6VleYGwnDmdRgzmPfLIM57+5VRh6rIB0deSRJdqeVsg77YYXaDjs4PQJfUruBOraX/CwszXP0JlzbcBjqhuJu8s0HhI/e8C7H2ewilkVCCeUf/VRq2uQ+UkId02qTUjGD2eKnXtE7pI4IgHJaQIrDpp1noKWVSJFemjeYt1v/iX1aDkpmV72qfUWmhcVBCoRV5tP8H+NFyrXhzcNvJSjIGPAmjmK/ip7Toe89I1lu1rvz0BQoGc7JAno5StcGvRtd00Y2xnFVaOAawpDVyvT0nd049JTiJJDY6cB5JB1C1v2fAytiJlVcHQLufewU5quyEf6l+u/E+aEx6ckwRCrCbV+dMbt8tNZEFW0aI9NnlWkdKuoCM9LY99EOQ0Qi2v0wdPyJEe6+i/SiGd+vq42pY00w+1p9HlCPnkqDTKyRvE+F4=
+        secure: IA9wV865qzaNs9VXmc1iBTAwmTzkbul7wOs9TzwvcZfP2CuxW92gG0a8ovik9J+ehUuj4BJN+l4BVPUiaf5X+roISxkK/PQLjBygyYwpPrzXrxuzybfE3mgCgNoUmFXR0AeRrgbF0tW4MYpu8gkvvCUI2V1fWjWGu2t46HWkHGTpZyenl0IOR1GxK5PNl/GeZo5B0BPhfNj8OT9Qa0dPT5D7a9OJBO6h1ortzLdtw7FgxmpKke5rFkSJAr3ZjK0RMIy9IhPBSfizR+sBYPVENH/kJwR5o/ghxL1ANfXauBTGdoL/Yg/A3sKjd+hkPbBkl4xWTL7+3KTWTJqBmBiYbz5y+e2yAV7c2FvZZWADQwJZYFgBNbqGcsgVrDvc3drYJ/4sK1Y7VeMFCavrIR8Tjo0KsRFP7FajHBV8+48U6Qc4jB2dfyweoT5w4QsjTlKmOc6AmdsdAkW+k+x3DEMkPttxxQ0DtqRpK4hV4gKINIUNPxsQr0GYsUE6ZScUvRM0/TPKeEBj9Ll/9sPZORRufck1Endz2LzIIxMZ/B3EEIYRvaUDwyo4qqiH+wfGrEoAiciejB4wpAmkqc2tgEzBDO2XPGSnSM401LDJeKyW/prlYgwrSwOHrcn5d4tBVpZoMEVw+3kHpSTj+ekZlphS5yMsann3vft8CPiAbDTn1bQ=
       app: the-recommender-fe
       on:
         repo: Navbryce/the-recommender-fe
