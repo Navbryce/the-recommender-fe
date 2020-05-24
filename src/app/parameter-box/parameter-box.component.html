@@ -1,0 +1,6 @@
+<mat-form-field>
+  <mat-label>Price</mat-label>
+  <mat-select  multiple>
+    <mat-option *ngFor="let priceCategory of priceCategoryValues" [value]="priceCategory">{{toPriceCategoryString(priceCategory)}}</mat-option>
+  </mat-select>
+</mat-form-field>
