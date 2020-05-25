@@ -1,21 +1,21 @@
 language: node_js
 node_js: 14.3.0
 stages:
-- deploy
-- tests
+  - tests
+  - deploy
 jobs:
   include:
-  - stage: tests
-    script:
-    - npm run headless-test
-  - stage: deploy
-    script:
-    - npm run build-prod
-    deploy:
-      provider: heroku
-      api_key:
-        secure: IA9wV865qzaNs9VXmc1iBTAwmTzkbul7wOs9TzwvcZfP2CuxW92gG0a8ovik9J+ehUuj4BJN+l4BVPUiaf5X+roISxkK/PQLjBygyYwpPrzXrxuzybfE3mgCgNoUmFXR0AeRrgbF0tW4MYpu8gkvvCUI2V1fWjWGu2t46HWkHGTpZyenl0IOR1GxK5PNl/GeZo5B0BPhfNj8OT9Qa0dPT5D7a9OJBO6h1ortzLdtw7FgxmpKke5rFkSJAr3ZjK0RMIy9IhPBSfizR+sBYPVENH/kJwR5o/ghxL1ANfXauBTGdoL/Yg/A3sKjd+hkPbBkl4xWTL7+3KTWTJqBmBiYbz5y+e2yAV7c2FvZZWADQwJZYFgBNbqGcsgVrDvc3drYJ/4sK1Y7VeMFCavrIR8Tjo0KsRFP7FajHBV8+48U6Qc4jB2dfyweoT5w4QsjTlKmOc6AmdsdAkW+k+x3DEMkPttxxQ0DtqRpK4hV4gKINIUNPxsQr0GYsUE6ZScUvRM0/TPKeEBj9Ll/9sPZORRufck1Endz2LzIIxMZ/B3EEIYRvaUDwyo4qqiH+wfGrEoAiciejB4wpAmkqc2tgEzBDO2XPGSnSM401LDJeKyW/prlYgwrSwOHrcn5d4tBVpZoMEVw+3kHpSTj+ekZlphS5yMsann3vft8CPiAbDTn1bQ=
-      app: the-recommender-fe
-      on:
-        repo: Navbryce/the-recommender-fe
-      cleanup: false
+    - stage: tests
+      script:
+        - npm run headless-test
+    - stage: deploy
+      script:
+        - npm run build-prod
+      deploy:
+        provider: heroku
+        api_key:
+          secure: IA9wV865qzaNs9VXmc1iBTAwmTzkbul7wOs9TzwvcZfP2CuxW92gG0a8ovik9J+ehUuj4BJN+l4BVPUiaf5X+roISxkK/PQLjBygyYwpPrzXrxuzybfE3mgCgNoUmFXR0AeRrgbF0tW4MYpu8gkvvCUI2V1fWjWGu2t46HWkHGTpZyenl0IOR1GxK5PNl/GeZo5B0BPhfNj8OT9Qa0dPT5D7a9OJBO6h1ortzLdtw7FgxmpKke5rFkSJAr3ZjK0RMIy9IhPBSfizR+sBYPVENH/kJwR5o/ghxL1ANfXauBTGdoL/Yg/A3sKjd+hkPbBkl4xWTL7+3KTWTJqBmBiYbz5y+e2yAV7c2FvZZWADQwJZYFgBNbqGcsgVrDvc3drYJ/4sK1Y7VeMFCavrIR8Tjo0KsRFP7FajHBV8+48U6Qc4jB2dfyweoT5w4QsjTlKmOc6AmdsdAkW+k+x3DEMkPttxxQ0DtqRpK4hV4gKINIUNPxsQr0GYsUE6ZScUvRM0/TPKeEBj9Ll/9sPZORRufck1Endz2LzIIxMZ/B3EEIYRvaUDwyo4qqiH+wfGrEoAiciejB4wpAmkqc2tgEzBDO2XPGSnSM401LDJeKyW/prlYgwrSwOHrcn5d4tBVpZoMEVw+3kHpSTj+ekZlphS5yMsann3vft8CPiAbDTn1bQ=
+        app: the-recommender-fe
+        on:
+          repo: Navbryce/the-recommender-fe
+        cleanup: false
