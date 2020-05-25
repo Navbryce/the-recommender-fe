@@ -1,42 +1,48 @@
 <div class="wrapper" [formGroup]="parameterForm">
-  <mat-form-field>
-    <mat-label>Address</mat-label>
-    <input matInput
-           matGoogleMapsAutocomplete>
-  </mat-form-field>
-  <br>
-  <mat-form-field>
-    <mat-label>Price</mat-label>
-    <mat-select  multiple formControlName="price">
-      <mat-option *ngFor="let priceCategory of priceCategoryValues" [value]="priceCategory">{{toPriceCategoryString(priceCategory)}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <br>
-  <mat-form-field appearance="standard">
+  <app-location-entry class="full-width"></app-location-entry>
+  <br />
+  <mat-form-field appearance="standard" class="full-width">
     <mat-label>Search</mat-label>
-    <input matInput placeholder="Search term" formControlName="searchTerm">
+    <input matInput placeholder="Search term" formControlName="searchTerm" />
     <mat-hint>A term associated with the business</mat-hint>
   </mat-form-field>
-  <br>
+  <br />
+  <mat-form-field class="full-width">
+    <mat-label>Price</mat-label>
+    <mat-select multiple formControlName="price">
+      <mat-option
+        *ngFor="let priceCategory of priceCategoryValues"
+        [value]="priceCategory"
+        >{{ toPriceCategoryString(priceCategory) }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+  <br />
   <mat-form-field>
     <div>
-      <input type="text"
-             placeholder="Pick one"
-             aria-label="Number"
-             matInput
-             [matAutocomplete]="auto"
-             formControlName="attributes"
-             [appFilteredAutocomplete]="attributeOptions"
-              (filteredOptionsEmitter)="filteredAttributes = $event">
+      <input
+        type="text"
+        placeholder="Pick one"
+        aria-label="Number"
+        matInput
+        [matAutocomplete]="auto"
+        formControlName="attributes"
+        [appFilteredAutocomplete]="attributeOptions"
+        (filteredOptionsEmitter)="filteredAttributes = $event"
+      />
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let filteredAttribute of filteredAttributes" [value]="filteredAttribute">{{filteredAttribute.toString()}}</mat-option>
+        <mat-option
+          *ngFor="let filteredAttribute of filteredAttributes"
+          [value]="filteredAttribute"
+          >{{ filteredAttribute.toString() }}</mat-option
+        >
       </mat-autocomplete>
     </div>
   </mat-form-field>
-  <br>
+  <br />
   <mat-form-field>
     <mat-label>Max radius</mat-label>
-    <input matInput type="number" formControlName="radius">
+    <input matInput type="number" formControlName="radius" />
     <span matSuffix>km</span>
     <mat-hint>Max distance from your current location</mat-hint>
   </mat-form-field>

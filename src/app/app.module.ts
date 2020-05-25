@@ -5,25 +5,35 @@ import { AppComponent } from './app.component';
 import { RecommendationEngineComponent } from './recommendation-engine/recommendation-engine.component';
 import { ParameterBoxComponent } from './parameter-box/parameter-box.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatInputModule} from '@angular/material/input';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FilteredAutocompleteDirective } from './directives/filtered-autocomplete.directive';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatGoogleMapsAutocompleteModule} from '@angular-material-extensions/google-maps-autocomplete';
-import {AgmCoreModule} from '@agm/core';
-import {environment} from '../environments/environment';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
+import { AgmCoreModule } from '@agm/core';
+import { environment } from '../environments/environment';
+import { LocationEntryComponent } from './parameter-box/location-entry/location-entry.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
     AppComponent,
     RecommendationEngineComponent,
     ParameterBoxComponent,
-    FilteredAutocompleteDirective
+    FilteredAutocompleteDirective,
+    LocationEntryComponent,
   ],
   imports: [
-    AgmCoreModule.forRoot({apiKey: environment.PLACES_API_KEY, libraries: ['places']}),
+    AgmCoreModule.forRoot({
+      apiKey: environment.PLACES_API_KEY,
+      libraries: ['places'],
+    }),
     BrowserModule,
     BrowserAnimationsModule,
     MatSelectModule,
@@ -31,9 +41,14 @@ import {environment} from '../environments/environment';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    MatGoogleMapsAutocompleteModule
+    MatGoogleMapsAutocompleteModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatCardModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

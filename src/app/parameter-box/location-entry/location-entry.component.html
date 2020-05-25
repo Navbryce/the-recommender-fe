@@ -1,0 +1,23 @@
+<mat-form-field
+  appearance="standard"
+  class="full-width"
+  style="position: relative;"
+>
+  <mat-chip-list>
+    <mat-chip *ngIf="usingCurrentLocation"
+      >Current location
+      <mat-icon matChipRemove (click)="stopUsingCurrentLocation()"
+        >cancel</mat-icon
+      ></mat-chip
+    >
+  </mat-chip-list>
+  <input matInput matGoogleMapsAutocomplete [disabled]="usingCurrentLocation" />
+  <button
+    mat-icon-button
+    matSuffix
+    (click)="useCurrentLocation()"
+    matTooltip="Use current location"
+  >
+    <mat-icon>location_searching</mat-icon>
+  </button>
+</mat-form-field>
