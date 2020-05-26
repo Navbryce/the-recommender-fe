@@ -18,3 +18,4 @@ jobs:
         app: the-recommender-fe
         on:
           repo: Navbryce/the-recommender-fe
+        skip_cleanup: true
