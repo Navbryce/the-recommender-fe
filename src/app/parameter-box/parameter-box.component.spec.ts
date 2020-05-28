@@ -8,6 +8,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LocationEntryComponent } from './location-entry/location-entry.component';
 
 describe('ParameterBoxComponent', () => {
   let component: ParameterBoxComponent;
@@ -25,7 +26,7 @@ describe('ParameterBoxComponent', () => {
         MatInputModule,
         MatSelectModule,
       ],
-      declarations: [ParameterBoxComponent],
+      declarations: [ParameterBoxComponent, LocationEntryComponent],
     }).compileComponents();
   }));
 
