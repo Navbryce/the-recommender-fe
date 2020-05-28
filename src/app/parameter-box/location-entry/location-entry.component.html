@@ -6,16 +6,24 @@
   <mat-chip-list>
     <mat-chip *ngIf="usingCurrentLocation"
       >Current location
-      <mat-icon matChipRemove (click)="stopUsingCurrentLocation()"
+      <mat-icon matChipRemove (click)="stopUsingCurrentLocationHandler()"
         >cancel</mat-icon
       ></mat-chip
     >
   </mat-chip-list>
-  <input matInput matGoogleMapsAutocomplete [disabled]="usingCurrentLocation" />
+  <!--- This works because the input event is not fired when the location autocomplete is selected --->
+  <input
+    matInput
+    matGoogleMapsAutocomplete
+    [disabled]="usingCurrentLocation"
+    (focusout)="updateAsTouchedIfNotAlreadyTouched()"
+    (input)="autocompleteChangeHandler(null)"
+    (onLocationSelected)="autocompleteChangeHandler($event)"
+  />
   <button
     mat-icon-button
     matSuffix
-    (click)="useCurrentLocation()"
+    (click)="useCurrentLocationHandler()"
     matTooltip="Use current location"
   >
     <mat-icon>location_searching</mat-icon>

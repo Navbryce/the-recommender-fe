@@ -20,6 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { InputErrorMessageDirective } from './directives/input-error-message.directive';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { MatCardModule } from '@angular/material/card';
     ParameterBoxComponent,
     FilteredAutocompleteDirective,
     LocationEntryComponent,
+    InputErrorMessageDirective,
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -47,6 +50,7 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatChipsModule,
     MatCardModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

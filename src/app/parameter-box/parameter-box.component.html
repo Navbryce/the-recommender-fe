@@ -1,5 +1,15 @@
-<div class="wrapper" [formGroup]="parameterForm">
-  <app-location-entry class="full-width"></app-location-entry>
+<form
+  class="field-wrapper"
+  [formGroup]="parameterForm"
+  (ngSubmit)="formSubmitEventHandler($event)"
+>
+  <app-location-entry
+    formControlName="location"
+    class="full-width"
+  ></app-location-entry>
+  <div [appInputErrorMessage]="parameterForm.get('location')">
+    <p>Location is required</p>
+  </div>
   <br />
   <mat-form-field appearance="standard" class="full-width">
     <mat-label>Search</mat-label>
@@ -46,4 +56,9 @@
     <span matSuffix>km</span>
     <mat-hint>Max distance from your current location</mat-hint>
   </mat-form-field>
-</div>
+  <div class="submit-button-wrapper">
+    <button type="submit" mat-raised-button color="primary">
+      Recommend a place!
+    </button>
+  </div>
+</form>

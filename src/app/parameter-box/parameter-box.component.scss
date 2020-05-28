@@ -3,6 +3,14 @@
 mat-option {
   user-select: none !important;
 }
-.wrapper {
+.field-wrapper {
   @extend .full;
+}
+.submit-button-wrapper {
+  margin-top: 20px;
+
+  button {
+    padding: 0;
+    width: 100%;
+  }
 }
