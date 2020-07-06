@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GeoCoordinates } from '../data/GeoCoordinates.interface';
+import { GeoCoordinates } from './data/GeoCoordinates.interface';
 
 @Component({
   selector: 'app-root',

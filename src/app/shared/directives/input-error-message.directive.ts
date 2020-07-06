@@ -4,6 +4,7 @@ import { Directive, DoCheck, ElementRef, Input, OnInit } from '@angular/core';
   selector: '[appInputErrorMessage]',
 })
 export class InputErrorMessageDirective implements DoCheck, OnInit {
+  // the form control
   @Input('appInputErrorMessage') inputModel: any;
 
   constructor(private hostElement: ElementRef) {}
@@ -13,7 +14,7 @@ export class InputErrorMessageDirective implements DoCheck, OnInit {
   }
 
   ngDoCheck(): void {
-    const shouldShow = !this.inputModel.valid && !this.inputModel.pristine;
+    const shouldShow = !this.inputModel.valid && this.inputModel.touched;
     this.hostElement.nativeElement.style.visibility = shouldShow
       ? 'visible'
       : 'hidden';

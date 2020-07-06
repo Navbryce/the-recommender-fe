@@ -11,7 +11,11 @@
       ></mat-chip
     >
   </mat-chip-list>
-  <!--- This works because the input event is not fired when the location autocomplete is selected --->
+  <!---
+  On input change, fire null event, so the input gets marked as dirty (the user has modified the value)
+  This works because the input event is not fired when the location autocomplete is selected (preventing two events
+  from firing)
+  --->
   <input
     matInput
     matGoogleMapsAutocomplete

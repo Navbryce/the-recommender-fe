@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   PriceCategory,
   toPriceCategoryString,
-} from '../../data/PriceCategory.enum';
+} from '../data/PriceCategory.enum';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 
 @Component({

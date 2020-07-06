@@ -9,19 +9,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { FilteredAutocompleteDirective } from './directives/filtered-autocomplete.directive';
+import { FilteredAutocompleteDirective } from './shared/directives/filtered-autocomplete.directive';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';
-import { LocationEntryComponent } from './parameter-box/location-entry/location-entry.component';
+import { LocationEntryComponent } from './shared/components/location-entry/location-entry.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { InputErrorMessageDirective } from './directives/input-error-message.directive';
+import { InputErrorMessageDirective } from './shared/directives/input-error-message.directive';
 
 @NgModule({
   declarations: [

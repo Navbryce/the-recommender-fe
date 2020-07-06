@@ -64,13 +64,14 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
   }
 
   useCurrentLocationHandler() {
-    this.updateAsTouchedIfNotAlreadyTouched();
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.currentGeoLocationSuccessCallback(position);
+        this.updateAsTouchedIfNotAlreadyTouched();
       },
       () => {
         console.log('Failed to get user position');
+        this.updateAsTouchedIfNotAlreadyTouched();
       }
     );
   }
