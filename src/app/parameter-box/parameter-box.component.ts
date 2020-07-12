@@ -1,9 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   PriceCategory,
   toPriceCategoryString,
-} from '../data/PriceCategory.enum';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+} from '../data/models/PriceCategory.enum';
+import {
+  FormBuilder,
+  FormGroup,
+  FormGroupDirective,
+  NgForm,
+  Validators,
+} from '@angular/forms';
+import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
 
 @Component({
   selector: 'app-parameter-box',
@@ -18,11 +25,16 @@ export class ParameterBoxComponent implements OnInit {
 
   readonly toPriceCategoryString = toPriceCategoryString;
 
-  filteredAttributes: any[];
-  parameterForm: FormGroup;
+  searchParametersFormGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.parameterForm = formBuilder.group({
+  @Output() searchParametersEmitter: EventEmitter<
+    BusinessSearchParameters
+  > = new EventEmitter<BusinessSearchParameters>();
+
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.searchParametersFormGroup = this.formBuilder.group({
       location: ['', Validators.required],
       price: [''],
       searchTerm: [''],
@@ -31,11 +43,21 @@ export class ParameterBoxComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
-  formSubmitEventHandler(formSubmitEvent: NgForm) {
-    if (formSubmitEvent.valid) {
-      console.log(formSubmitEvent);
+  onFormSubmit(form: FormGroupDirective) {
+    if (form.valid) {
+      this.searchParametersEmitter.emit(this.generateSearchParameters(form));
+    } else {
+      this.searchParametersFormGroup.markAllAsTouched();
     }
+  }
+
+  private generateSearchParameters(
+    form: FormGroupDirective
+  ): BusinessSearchParameters {
+    if (!form.valid) {
+      throw new Error('Form must be valid');
+    }
+
+    return form.value;
   }
 }

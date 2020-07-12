@@ -1,0 +1,5 @@
+<mat-autocomplete>
+  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+    {{ option.toString() }}
+  </mat-option>
+</mat-autocomplete>

@@ -5,52 +5,36 @@ import { AppComponent } from './app.component';
 import { RecommendationEngineComponent } from './recommendation-engine/recommendation-engine.component';
 import { ParameterBoxComponent } from './parameter-box/parameter-box.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatInputModule } from '@angular/material/input';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { FilteredAutocompleteDirective } from './shared/directives/filtered-autocomplete.directive';
+import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
-import { AgmCoreModule } from '@agm/core';
-import { environment } from '../environments/environment';
-import { LocationEntryComponent } from './shared/components/location-entry/location-entry.component';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { InputErrorMessageDirective } from './shared/directives/input-error-message.directive';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
     AppComponent,
     RecommendationEngineComponent,
     ParameterBoxComponent,
-    FilteredAutocompleteDirective,
-    LocationEntryComponent,
-    InputErrorMessageDirective,
   ],
   imports: [
-    AgmCoreModule.forRoot({
-      apiKey: environment.PLACES_API_KEY,
-      libraries: ['places'],
-    }),
     BrowserModule,
     BrowserAnimationsModule,
-    MatSelectModule,
     MatSidenavModule,
-    MatInputModule,
-    MatAutocompleteModule,
+    SharedModule,
     ReactiveFormsModule,
-    MatGoogleMapsAutocompleteModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatButtonModule,
-    MatChipsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     MatCardModule,
     MatToolbarModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

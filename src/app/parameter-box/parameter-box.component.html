@@ -1,13 +1,14 @@
 <form
   class="field-wrapper"
-  [formGroup]="parameterForm"
-  (ngSubmit)="formSubmitEventHandler($event)"
+  #form="ngForm"
+  [formGroup]="searchParametersFormGroup"
+  (ngSubmit)="onFormSubmit(form)"
 >
   <app-location-entry
     formControlName="location"
     class="full-width"
   ></app-location-entry>
-  <div [appInputErrorMessage]="parameterForm.get('location')">
+  <div [appInputErrorMessage]="searchParametersFormGroup.get('location')">
     <p>Location is required</p>
   </div>
   <br />
@@ -35,18 +36,15 @@
         placeholder="Pick one"
         aria-label="Number"
         matInput
-        [matAutocomplete]="auto"
         formControlName="attributes"
-        [appFilteredAutocomplete]="attributeOptions"
-        (filteredOptionsEmitter)="filteredAttributes = $event"
+        [matAutocomplete]="attributesAutoComplete.matAutocomplete | async"
       />
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option
-          *ngFor="let filteredAttribute of filteredAttributes"
-          [value]="filteredAttribute"
-          >{{ filteredAttribute.toString() }}</mat-option
-        >
-      </mat-autocomplete>
+      <app-filtered-autocomplete
+        [inputControl]="searchParametersFormGroup.controls.attributes"
+        [options]="attributeOptions"
+        #attributesAutoComplete
+      >
+      </app-filtered-autocomplete>
     </div>
   </mat-form-field>
   <br />
@@ -56,7 +54,7 @@
     <span matSuffix>km</span>
     <mat-hint>Max distance from your current location</mat-hint>
   </mat-form-field>
-  <div class="submit-button-wrapper">
+  <div class="form-group submit-button-wrapper">
     <button type="submit" mat-raised-button color="primary">
       Recommend a place!
     </button>

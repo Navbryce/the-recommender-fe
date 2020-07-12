@@ -1,5 +1,5 @@
 import { Component, forwardRef, OnInit, ViewChild } from '@angular/core';
-import { GeoCoordinates } from '../../../data/GeoCoordinates.interface';
+import { GeoCoordinates } from '../../../data/models/GeoCoordinates.interface';
 import { Observable, Subject } from 'rxjs';
 import { MatInput } from '@angular/material/input';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';

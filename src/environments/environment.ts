@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  PLACES_API_KEY: 'AIzaSyBo0sc5w1uNU88UUdPgyhpq1MZAlKxux4M'  // restricted to my ip
+  placesApiKey: 'AIzaSyBo0sc5w1uNU88UUdPgyhpq1MZAlKxux4M', // restricted to my ip
+  searchApiUrl: 'localhost:5000',
 };
 
 /*

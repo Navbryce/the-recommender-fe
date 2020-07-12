@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { GeoCoordinates } from '../data/GeoCoordinates.interface';
+import { GeoCoordinates } from '../data/models/GeoCoordinates.interface';
 
 @Component({
   selector: 'app-recommendation-engine',
