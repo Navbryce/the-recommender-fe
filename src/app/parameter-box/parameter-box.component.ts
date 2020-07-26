@@ -18,7 +18,8 @@ import { BusinessSearchParameters } from '../data/models/BusinessSearchParameter
   styleUrls: ['./parameter-box.component.scss'],
 })
 export class ParameterBoxComponent implements OnInit {
-  readonly attributeOptions = ['test', 'test option 2'];
+  readonly ATTRIBUTE_OPTIONS = ['test', 'test option 2'];
+  readonly DEFAULT_RADIUS = 5;
   readonly priceCategoryValues: PriceCategory[] = Object.keys(
     PriceCategory
   ) as PriceCategory[];
@@ -27,7 +28,7 @@ export class ParameterBoxComponent implements OnInit {
 
   searchParametersFormGroup: FormGroup;
 
-  @Output() searchParametersEmitter: EventEmitter<
+  @Output('searchParameters') searchParametersEmitter: EventEmitter<
     BusinessSearchParameters
   > = new EventEmitter<BusinessSearchParameters>();
 
@@ -39,7 +40,7 @@ export class ParameterBoxComponent implements OnInit {
       price: [''],
       searchTerm: [''],
       attributes: [''],
-      radius: [''],
+      radius: [this.DEFAULT_RADIUS],
     });
   }
 
