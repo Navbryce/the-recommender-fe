@@ -66,7 +66,7 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
   useCurrentLocationHandler() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.currentGeoLocationSuccessCallback(position);
+        this.onCurrentGeoLocationFind(position);
         this.updateAsTouchedIfNotAlreadyTouched();
       },
       (error) => {
@@ -77,7 +77,7 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
     );
   }
 
-  private currentGeoLocationSuccessCallback(position: Position) {
+  private onCurrentGeoLocationFind(position: Position) {
     this.updateCurrentCoordinates({
       lat: position.coords.latitude,
       long: position.coords.longitude,
@@ -96,8 +96,14 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
     this.usingCurrentLocation = false;
   }
 
-  autocompleteChangeHandler($event?: GeoCoordinates) {
-    this.updateCurrentCoordinates($event);
+  onLocationAutocompleteChange($event?: {
+    latitude: number;
+    longitude: number;
+  }) {
+    this.updateCurrentCoordinates({
+      lat: $event.latitude,
+      long: $event.longitude,
+    });
   }
 
   private updateCurrentCoordinates(geoCoordinates?: GeoCoordinates) {

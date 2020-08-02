@@ -21,8 +21,8 @@
     matGoogleMapsAutocomplete
     [disabled]="usingCurrentLocation"
     (focusout)="updateAsTouchedIfNotAlreadyTouched()"
-    (input)="autocompleteChangeHandler(null)"
-    (onLocationSelected)="autocompleteChangeHandler($event)"
+    (input)="onLocationAutocompleteChange(null)"
+    (onLocationSelected)="onLocationAutocompleteChange($event)"
   />
   <button
     mat-icon-button
