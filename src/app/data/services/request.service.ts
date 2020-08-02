@@ -7,7 +7,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +50,7 @@ export class RequestService {
   private makeRequest<T>(request: HttpRequest<T>): Observable<T> {
     return this.httpClient.request(request).pipe(
       map((event) => event as HttpResponse<T>),
+      filter((event) => event.type != 0),
       map((event) => event.body)
     );
   }

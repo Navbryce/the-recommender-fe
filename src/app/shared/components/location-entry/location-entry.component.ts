@@ -69,16 +69,19 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
         this.currentGeoLocationSuccessCallback(position);
         this.updateAsTouchedIfNotAlreadyTouched();
       },
-      () => {
+      (error) => {
         console.log('Failed to get user position');
+        console.log(error);
         this.updateAsTouchedIfNotAlreadyTouched();
       }
     );
   }
 
   private currentGeoLocationSuccessCallback(position: Position) {
-    const { latitude, longitude } = position.coords;
-    this.updateCurrentCoordinates({ latitude, longitude });
+    this.updateCurrentCoordinates({
+      lat: position.coords.latitude,
+      long: position.coords.longitude,
+    });
     this.usingCurrentLocation = true;
     this.locationInput.placeholder = '';
     this.locationInput.value = '';
