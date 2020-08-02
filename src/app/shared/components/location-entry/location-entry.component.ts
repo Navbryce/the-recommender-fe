@@ -78,8 +78,10 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
   }
 
   private currentGeoLocationSuccessCallback(position: Position) {
-    const { latitude, longitude } = position.coords;
-    this.updateCurrentCoordinates({ latitude, longitude });
+    this.updateCurrentCoordinates({
+      lat: position.coords.latitude,
+      long: position.coords.longitude,
+    });
     this.usingCurrentLocation = true;
     this.locationInput.placeholder = '';
     this.locationInput.value = '';
