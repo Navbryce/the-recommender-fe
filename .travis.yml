@@ -1,8 +1,8 @@
 language: node_js
 node_js: 14.3.0
 stages:
-  - deploy
   - tests
+  - deploy
 jobs:
   include:
     - stage: tests
