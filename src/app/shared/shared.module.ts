@@ -14,6 +14,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { BooleanIndicatorIconComponent } from './components/boolean-indicator-icon/boolean-indicator-icon.component';
 import { UnitConverterPipe } from './pipes/unit-converter.pipe';
 import { RoundValuePipe } from './pipes/round-value.pipe';
+import { PriceCategoryComponent } from './components/price-category/price-category.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { RoundValuePipe } from './pipes/round-value.pipe';
     BooleanIndicatorIconComponent,
     RoundValuePipe,
     UnitConverterPipe,
+    PriceCategoryComponent,
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -42,6 +44,7 @@ import { RoundValuePipe } from './pipes/round-value.pipe';
     InputErrorMessageDirective,
     LocationEntryComponent,
     FilteredAutocompleteComponent,
+    PriceCategoryComponent,
     RoundValuePipe,
     UnitConverterPipe,
   ],

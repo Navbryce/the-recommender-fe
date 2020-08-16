@@ -1,5 +1,5 @@
 <div class="recommendation-session-wrapper full">
-  <div class="recommended-business">
+  <div *ngIf="currentRecommendation" class="recommended-business">
     <app-recommendation-card
       [recommendation]="currentRecommendation"
     ></app-recommendation-card>

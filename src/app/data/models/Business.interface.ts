@@ -1,5 +1,5 @@
 import { GeoCoordinates } from './GeoCoordinates.interface';
-import { Address } from './Location.interface';
+import { Address } from './Address.interface';
 import { PriceCategory } from './PriceCategory.enum';
 
 export interface Business {
