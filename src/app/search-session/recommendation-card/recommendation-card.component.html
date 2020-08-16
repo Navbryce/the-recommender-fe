@@ -1,0 +1,30 @@
+<mat-card class="full">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>{{ recommendedBusiness.name }}</mat-card-title>
+    <mat-card-subtitle
+      >{{ recommendation.distance | unitConverter: "m":"mi" | roundValue }} mi
+      away</mat-card-subtitle
+    >
+  </mat-card-header>
+  <div mat-card-image *ngIf="recommendedBusiness.imageUrls.length > 0">
+    <img class="business-image" src="{{ recommendedBusiness.imageUrls[0] }}" />
+  </div>
+  <mat-card-content>
+    <div class="transaction-options">
+      <span
+        ><span>Pickup </span>
+        <app-boolean-icon
+          [value]="recommendedBusiness.pickup"
+        ></app-boolean-icon
+      ></span>
+      <span>|</span>
+      <span
+        ><span>Delivery </span>
+        <app-boolean-icon
+          [value]="recommendedBusiness.delivery"
+        ></app-boolean-icon
+      ></span>
+    </div>
+  </mat-card-content>
+</mat-card>

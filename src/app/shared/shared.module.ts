@@ -11,12 +11,18 @@ import { environment } from '../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 import { FilteredAutocompleteComponent } from './components/filtered-autocomplete/filtered-autocomplete.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { BooleanIndicatorIconComponent } from './components/boolean-indicator-icon/boolean-indicator-icon.component';
+import { UnitConverterPipe } from './pipes/unit-converter.pipe';
+import { RoundValuePipe } from './pipes/round-value.pipe';
 
 @NgModule({
   declarations: [
     InputErrorMessageDirective,
     LocationEntryComponent,
     FilteredAutocompleteComponent,
+    BooleanIndicatorIconComponent,
+    RoundValuePipe,
+    UnitConverterPipe,
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -32,9 +38,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatAutocompleteModule,
   ],
   exports: [
+    BooleanIndicatorIconComponent,
     InputErrorMessageDirective,
     LocationEntryComponent,
     FilteredAutocompleteComponent,
+    RoundValuePipe,
+    UnitConverterPipe,
   ],
 })
 export class SharedModule {}

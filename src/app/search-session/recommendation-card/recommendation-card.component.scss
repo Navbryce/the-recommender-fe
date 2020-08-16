@@ -1,0 +1,17 @@
+.business-image {
+  object-fit: contain;
+  width: 100%;
+}
+.transaction-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 12pt;
+  width: 100%;
+
+  app-boolean-icon {
+    display: inline-block;
+    user-select: none;
+    vertical-align: middle;
+  }
+}

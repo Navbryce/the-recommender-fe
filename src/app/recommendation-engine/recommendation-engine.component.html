@@ -1,13 +1,22 @@
-<div class="search-box-wrapper">
-  <mat-card class="search-box center-search">
-    <mat-card-header>
-      <mat-card-title>Search</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <app-parameter-box
-        (searchParameters)="onSearchParameters($event)"
-        class="full"
-      ></app-parameter-box>
-    </mat-card-content>
-  </mat-card>
+<div class="recommendation-engine-wrapper">
+  <div
+    *ngIf="(recommendationSessionUpdated | async) == null"
+    class="search-box-wrapper"
+  >
+    <mat-card class="search-box center-search">
+      <mat-card-header>
+        <mat-card-title>Search</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-parameter-box
+          (searchParameters)="onSearchParameters($event)"
+          class="full"
+        ></app-parameter-box>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div *ngIf="(recommendationSessionUpdated | async) !== null" class="full">
+    <app-search-session [searchSession]="recommendationSessionUpdated | async">
+    </app-search-session>
+  </div>
 </div>

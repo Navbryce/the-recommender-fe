@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { RecommendationSessionComponent } from './recommendation-session-component/recommendation-session.component';
 import { ParameterBoxComponent } from './parameter-box/parameter-box.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -17,11 +16,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RecommendationEngineComponent } from './recommendation-engine/recommendation-engine.component';
 import { SearchClientModule } from './search-client/search-client.module';
+import { SearchSessionModule } from './search-session/search-session.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RecommendationSessionComponent,
     ParameterBoxComponent,
     RecommendationEngineComponent,
   ],
@@ -39,6 +38,7 @@ import { SearchClientModule } from './search-client/search-client.module';
     MatToolbarModule,
     MatButtonModule,
     SearchClientModule,
+    SearchSessionModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
