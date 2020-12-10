@@ -9,7 +9,7 @@ import { SearchApiClient } from './search-api-client.service';
   providedIn: 'root',
 })
 export class SearchServiceSearchApi implements SearchService {
-  private static readonly BASE_PATH = '/business-search/';
+  private static readonly BASE_PATH = '/business-search';
   constructor(private searchApiClient: SearchApiClient) {}
 
   newSearch(

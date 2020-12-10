@@ -40,7 +40,7 @@ export class ParameterBoxComponent implements OnInit {
       price: [''],
       searchTerm: [''],
       attributes: [''],
-      radius: [this.DEFAULT_RADIUS],
+      searchRadius: [this.DEFAULT_RADIUS],
     });
   }
 
@@ -59,6 +59,9 @@ export class ParameterBoxComponent implements OnInit {
       throw new Error('Form must be valid');
     }
 
-    return form.value;
+    return {
+      ...form.value,
+      searchRadius: form.value.radius * 10000,
+    };
   }
 }
