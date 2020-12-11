@@ -4,6 +4,7 @@ import { SEARCH_SERVICE_TOKEN } from '../data/services/service-injection-tokens'
 import { SearchService } from '../data/services/SearchService.interface';
 import { SearchSession } from '../data/models/SearchSession.interface';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { Recommendation } from '../data/models/Recommendation.interface';
 
 @Component({
   selector: 'app-recommendation-engine',
@@ -11,16 +12,23 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
   styleUrls: ['./recommendation-engine.component.scss'],
 })
 export class RecommendationEngineComponent implements OnInit {
-  public searchSessionUpdated: Observable<SearchSession>;
+  public searchSessionUpdated: Observable<{
+    sessionId: string;
+    recommendation: Recommendation;
+  }>;
 
-  public recommendationSessionUpdated: BehaviorSubject<SearchSession>;
+  public recommendationSessionUpdated: BehaviorSubject<{
+    sessionId: string;
+    recommendation: Recommendation;
+  }>;
 
   constructor(
     @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService
   ) {
-    this.recommendationSessionUpdated = new BehaviorSubject<SearchSession>(
-      null
-    );
+    this.recommendationSessionUpdated = new BehaviorSubject<{
+      sessionId: string;
+      recommendation: Recommendation;
+    }>(null);
     this.searchSessionUpdated = this.recommendationSessionUpdated.asObservable();
   }
 
@@ -32,7 +40,10 @@ export class RecommendationEngineComponent implements OnInit {
       .subscribe((session) => this.setNewRecommendationSession(session));
   }
 
-  setNewRecommendationSession(searchSession: SearchSession) {
+  setNewRecommendationSession(searchSession: {
+    sessionId: string;
+    recommendation: Recommendation;
+  }) {
     this.recommendationSessionUpdated.next(searchSession);
   }
 }

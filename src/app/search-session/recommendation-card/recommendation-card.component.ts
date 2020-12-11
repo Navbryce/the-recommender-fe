@@ -14,6 +14,10 @@ export class RecommendationCardComponent implements OnInit {
     return this.recommendation?.business;
   }
 
+  get displayableCategories(): string[] {
+    return this.recommendation?.business.categories.map((val) => val.label);
+  }
+
   constructor() {}
 
   ngOnInit(): void {}

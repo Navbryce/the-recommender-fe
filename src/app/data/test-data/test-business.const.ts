@@ -9,12 +9,11 @@ export const TEST_BUSINESS: Business = {
     'https://cdn.wallpapersafari.com/19/1/k7fGZb.jpg',
     'https://upload.wikimedia.org/wikipedia/commons/d/d4/N.Tesla.JPG',
   ],
-
   price: PriceCategory.HIGH,
   pickup: false,
   delivery: true,
-  categories: ['Category'],
-
+  categories: [{ id: 'category', label: 'Category' }],
+  rating: 3.3,
   coordinates: {
     lat: 111.1,
     long: 111.2,
@@ -25,6 +24,5 @@ export const TEST_BUSINESS: Business = {
     city: 'City',
     addressLine: '0000 Street',
     zipCode: '00000',
-    displayString: '0000 Street, CA, US, 00000',
   },
 };

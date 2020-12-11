@@ -1,0 +1,7 @@
+<div fxLayout="row" fxLayoutAlign="start none">
+  <div *ngFor="let fill of stars" class="star-wrapper">
+    <mat-icon>star</mat-icon>
+    <mat-icon *ngIf="fill == 0.5">star_half</mat-icon>
+    <mat-icon *ngIf="fill == 1">star</mat-icon>
+  </div>
+</div>

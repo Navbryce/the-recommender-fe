@@ -1,10 +1,11 @@
 import { BusinessSearchParameters } from '../models/BusinessSearchParameters.interface';
-import { SearchSession } from '../models/SearchSession.interface';
 import { Observable } from 'rxjs';
+import { Recommendation } from '../models/Recommendation.interface';
 
 export interface SearchService {
   newSearch(
     searchParameters: BusinessSearchParameters
-  ): Observable<SearchSession>;
-  nextRecommendation(searchSession: SearchSession): Observable<SearchSession>;
+  ): Observable<{ sessionId: string; recommendation: Recommendation }>;
+
+  nextRecommendation(sessionId: string): Observable<Recommendation>;
 }

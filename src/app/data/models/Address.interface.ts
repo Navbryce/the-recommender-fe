@@ -4,5 +4,4 @@ export interface Address {
   city: string;
   addressLine: string;
   zipCode: string;
-  displayString;
 }

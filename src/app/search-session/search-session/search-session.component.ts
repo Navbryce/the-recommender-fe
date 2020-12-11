@@ -1,7 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { SearchSession } from '../../data/models/SearchSession.interface';
 import { Recommendation } from '../../data/models/Recommendation.interface';
-import { TEST_RECOMMENDATION } from '../../data/test-data/test-recommendation.const';
 
 @Component({
   selector: 'app-search-session',
@@ -9,9 +7,19 @@ import { TEST_RECOMMENDATION } from '../../data/test-data/test-recommendation.co
   styleUrls: ['./search-session.component.scss'],
 })
 export class SearchSessionComponent implements OnChanges {
-  @Input() searchSession: SearchSession;
+  @Input() sessionIdAndCurrentRecommendation: {
+    sesssionId: string;
+    recommendation: Recommendation;
+  };
 
-  public currentRecommendation: Recommendation = TEST_RECOMMENDATION;
+  public currentRecommendation: Recommendation;
 
-  ngOnChanges(): void {}
+  get sessionId(): string {
+    return this.sessionIdAndCurrentRecommendation.sesssionId;
+  }
+
+  ngOnChanges(): void {
+    console.log(this.sessionIdAndCurrentRecommendation);
+    this.currentRecommendation = this.sessionIdAndCurrentRecommendation.recommendation;
+  }
 }

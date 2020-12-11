@@ -15,9 +15,13 @@ import { BooleanIndicatorIconComponent } from './components/boolean-indicator-ic
 import { UnitConverterPipe } from './pipes/unit-converter.pipe';
 import { RoundValuePipe } from './pipes/round-value.pipe';
 import { PriceCategoryComponent } from './components/price-category/price-category.component';
+import { AddressPipe } from './pipes/address.pipe';
+import { RatingComponent } from './components/rating/rating.component';
+import { FlexModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
+    AddressPipe,
     InputErrorMessageDirective,
     LocationEntryComponent,
     FilteredAutocompleteComponent,
@@ -25,6 +29,7 @@ import { PriceCategoryComponent } from './components/price-category/price-catego
     RoundValuePipe,
     UnitConverterPipe,
     PriceCategoryComponent,
+    RatingComponent,
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -38,8 +43,10 @@ import { PriceCategoryComponent } from './components/price-category/price-catego
     MatChipsModule,
     MatIconModule,
     MatAutocompleteModule,
+    FlexModule,
   ],
   exports: [
+    AddressPipe,
     BooleanIndicatorIconComponent,
     InputErrorMessageDirective,
     LocationEntryComponent,
@@ -47,6 +54,7 @@ import { PriceCategoryComponent } from './components/price-category/price-catego
     PriceCategoryComponent,
     RoundValuePipe,
     UnitConverterPipe,
+    RatingComponent,
   ],
 })
 export class SharedModule {}

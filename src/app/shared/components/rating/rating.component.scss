@@ -1,0 +1,22 @@
+.star-wrapper {
+  display: inline;
+  left: 0;
+  position: relative;
+  top: 0;
+
+  .mat-icon {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+  }
+
+  .mat-icon:nth-child(1) {
+    color: rgba(0, 0, 0, 0);
+  }
+
+  .mat-icon:nth-child(2) {
+    left: 0;
+    color: #ffc30e;
+    position: absolute;
+    top: 0;
+  }
+}

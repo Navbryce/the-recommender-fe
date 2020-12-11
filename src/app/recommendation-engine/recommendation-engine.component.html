@@ -16,7 +16,9 @@
     </mat-card>
   </div>
   <div *ngIf="(recommendationSessionUpdated | async) !== null" class="full">
-    <app-search-session [searchSession]="recommendationSessionUpdated | async">
+    <app-search-session
+      [sessionIdAndCurrentRecommendation]="recommendationSessionUpdated | async"
+    >
     </app-search-session>
   </div>
 </div>

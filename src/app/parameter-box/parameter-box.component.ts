@@ -37,10 +37,10 @@ export class ParameterBoxComponent implements OnInit {
   ngOnInit(): void {
     this.searchParametersFormGroup = this.formBuilder.group({
       location: ['', Validators.required],
-      price: [''],
+      priceCategories: [''],
       searchTerm: [''],
       attributes: [''],
-      searchRadius: [this.DEFAULT_RADIUS],
+      searchRadius: [this.DEFAULT_RADIUS, Validators.max(40)],
     });
   }
 
@@ -61,7 +61,7 @@ export class ParameterBoxComponent implements OnInit {
 
     return {
       ...form.value,
-      searchRadius: form.value.radius * 10000,
+      searchRadius: form.value.searchRadius * 1000,
     };
   }
 }
