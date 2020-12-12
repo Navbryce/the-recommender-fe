@@ -1,4 +1,4 @@
-<mat-card class="full">
+<mat-card class="full-width">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>{{ recommendedBusiness.name }}</mat-card-title>
@@ -18,8 +18,15 @@
       </div>
     </mat-card-subtitle>
   </mat-card-header>
-  <div mat-card-image *ngIf="recommendedBusiness.imageUrls.length > 0">
-    <img class="business-image" src="{{ recommendedBusiness.imageUrls[0] }}" />
+  <div
+    mat-card-image
+    *ngIf="recommendedBusiness.imageUrls.length > 0"
+    class="images"
+  >
+    <app-image-carousel
+      [images]="formattedImages"
+      height="400px"
+    ></app-image-carousel>
   </div>
   <mat-card-content>
     <div class="transaction-options">
@@ -50,9 +57,9 @@
       <div>
         <p>
           <mat-icon>link</mat-icon
-          ><a href="{{ recommendedBusiness.url }}">{{
-            recommendedBusiness.url
-          }}</a>
+          ><a href="{{ recommendedBusiness.url }}"
+            ><button mat-raised-button color="primary">View Site</button></a
+          >
         </p>
       </div>
     </div>

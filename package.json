@@ -27,9 +27,11 @@
     "@angular/platform-browser": "~9.1.9",
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
+    "@splidejs/splide": "^2.4.21",
     "http-server": "^0.12.3",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "uuid": "^8.3.2",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

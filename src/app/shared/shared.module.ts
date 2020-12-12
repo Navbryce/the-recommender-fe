@@ -18,6 +18,7 @@ import { PriceCategoryComponent } from './components/price-category/price-catego
 import { AddressPipe } from './pipes/address.pipe';
 import { RatingComponent } from './components/rating/rating.component';
 import { FlexModule } from '@angular/flex-layout';
+import { ImageCarouselComponent } from './components/image-carousel/image-carousel.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { FlexModule } from '@angular/flex-layout';
     UnitConverterPipe,
     PriceCategoryComponent,
     RatingComponent,
+    ImageCarouselComponent,
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -55,6 +57,7 @@ import { FlexModule } from '@angular/flex-layout';
     RoundValuePipe,
     UnitConverterPipe,
     RatingComponent,
+    ImageCarouselComponent,
   ],
 })
 export class SharedModule {}

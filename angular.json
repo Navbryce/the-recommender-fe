@@ -21,7 +21,7 @@
             "aot": true,
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/custom-theme.scss", "src/styles.scss"],
-            "scripts": []
+            "scripts": ["node_modules/@splidejs/splide/dist/js/splide.js"]
           },
           "configurations": {
             "production": {

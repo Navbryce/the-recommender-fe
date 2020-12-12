@@ -1,17 +1,16 @@
-.business-image {
-  object-fit: contain;
-  width: 100%;
-}
 .details {
   vertical-align: middle;
+
   mat-icon {
     margin-right: 5px;
   }
+
   mat-icon,
   p {
     vertical-align: middle;
   }
 }
+
 .transaction-options {
   display: flex;
   align-items: center;
