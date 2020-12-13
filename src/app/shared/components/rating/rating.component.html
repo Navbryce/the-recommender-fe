@@ -1,7 +1,12 @@
-<div fxLayout="row" fxLayoutAlign="start none">
-  <div *ngFor="let fill of stars" class="star-wrapper">
-    <mat-icon>star</mat-icon>
-    <mat-icon *ngIf="fill == 0.5">star_half</mat-icon>
-    <mat-icon *ngIf="fill == 1">star</mat-icon>
+<div fxLayout="column" fxLayoutAlign="start none">
+  <div fxLayout="row" fxLayoutAlign="start none">
+    <div *ngFor="let fill of stars" class="star-wrapper" fxFlexAlign="center">
+      <mat-icon>star</mat-icon>
+      <mat-icon *ngIf="fill == 0.5">star_half</mat-icon>
+      <mat-icon *ngIf="fill == 1">star</mat-icon>
+    </div>
+  </div>
+  <div *ngIf="ratingCount != null" fxFlexAlign="center">
+    <h5>{{ ratingCount }} Reviews</h5>
   </div>
 </div>

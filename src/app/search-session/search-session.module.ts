@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FlexModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [SearchSessionComponent, RecommendationCardComponent],
@@ -15,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
     SharedModule,
     MatIconModule,
     MatButtonModule,
+    FlexModule,
   ],
   exports: [SearchSessionComponent, RecommendationCardComponent],
 })

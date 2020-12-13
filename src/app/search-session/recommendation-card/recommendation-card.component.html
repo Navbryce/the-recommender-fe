@@ -2,10 +2,18 @@
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>{{ recommendedBusiness.name }}</mat-card-title>
-    <app-rating
-      style="margin-left: auto;"
-      [rating]="recommendedBusiness.rating"
-    ></app-rating>
+    <div fxFlexAlign="center" class="full-height" style="margin-left: auto;">
+      <a
+        href="{{ recommendedBusiness.url }}"
+        target="_blank"
+        style="color: white; text-decoration: none;"
+      >
+        <app-rating
+          [rating]="recommendedBusiness.rating"
+          [ratingCount]="recommendedBusiness.ratingCount"
+        ></app-rating>
+      </a>
+    </div>
     <mat-card-subtitle>
       <div>
         {{ recommendation.distance | unitConverter: "m":"mi" | roundValue }} mi
@@ -52,14 +60,17 @@
         </p>
       </div>
       <div>
-        <p><mat-icon>book</mat-icon> {{ displayableCategories.join(", ") }}</p>
+        <p>
+          <mat-icon>book</mat-icon>
+          {{ displayableCategories.join(", ") }}
+        </p>
       </div>
       <div>
         <p>
-          <mat-icon>link</mat-icon
-          ><a href="{{ recommendedBusiness.url }}"
-            ><button mat-raised-button color="primary">View Site</button></a
-          >
+          <mat-icon>link </mat-icon>
+          <a href="{{ recommendedBusiness.url }}">
+            <button mat-raised-button color="primary">View Site</button>
+          </a>
         </p>
       </div>
     </div>

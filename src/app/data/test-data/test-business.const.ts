@@ -14,6 +14,7 @@ export const TEST_BUSINESS: Business = {
   delivery: true,
   categories: [{ id: 'category', label: 'Category' }],
   rating: 3.3,
+  ratingCount: 1000,
   coordinates: {
     lat: 111.1,
     long: 111.2,

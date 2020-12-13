@@ -9,6 +9,7 @@ export interface Business {
   imageUrls: string[];
   price: PriceCategory;
   rating: number;
+  ratingCount: number;
 
   delivery: boolean;
   pickup: boolean;

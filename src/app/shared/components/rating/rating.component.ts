@@ -10,6 +10,7 @@ export class RatingComponent implements OnInit, OnChanges {
 
   // [0-5]
   @Input() rating: number;
+  @Input() ratingCount: number;
 
   constructor() {}
 
