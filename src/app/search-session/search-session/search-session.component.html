@@ -3,5 +3,24 @@
     <app-recommendation-card
       [recommendation]="currentRecommendation"
     ></app-recommendation-card>
+    <div fxLayout="row" class="buttons full-width">
+      <button
+        mat-raised-button
+        (click)="onRejectCurrentRecommendation()"
+        color="warn"
+        fxFlex="100%"
+      >
+        Reject
+      </button>
+      <button
+        mat-raised-button
+        (click)="onMaybeRecommendation()"
+        color="accent"
+        fxFlex="100%"
+      >
+        Reconsider later
+      </button>
+      <button mat-raised-button color="primary" fxFlex="100%">Accept</button>
+    </div>
   </div>
 </div>

@@ -5,6 +5,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild,
@@ -18,7 +19,9 @@ declare var Splide: any;
   templateUrl: './image-carousel.component.html',
   styleUrls: ['./image-carousel.component.scss'],
 })
-export class ImageCarouselComponent implements AfterViewInit {
+export class ImageCarouselComponent
+  implements AfterViewInit, OnChanges, OnDestroy {
+  private splide: any;
   readonly id: string;
 
   @Input() images: { url: string }[];
@@ -26,14 +29,39 @@ export class ImageCarouselComponent implements AfterViewInit {
 
   constructor() {
     this.id = `slider-${uuidv4().toString().replace(/-/g, '')}`;
-    console.log(this.id);
   }
 
   ngAfterViewInit(): void {
-    new Splide(`#${this.id}`, {
+    this.createSplideAndAddImages(this.images);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.splide != null) {
+      this.splide.destroy();
+      document
+        .querySelectorAll(`#${this.id} li`)
+        .forEach((element) => element.remove());
+      this.createSplideAndAddImages(this.images);
+    }
+  }
+
+  private createSplideAndAddImages(images) {
+    this.splide = new Splide(`#${this.id}`, {
       width: '100%',
       height: this.height,
       cover: true,
-    }).mount();
+    });
+    this.splide.mount();
+    this.addImagesToSplide(this.splide, images);
+  }
+
+  private addImagesToSplide(splide, images) {
+    images.forEach(({ url }) => {
+      splide.add(`<li class="splide__slide"><img src='${url}'/></li>`);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.splide.destroy();
   }
 }

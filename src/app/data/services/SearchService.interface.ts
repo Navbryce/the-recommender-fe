@@ -7,5 +7,14 @@ export interface SearchService {
     searchParameters: BusinessSearchParameters
   ): Observable<{ sessionId: string; recommendation: Recommendation }>;
 
-  nextRecommendation(sessionId: string): Observable<Recommendation>;
+  nextRecommendation(
+    sessionId: string,
+    businessId: string,
+    recommendationAction: RecommendationAction
+  ): Observable<Recommendation>;
+}
+
+export enum RecommendationAction {
+  REJECT = 'MAYBE',
+  MAYBE = 'REJECT',
 }

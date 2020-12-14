@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { SearchService } from '../data/services/SearchService.interface';
+import {
+  RecommendationAction,
+  SearchService,
+} from '../data/services/SearchService.interface';
 import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
 import { Observable } from 'rxjs';
 import { SearchApiClient } from './search-api-client.service';
@@ -22,7 +25,17 @@ export class SearchServiceSearchApi implements SearchService {
     ) as Observable<{ sessionId: string; recommendation: Recommendation }>;
   }
 
-  nextRecommendation(searchSession: string): Observable<Recommendation> {
-    return undefined;
+  nextRecommendation(
+    sessionId: string,
+    businessId: string,
+    recommendationAction: RecommendationAction
+  ): Observable<Recommendation> {
+    return this.searchApiClient.post(
+      `${SearchServiceSearchApi.BASE_PATH}/${sessionId}`,
+      {
+        currentRecommendationId: businessId,
+        recommendationAction,
+      }
+    );
   }
 }
