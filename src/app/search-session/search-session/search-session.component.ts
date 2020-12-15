@@ -7,6 +7,7 @@ import {
 } from '../../data/services/SearchService.interface';
 import { SEARCH_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
 import { first, tap } from 'rxjs/operators';
+import { SearchSession } from '../../data/models/SearchSession.interface';
 
 @Component({
   selector: 'app-search-session',
@@ -14,15 +15,13 @@ import { first, tap } from 'rxjs/operators';
   styleUrls: ['./search-session.component.scss'],
 })
 export class SearchSessionComponent implements OnChanges {
-  @Input() sessionIdAndCurrentRecommendation: {
-    sessionId: string;
-    recommendation: Recommendation;
-  };
+  @Input() currentSession: SearchSession;
 
   public currentRecommendation: Recommendation;
+  public loadingRecommendation = false;
 
   get sessionId(): string {
-    return this.sessionIdAndCurrentRecommendation.sessionId;
+    return this.currentSession.id;
   }
 
   constructor(
@@ -30,7 +29,7 @@ export class SearchSessionComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    this.currentRecommendation = this.sessionIdAndCurrentRecommendation.recommendation;
+    this.currentRecommendation = this.currentSession.currentRecommendation;
   }
 
   onRejectCurrentRecommendation(): void {
@@ -41,8 +40,17 @@ export class SearchSessionComponent implements OnChanges {
     this.getNextRecommendation(RecommendationAction.MAYBE);
   }
 
+  onAcceptRecommendation(): void {
+    this.searchService
+      .acceptRecommendation(
+        this.sessionId,
+        this.currentRecommendation.businessId
+      )
+      .subscribe(() => this.currentSession.acceptCurrentRecommendation());
+  }
+
   private getNextRecommendation(recommendationAction: RecommendationAction) {
-    console.log(this.currentRecommendation);
+    this.loadingRecommendation = true;
     return this.searchService
       .nextRecommendation(
         this.sessionId,
@@ -50,8 +58,13 @@ export class SearchSessionComponent implements OnChanges {
         recommendationAction
       )
       .pipe(first())
-      .subscribe(
-        (recommendation) => (this.currentRecommendation = recommendation)
-      );
+      .subscribe((recommendation) => {
+        this.currentSession.setNewCurrentRecommendation(
+          recommendation,
+          recommendationAction
+        );
+        this.currentRecommendation = recommendation;
+        this.loadingRecommendation = false;
+      });
   }
 }

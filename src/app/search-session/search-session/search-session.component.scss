@@ -1,9 +1,20 @@
+@import "src/colors";
+
+.loading-wrapper {
+  background-color: $loading-overlay-color;
+  left: 0;
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+}
 .recommendation-session-wrapper {
   align-items: center;
   display: flex;
   justify-content: center;
+  position: relative;
 
   .recommended-business {
+    position: relative;
     width: 400px;
   }
 

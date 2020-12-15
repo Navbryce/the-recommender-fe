@@ -17,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { RecommendationEngineComponent } from './recommendation-engine/recommendation-engine.component';
 import { SearchClientModule } from './search-client/search-client.module';
 import { SearchSessionModule } from './search-session/search-session.module';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FlexModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { SearchSessionModule } from './search-session/search-session.module';
     MatButtonModule,
     SearchClientModule,
     SearchSessionModule,
+    MatProgressBarModule,
+    FlexModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

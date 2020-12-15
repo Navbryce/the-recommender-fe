@@ -30,6 +30,29 @@ export class SearchServiceSearchApi implements SearchService {
     businessId: string,
     recommendationAction: RecommendationAction
   ): Observable<Recommendation> {
+    return this.applyRecommendationAction(
+      sessionId,
+      businessId,
+      recommendationAction
+    ) as Observable<null>;
+  }
+
+  acceptRecommendation(
+    sessionId: string,
+    businessId: string
+  ): Observable<null> {
+    return this.applyRecommendationAction(
+      sessionId,
+      businessId,
+      RecommendationAction.ACCEPT
+    ) as Observable<null>;
+  }
+
+  private applyRecommendationAction(
+    sessionId,
+    businessId: string,
+    recommendationAction: string
+  ): Observable<Recommendation | null> {
     return this.searchApiClient.post(
       `${SearchServiceSearchApi.BASE_PATH}/${sessionId}`,
       {

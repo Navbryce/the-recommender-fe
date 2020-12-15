@@ -7,9 +7,15 @@ import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@angular/flex-layout';
+import { SessionSummaryComponent } from './session-summary/session-summary.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [SearchSessionComponent, RecommendationCardComponent],
+  declarations: [
+    SearchSessionComponent,
+    RecommendationCardComponent,
+    SessionSummaryComponent,
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -17,6 +23,7 @@ import { FlexModule } from '@angular/flex-layout';
     MatIconModule,
     MatButtonModule,
     FlexModule,
+    MatProgressSpinnerModule,
   ],
   exports: [SearchSessionComponent, RecommendationCardComponent],
 })

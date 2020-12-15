@@ -12,38 +12,50 @@ import { Recommendation } from '../data/models/Recommendation.interface';
   styleUrls: ['./recommendation-engine.component.scss'],
 })
 export class RecommendationEngineComponent implements OnInit {
-  public searchSessionUpdated: Observable<{
-    sessionId: string;
-    recommendation: Recommendation;
-  }>;
+  public searchSessionUpdated: Observable<SearchSession>;
 
-  public recommendationSessionUpdated: BehaviorSubject<{
-    sessionId: string;
-    recommendation: Recommendation;
-  }>;
+  public recommendationSessionUpdated: BehaviorSubject<SearchSession>;
+  public generatingSession = false;
 
   constructor(
     @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService
   ) {
-    this.recommendationSessionUpdated = new BehaviorSubject<{
-      sessionId: string;
-      recommendation: Recommendation;
-    }>(null);
+    this.recommendationSessionUpdated = new BehaviorSubject<SearchSession>(
+      null
+    );
     this.searchSessionUpdated = this.recommendationSessionUpdated.asObservable();
   }
 
   ngOnInit(): void {}
 
   onSearchParameters(searchParameters: BusinessSearchParameters) {
+    this.generatingSession = true;
     this.searchService
       .newSearch(searchParameters)
-      .subscribe((session) => this.setNewRecommendationSession(session));
+      .subscribe((sessionIdAndRecommendation) =>
+        this.setNewRecommendationSession({
+          ...sessionIdAndRecommendation,
+          searchParameters,
+        })
+      );
   }
 
-  setNewRecommendationSession(searchSession: {
+  setNewRecommendationSession({
+    sessionId,
+    recommendation,
+    searchParameters,
+  }: {
     sessionId: string;
     recommendation: Recommendation;
+    searchParameters: BusinessSearchParameters;
   }) {
-    this.recommendationSessionUpdated.next(searchSession);
+    this.recommendationSessionUpdated.next(
+      new SearchSession({
+        id: sessionId,
+        searchRequest: searchParameters,
+        currentRecommendation: recommendation,
+      })
+    );
+    this.generatingSession = false;
   }
 }

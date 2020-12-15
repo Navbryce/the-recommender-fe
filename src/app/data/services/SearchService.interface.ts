@@ -12,9 +12,12 @@ export interface SearchService {
     businessId: string,
     recommendationAction: RecommendationAction
   ): Observable<Recommendation>;
+
+  acceptRecommendation(sessionId: string, businessId: string): Observable<null>;
 }
 
 export enum RecommendationAction {
+  ACCEPT = 'ACCEPT',
   REJECT = 'MAYBE',
   MAYBE = 'REJECT',
 }

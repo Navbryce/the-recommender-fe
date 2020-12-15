@@ -1,7 +1,20 @@
 <div class="recommendation-engine-wrapper">
   <div
+    *ngIf="generatingSession"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    class="full loading-wrapper"
+  >
+    <div style="width: 40vw;">
+      <div>Generating Recommendation Session...</div>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+  </div>
+  <div
     *ngIf="(recommendationSessionUpdated | async) == null"
     class="search-box-wrapper"
+    fxLayout="row"
+    fxLayoutAlign="center center"
   >
     <mat-card class="search-box center-search">
       <mat-card-header>
@@ -16,9 +29,7 @@
     </mat-card>
   </div>
   <div *ngIf="(recommendationSessionUpdated | async) !== null" class="full">
-    <app-search-session
-      [sessionIdAndCurrentRecommendation]="recommendationSessionUpdated | async"
-    >
+    <app-search-session [currentSession]="recommendationSessionUpdated | async">
     </app-search-session>
   </div>
 </div>
