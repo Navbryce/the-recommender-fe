@@ -7,7 +7,7 @@ import {
 } from '../../data/services/SearchService.interface';
 import { SEARCH_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
 import { first, tap } from 'rxjs/operators';
-import { SearchSession } from '../../data/models/SearchSession.interface';
+import { SearchSession } from '../../data/models/SearchSession.class';
 
 @Component({
   selector: 'app-search-session',
@@ -32,21 +32,14 @@ export class SearchSessionComponent implements OnChanges {
     this.currentRecommendation = this.currentSession.currentRecommendation;
   }
 
-  onRejectCurrentRecommendation(): void {
-    this.getNextRecommendation(RecommendationAction.REJECT);
-  }
-
-  onMaybeRecommendation(): void {
-    this.getNextRecommendation(RecommendationAction.MAYBE);
-  }
-
-  onAcceptRecommendation(): void {
-    this.searchService
-      .acceptRecommendation(
-        this.sessionId,
-        this.currentRecommendation.businessId
-      )
-      .subscribe(() => this.currentSession.acceptCurrentRecommendation());
+  onCurrentRecommendationAction({ action }: { action: RecommendationAction }) {
+    if (action === RecommendationAction.ACCEPT) {
+      this.onAcceptRecommendation(
+        this.currentSession.currentRecommendation.businessId
+      );
+    } else {
+      this.getNextRecommendation(action);
+    }
   }
 
   private getNextRecommendation(recommendationAction: RecommendationAction) {
@@ -65,6 +58,39 @@ export class SearchSessionComponent implements OnChanges {
         );
         this.currentRecommendation = recommendation;
         this.loadingRecommendation = false;
+      });
+  }
+
+  onMaybeRecommendationAction({
+    action,
+    businessId,
+  }: {
+    action: RecommendationAction;
+    businessId: string;
+  }) {
+    if (action === RecommendationAction.ACCEPT) {
+      this.onAcceptRecommendation(businessId);
+    } else {
+      this.rejectMaybeRecommendation(businessId);
+    }
+  }
+
+  private onAcceptRecommendation(recommendationId: string): void {
+    this.searchService
+      .acceptRecommendation(
+        this.sessionId,
+        this.currentRecommendation.businessId
+      )
+      .subscribe(() =>
+        this.currentSession.acceptRecommendation(recommendationId)
+      );
+  }
+
+  private rejectMaybeRecommendation(recommendationId: string): void {
+    this.searchService
+      .rejectMaybeRecommendation(this.sessionId, recommendationId)
+      .subscribe(() => {
+        this.currentSession.rejectMaybeRecommendation(recommendationId);
       });
   }
 }

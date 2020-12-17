@@ -14,10 +14,15 @@ export interface SearchService {
   ): Observable<Recommendation>;
 
   acceptRecommendation(sessionId: string, businessId: string): Observable<null>;
+
+  rejectMaybeRecommendation(
+    sessionId: string,
+    businessId: string
+  ): Observable<null>;
 }
 
 export enum RecommendationAction {
   ACCEPT = 'ACCEPT',
-  REJECT = 'MAYBE',
-  MAYBE = 'REJECT',
+  REJECT = 'REJECT',
+  MAYBE = 'MAYBE',
 }

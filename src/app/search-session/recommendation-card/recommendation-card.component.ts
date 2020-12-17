@@ -1,6 +1,14 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Business } from '../../data/models/Business.interface';
 import { Recommendation } from '../../data/models/Recommendation.interface';
+import { RecommendationAction } from '../../data/services/SearchService.interface';
 
 @Component({
   selector: 'app-recommendation-card',
@@ -9,6 +17,13 @@ import { Recommendation } from '../../data/models/Recommendation.interface';
 })
 export class RecommendationCardComponent implements OnInit, OnChanges {
   @Input() recommendation: Recommendation;
+  @Input() withActions = true;
+  @Input() disableReconsider = false;
+
+  @Output() onAction = new EventEmitter<{
+    businessId: string;
+    action: RecommendationAction;
+  }>();
 
   formattedImages: { url: string }[];
 
@@ -21,6 +36,25 @@ export class RecommendationCardComponent implements OnInit, OnChanges {
   }
 
   constructor() {}
+
+  onAcceptRecommendation(): void {
+    this.emitAction(RecommendationAction.ACCEPT);
+  }
+
+  onRejectCurrentRecommendation(): void {
+    this.emitAction(RecommendationAction.REJECT);
+  }
+
+  onMaybeRecommendation(): void {
+    this.emitAction(RecommendationAction.MAYBE);
+  }
+
+  private emitAction(action: RecommendationAction) {
+    this.onAction.emit({
+      businessId: this.recommendedBusiness.id,
+      action,
+    });
+  }
 
   ngOnInit(): void {}
 

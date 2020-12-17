@@ -33,7 +33,8 @@ export class SearchServiceSearchApi implements SearchService {
     return this.applyRecommendationAction(
       sessionId,
       businessId,
-      recommendationAction
+      recommendationAction,
+      true
     ) as Observable<null>;
   }
 
@@ -48,17 +49,40 @@ export class SearchServiceSearchApi implements SearchService {
     ) as Observable<null>;
   }
 
+  rejectMaybeRecommendation(
+    sessionId: string,
+    businessId: string
+  ): Observable<null> {
+    return this.applyRecommendationAction(
+      sessionId,
+      businessId,
+      RecommendationAction.REJECT,
+      false
+    ) as Observable<null>;
+  }
+
   private applyRecommendationAction(
     sessionId,
     businessId: string,
-    recommendationAction: string
+    recommendationAction: RecommendationAction,
+    isCurrent?: boolean
   ): Observable<Recommendation | null> {
+    const body: {
+      recommendationId: string;
+      recommendationAction: RecommendationAction;
+      isCurrent?: boolean;
+    } = {
+      recommendationId: businessId,
+      recommendationAction,
+    };
+
+    if (isCurrent !== undefined) {
+      body.isCurrent = isCurrent;
+    }
+
     return this.searchApiClient.post(
       `${SearchServiceSearchApi.BASE_PATH}/${sessionId}`,
-      {
-        currentRecommendationId: businessId,
-        recommendationAction,
-      }
+      body
     );
   }
 }

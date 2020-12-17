@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SearchSession } from '../../data/models/SearchSession.interface';
+import { SearchSession } from '../../data/models/SearchSession.class';
 
 @Component({
   selector: 'app-session-summary',

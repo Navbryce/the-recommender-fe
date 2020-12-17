@@ -1,44 +1,57 @@
 <div class="recommendation-session-wrapper full">
-  <div *ngIf="currentRecommendation" class="recommended-business">
-    <div
-      *ngIf="loadingRecommendation"
-      class="full loading-wrapper"
-      fxLayout="row"
-      fxLayoutAlign="center center"
-    >
-      <div>
-        <mat-spinner></mat-spinner>
+  <mat-drawer-container class="full">
+    <mat-drawer mode="side" #drawer>
+      <div
+        *ngFor="let recommendation of currentSession.maybeRecommendations"
+        style="box-sizing: border-box; padding: 50px;"
+      >
+        <div class="recommended-business">
+          <app-recommendation-card
+            [recommendation]="recommendation"
+            (onAction)="onMaybeRecommendationAction($event)"
+            [disableReconsider]="false"
+          >
+          </app-recommendation-card>
+        </div>
       </div>
-    </div>
-    <app-recommendation-card
-      class="full-width"
-      [recommendation]="currentRecommendation"
-    ></app-recommendation-card>
-    <div fxLayout="row" class="buttons full-width">
-      <button
-        mat-raised-button
-        (click)="onRejectCurrentRecommendation()"
-        color="warn"
-        fxFlex="100%"
-      >
-        Reject
-      </button>
-      <button
-        mat-raised-button
-        (click)="onMaybeRecommendation()"
-        color="accent"
-        fxFlex="100%"
-      >
-        Reconsider later
-      </button>
-      <button
-        mat-raised-button
-        (click)="onAcceptRecommendation()"
-        color="primary"
-        fxFlex="100%"
-      >
-        Accept
-      </button>
-    </div>
-  </div>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div style="position: absolute; bottom: 50vh; top: 50vh; z-index: 2;">
+        <button
+          mat-stroked-button
+          color="accent"
+          (click)="drawer.toggle()"
+          [disabled]="currentSession.maybeRecommendations.length == 0"
+        >
+          <mat-icon style="display: inline; vertical-align: middle;"
+            >repeat</mat-icon
+          >
+          <p
+            style="padding-left: 5px; display: inline; vertical-align: middle;"
+          >
+            Reconsider
+          </p>
+        </button>
+      </div>
+      <div class="full" fxLayout="column" fxLayoutAlign="center center">
+        <div *ngIf="currentRecommendation" class="recommended-business">
+          <div
+            *ngIf="loadingRecommendation"
+            class="full loading-wrapper"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+          >
+            <div>
+              <mat-spinner></mat-spinner>
+            </div>
+          </div>
+          <app-recommendation-card
+            class="full-width"
+            [recommendation]="currentRecommendation"
+            (onAction)="onCurrentRecommendationAction($event)"
+          ></app-recommendation-card>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>

@@ -67,7 +67,7 @@
       </div>
       <div>
         <p>
-          <mat-icon>link </mat-icon>
+          <mat-icon>link</mat-icon>
           <a href="{{ recommendedBusiness.url }}">
             <button mat-raised-button color="primary">View Site</button>
           </a>
@@ -76,3 +76,30 @@
     </div>
   </mat-card-content>
 </mat-card>
+<div *ngIf="withActions" fxLayout="row" class="buttons full-width">
+  <button
+    mat-raised-button
+    (click)="onRejectCurrentRecommendation()"
+    color="warn"
+    fxFlex="100%"
+  >
+    Reject
+  </button>
+  <button
+    mat-raised-button
+    (click)="onMaybeRecommendation()"
+    [disabled]="disableReconsider"
+    color="accent"
+    fxFlex="100%"
+  >
+    Reconsider later
+  </button>
+  <button
+    mat-raised-button
+    (click)="onAcceptRecommendation()"
+    color="primary"
+    fxFlex="100%"
+  >
+    Accept
+  </button>
+</div>

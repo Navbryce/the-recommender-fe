@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@angular/flex-layout';
 import { SessionSummaryComponent } from './session-summary/session-summary.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     FlexModule,
     MatProgressSpinnerModule,
+    MatSidenavModule,
   ],
   exports: [SearchSessionComponent, RecommendationCardComponent],
 })

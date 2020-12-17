@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
 import { SEARCH_SERVICE_TOKEN } from '../data/services/service-injection-tokens';
 import { SearchService } from '../data/services/SearchService.interface';
-import { SearchSession } from '../data/models/SearchSession.interface';
+import { SearchSession } from '../data/models/SearchSession.class';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { Recommendation } from '../data/models/Recommendation.interface';
 

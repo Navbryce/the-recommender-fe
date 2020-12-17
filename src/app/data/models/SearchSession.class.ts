@@ -33,6 +33,14 @@ export class SearchSession {
     this.rejectedRecommendations = rejectedRecommendations ?? [];
   }
 
+  public acceptRecommendation(businessIdToAccept: string) {
+    if (this.currentRecommendation.businessId === businessIdToAccept) {
+      this.acceptCurrentRecommendation();
+    } else {
+      this.acceptMaybeRecommendation(businessIdToAccept);
+    }
+  }
+
   public acceptCurrentRecommendation() {
     this.acceptedRecommendation = this.currentRecommendation;
     this.currentRecommendation = null;
@@ -58,6 +66,18 @@ export class SearchSession {
 
     this.currentRecommendation = null;
     this.maybeRecommendations = [];
+  }
+
+  public rejectMaybeRecommendation(businessIdToReject: string) {
+    const lengthBefore = this.maybeRecommendations.length;
+    this.maybeRecommendations = this.maybeRecommendations.filter(
+      ({ businessId }) => businessId !== businessIdToReject
+    );
+    if (this.maybeRecommendations.length !== lengthBefore - 1) {
+      throw new Error(
+        `The maybe recommendation being rejected (${businessIdToReject}) could not be found`
+      );
+    }
   }
 
   public setNewCurrentRecommendation(
