@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   placesApiKey: 'AIzaSyBo0sc5w1uNU88UUdPgyhpq1MZAlKxux4M', // restricted to my ip
   searchApiUrl: 'http://localhost:5000',
+  useWake: false,
 };
 
 /*
