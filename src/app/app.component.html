@@ -2,13 +2,18 @@
   <mat-toolbar>
     <span>The Recommender</span>
   </mat-toolbar>
-  <mat-sidenav-container>
+  <mat-sidenav-container style="height: 100vh; width: 100vw;">
     <!--    <div style="height: 100vh; width: 100vw;">-->
     <!--      <app-search-session [sessionIdAndCurrentRecommendation]="session"></app-search-session>-->
     <!--    </div>-->
-    <app-recommendation-engine></app-recommendation-engine>
+    <!--    <app-recommendation-engine></app-recommendation-engine>-->
     <!--        <div style="width: 50vw; margin: auto">-->
     <!--          <app-recommendation-card [recommendation]="recommendation"></app-recommendation-card>-->
     <!--        </div>-->
+    <!--    <div style="width: 100vw; height: 100vh;">-->
+    <!--      <app-search-session [currentSession]="sessionCompleted">-->
+    <!--      </app-search-session>-->
+    <!--    </div>-->
+    <router-outlet> </router-outlet>
   </mat-sidenav-container>
 </div>

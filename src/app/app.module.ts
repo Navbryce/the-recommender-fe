@@ -19,6 +19,7 @@ import { SearchClientModule } from './search-client/search-client.module';
 import { SearchSessionModule } from './search-session/search-session.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FlexModule } from '@angular/flex-layout';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { FlexModule } from '@angular/flex-layout';
     SearchSessionModule,
     MatProgressBarModule,
     FlexModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

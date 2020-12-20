@@ -1,1 +1,22 @@
-<p>session-summary works!</p>
+<div class="full" fxLayout="column" fxLayoutAlign="center center">
+  <div class="summary-message">
+    <h1>
+      You have accepted the recommendation,
+      {{ this.acceptedRecommendation.business.name }}
+    </h1>
+    <p style="max-width: 700px; font-size: 12pt;">
+      We recommend you visit their site to learn their contact information and
+      related details. Thank you for participating in this little experiment.
+      The more people who use the tool, the more that can be improve. Once we
+      get a large enough dataset, we plan on training a model.
+    </p>
+    <a mat-raised-button href="/" color="accent">New Session</a>
+  </div>
+  <div class="recommended-business" fxFlexAlign="center">
+    <app-recommendation-card
+      [recommendation]="acceptedRecommendation"
+      [withActions]="false"
+    >
+    </app-recommendation-card>
+  </div>
+</div>

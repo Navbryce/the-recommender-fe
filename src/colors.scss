@@ -1,2 +1,16 @@
+@import "~@angular/material/theming";
+
+$frontend-primary: mat-palette($mat-indigo);
+$frontend-accent: mat-palette($mat-pink, A200, A100, A400);
+$frontend-warn: mat-palette($mat-red);
+$frontend-theme: mat-dark-theme(
+  $frontend-primary,
+  $frontend-accent,
+  $frontend-warn
+);
+
+$primary: #{mat-color($frontend-primary)};
+$accent: #{mat-color($frontend-accent)};
+$warn: #{mat-color($frontend-warn)};
 $loading-overlay-color: rgba(50, 50, 50, 0.5);
 $dark-background: #232323;

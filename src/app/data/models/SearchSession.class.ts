@@ -2,6 +2,15 @@ import { BusinessSearchParameters } from './BusinessSearchParameters.interface';
 import { Recommendation } from './Recommendation.interface';
 import { RecommendationAction } from '../services/SearchService.interface';
 
+export interface SearchSessionObject {
+  id: string;
+  searchRequest: BusinessSearchParameters;
+  acceptedRecommendation?: Recommendation | null;
+  currentRecommendation: Recommendation | null;
+  maybeRecommendations?: Recommendation[];
+  rejectedRecommendations?: Recommendation[];
+}
+
 export class SearchSession {
   readonly id: string;
   readonly searchRequest: BusinessSearchParameters;
@@ -17,14 +26,7 @@ export class SearchSession {
     currentRecommendation,
     maybeRecommendations,
     rejectedRecommendations,
-  }: {
-    id: string;
-    searchRequest: BusinessSearchParameters;
-    acceptedRecommendation?: Recommendation;
-    currentRecommendation: Recommendation | null;
-    maybeRecommendations?: Recommendation[];
-    rejectedRecommendations?: Recommendation[];
-  }) {
+  }: SearchSessionObject) {
     this.id = id;
     this.searchRequest = searchRequest;
     this.acceptedRecommendation = acceptedRecommendation ?? null;

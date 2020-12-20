@@ -1,22 +1,30 @@
-import { Component, Inject, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { Recommendation } from '../../data/models/Recommendation.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
 import {
   RecommendationAction,
   SearchService,
 } from '../../data/services/SearchService.interface';
 import { SEARCH_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
-import { first, tap } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { SearchSession } from '../../data/models/SearchSession.class';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-session',
   templateUrl: './search-session.component.html',
   styleUrls: ['./search-session.component.scss'],
 })
-export class SearchSessionComponent implements OnChanges {
-  @Input() currentSession: SearchSession;
+export class SearchSessionComponent {
+  @Output() sessionCompleted = new EventEmitter<SearchSession>();
 
+  public currentSession: SearchSession;
   public currentRecommendation: Recommendation;
   public loadingRecommendation = false;
 
@@ -25,10 +33,30 @@ export class SearchSessionComponent implements OnChanges {
   }
 
   constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
     @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService
-  ) {}
+  ) {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    const searchSession:
+      | SearchSession
+      | undefined = router.getCurrentNavigation().extras.state?.searchSession;
+    if (searchSession) {
+      if (id !== searchSession.id) {
+        throw new Error(
+          `The id on the route ${id} conflicts with the search session provided ${searchSession.id}`
+        );
+      }
+      this.onNewCurrentSession(searchSession);
+    } else {
+      this.searchService
+        .getSearchSession(id)
+        .subscribe((session) => this.onNewCurrentSession(session));
+    }
+  }
 
-  ngOnChanges(): void {
+  private onNewCurrentSession(session: SearchSession) {
+    this.currentSession = session;
     this.currentRecommendation = this.currentSession.currentRecommendation;
   }
 
@@ -81,9 +109,10 @@ export class SearchSessionComponent implements OnChanges {
         this.sessionId,
         this.currentRecommendation.businessId
       )
-      .subscribe(() =>
-        this.currentSession.acceptRecommendation(recommendationId)
-      );
+      .subscribe(() => {
+        this.currentSession.acceptRecommendation(recommendationId);
+        this.sessionCompleted.emit(this.currentSession);
+      });
   }
 
   private rejectMaybeRecommendation(recommendationId: string): void {

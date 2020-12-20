@@ -1,5 +1,8 @@
-<div class="recommendation-session-wrapper full">
-  <mat-drawer-container class="full">
+<div *ngIf="!!currentSession" class="recommendation-session-wrapper full">
+  <mat-drawer-container
+    *ngIf="!currentSession.acceptedRecommendation"
+    class="full"
+  >
     <mat-drawer mode="side" #drawer>
       <div
         *ngFor="let recommendation of currentSession.maybeRecommendations"
@@ -24,8 +27,8 @@
           [disabled]="currentSession.maybeRecommendations.length == 0"
         >
           <mat-icon style="display: inline; vertical-align: middle;"
-            >repeat</mat-icon
-          >
+            >repeat
+          </mat-icon>
           <p
             style="padding-left: 5px; display: inline; vertical-align: middle;"
           >
@@ -54,4 +57,7 @@
       </div>
     </mat-drawer-content>
   </mat-drawer-container>
+  <div *ngIf="!!currentSession.acceptedRecommendation" class="full">
+    <app-session-summary [session]="currentSession"> </app-session-summary>
+  </div>
 </div>

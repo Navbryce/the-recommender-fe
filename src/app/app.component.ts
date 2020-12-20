@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GeoCoordinates } from './data/models/GeoCoordinates.interface';
 import { TEST_RECOMMENDATION } from './data/test-data/test-recommendation.const';
-import { TEST_SESSION } from './data/test-data/test-session';
+import {
+  TEST_SESSION,
+  TEST_SESSION_COMPLETED,
+} from './data/test-data/test-session';
 import { RequestService } from './data/services/request.service';
 import { SearchApiClient } from './search-client/search-api-client.service';
 import { environment } from '../environments/environment';
@@ -14,6 +17,7 @@ import { environment } from '../environments/environment';
 export class AppComponent implements OnInit {
   recommendation = TEST_RECOMMENDATION;
   session = TEST_SESSION;
+  sessionCompleted = TEST_SESSION_COMPLETED;
 
   constructor(private searchApiClient: SearchApiClient) {
     if (environment.useWake) {

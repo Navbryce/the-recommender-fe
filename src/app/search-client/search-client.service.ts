@@ -4,9 +4,14 @@ import {
   SearchService,
 } from '../data/services/SearchService.interface';
 import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { SearchApiClient } from './search-api-client.service';
 import { Recommendation } from '../data/models/Recommendation.interface';
+import {
+  SearchSession,
+  SearchSessionObject,
+} from '../data/models/SearchSession.class';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -16,13 +21,40 @@ export class SearchServiceSearchApi implements SearchService {
 
   constructor(private searchApiClient: SearchApiClient) {}
 
+  getSearchSession(sessionId: string): Observable<SearchSession> {
+    return this.searchApiClient
+      .get(`${SearchServiceSearchApi.BASE_PATH}/${sessionId}`)
+      .pipe(
+        map(
+          (sessionObject: SearchSessionObject) =>
+            new SearchSession({
+              ...sessionObject,
+            })
+        )
+      );
+  }
+
   newSearch(
     searchParameters: BusinessSearchParameters
-  ): Observable<{ sessionId: string; recommendation: Recommendation }> {
-    return this.searchApiClient.post(
-      SearchServiceSearchApi.BASE_PATH,
-      searchParameters
-    ) as Observable<{ sessionId: string; recommendation: Recommendation }>;
+  ): Observable<SearchSession> {
+    return this.searchApiClient
+      .post(SearchServiceSearchApi.BASE_PATH, searchParameters)
+      .pipe(
+        map(
+          ({
+            sessionId,
+            recommendation,
+          }: {
+            sessionId: string;
+            recommendation: Recommendation;
+          }) =>
+            new SearchSession({
+              id: sessionId,
+              searchRequest: searchParameters,
+              currentRecommendation: recommendation,
+            })
+        )
+      );
   }
 
   nextRecommendation(

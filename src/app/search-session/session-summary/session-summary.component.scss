@@ -1,0 +1,11 @@
+@import "../../../colors.scss";
+
+.summary-message {
+  border: 1px solid $accent;
+  border-radius: 5px;
+  margin: 20px;
+  padding: 20px;
+}
+.recommended-business {
+  width: 400px;
+}

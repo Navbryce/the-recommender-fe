@@ -28,8 +28,4 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div *ngIf="(recommendationSessionUpdated | async) !== null" class="full">
-    <app-search-session [currentSession]="recommendationSessionUpdated | async">
-    </app-search-session>
-  </div>
 </div>

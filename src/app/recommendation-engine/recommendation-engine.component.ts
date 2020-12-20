@@ -5,6 +5,8 @@ import { SearchService } from '../data/services/SearchService.interface';
 import { SearchSession } from '../data/models/SearchSession.class';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { Recommendation } from '../data/models/Recommendation.interface';
+import { Router } from '@angular/router';
+import { ROUTES } from '../../routes.const';
 
 @Component({
   selector: 'app-recommendation-engine',
@@ -18,7 +20,8 @@ export class RecommendationEngineComponent implements OnInit {
   public generatingSession = false;
 
   constructor(
-    @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService
+    @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService,
+    private router: Router
   ) {
     this.recommendationSessionUpdated = new BehaviorSubject<SearchSession>(
       null
@@ -30,32 +33,12 @@ export class RecommendationEngineComponent implements OnInit {
 
   onSearchParameters(searchParameters: BusinessSearchParameters) {
     this.generatingSession = true;
-    this.searchService
-      .newSearch(searchParameters)
-      .subscribe((sessionIdAndRecommendation) =>
-        this.setNewRecommendationSession({
-          ...sessionIdAndRecommendation,
-          searchParameters,
-        })
-      );
-  }
-
-  setNewRecommendationSession({
-    sessionId,
-    recommendation,
-    searchParameters,
-  }: {
-    sessionId: string;
-    recommendation: Recommendation;
-    searchParameters: BusinessSearchParameters;
-  }) {
-    this.recommendationSessionUpdated.next(
-      new SearchSession({
-        id: sessionId,
-        searchRequest: searchParameters,
-        currentRecommendation: recommendation,
+    this.searchService.newSearch(searchParameters).subscribe((session) =>
+      this.router.navigate([`${ROUTES.searchSession}/${session.id}`], {
+        state: {
+          searchSession: session,
+        },
       })
     );
-    this.generatingSession = false;
   }
 }
