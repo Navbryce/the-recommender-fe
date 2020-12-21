@@ -11,6 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
+import { convert } from '../shared/pipes/unit-converter.pipe';
 
 @Component({
   selector: 'app-parameter-box',
@@ -20,10 +21,13 @@ import { BusinessSearchParameters } from '../data/models/BusinessSearchParameter
 export class ParameterBoxComponent implements OnInit {
   readonly ATTRIBUTE_OPTIONS = ['test', 'test option 2'];
   readonly DEFAULT_RADIUS = 5;
+  readonly INPUT_UNIT = 'mi';
+  readonly TARGET_UNIT = 'm';
+  readonly MAX_RADIUS = convert(40000, this.TARGET_UNIT, this.INPUT_UNIT);
+
   readonly priceCategoryValues: PriceCategory[] = Object.keys(
     PriceCategory
   ) as PriceCategory[];
-
   readonly toPriceCategoryString = toPriceCategoryString;
 
   searchParametersFormGroup: FormGroup;
@@ -61,7 +65,11 @@ export class ParameterBoxComponent implements OnInit {
 
     return {
       ...form.value,
-      searchRadius: form.value.searchRadius * 1000,
+      searchRadius: convert(
+        form.value.searchRadius,
+        this.INPUT_UNIT,
+        this.TARGET_UNIT
+      ),
     };
   }
 }

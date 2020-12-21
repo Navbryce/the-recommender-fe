@@ -50,8 +50,13 @@
   <br />
   <mat-form-field>
     <mat-label>Max radius</mat-label>
-    <input matInput type="number" formControlName="searchRadius" max="40" />
-    <span matSuffix>km</span>
+    <input
+      matInput
+      type="number"
+      formControlName="searchRadius"
+      max="{{ MAX_RADIUS }}"
+    />
+    <span matSuffix>{{ INPUT_UNIT }}</span>
     <mat-hint>Max distance from your current location</mat-hint>
   </mat-form-field>
   <div class="form-group submit-button-wrapper">

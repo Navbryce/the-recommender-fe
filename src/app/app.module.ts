@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ParameterBoxComponent } from './parameter-box/parameter-box.component';
@@ -22,6 +22,7 @@ import { FlexModule } from '@angular/flex-layout';
 import { AppRoutingModule } from './app-routing.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
+import { ErrorHandlerService } from './error-handler.service';
 
 export function provideSwal() {
   return import('sweetalert2/src/sweetalert2.js'); // instead of import('sweetalert2')
@@ -56,7 +57,12 @@ export function provideSwal() {
       provideSwal,
     }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: ErrorHandlerService,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
