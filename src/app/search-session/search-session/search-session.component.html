@@ -12,7 +12,7 @@
           <app-recommendation-card
             [recommendation]="recommendation"
             (onAction)="onMaybeRecommendationAction($event)"
-            [disableReconsider]="false"
+            [disableReconsider]="true"
           >
           </app-recommendation-card>
         </div>
@@ -37,7 +37,7 @@
         </button>
       </div>
       <div class="full" fxLayout="column" fxLayoutAlign="center center">
-        <div *ngIf="currentRecommendation" class="recommended-business">
+        <div *ngIf="currentSession" class="recommended-business">
           <div
             *ngIf="loadingRecommendation"
             class="full loading-wrapper"
@@ -49,15 +49,35 @@
             </div>
           </div>
           <app-recommendation-card
+            *ngIf="currentRecommendation"
             class="full-width"
             [recommendation]="currentRecommendation"
             (onAction)="onCurrentRecommendationAction($event)"
           ></app-recommendation-card>
+          <mat-card *ngIf="!currentRecommendation" class="full-width">
+            <mat-card-title>No current recommendation</mat-card-title>
+            <div
+              mat-card-image
+              style="height: 400px;"
+              fxLayout="column"
+              fxLayoutAlign="center center"
+            >
+              <mat-icon
+                style="font-size: 100px; height: auto; width: auto;"
+                color="accent"
+                fxFlexAlign="center"
+                >priority_high</mat-icon
+              >
+            </div>
+            <mat-card-content
+              >Look at maybe recommendations or restart search</mat-card-content
+            >
+          </mat-card>
         </div>
       </div>
     </mat-drawer-content>
   </mat-drawer-container>
   <div *ngIf="!!currentSession.acceptedRecommendation" class="full">
-    <app-session-summary [session]="currentSession"> </app-session-summary>
+    <app-session-summary [session]="currentSession"></app-session-summary>
   </div>
 </div>

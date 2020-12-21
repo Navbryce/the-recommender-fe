@@ -8,6 +8,7 @@ import {
 import { RequestService } from './data/services/request.service';
 import { SearchApiClient } from './search-client/search-api-client.service';
 import { environment } from '../environments/environment';
+import { AlertService } from './shared/services/alert.service';
 
 @Component({
   selector: 'app-root',

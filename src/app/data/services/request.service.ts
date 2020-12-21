@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
+  HttpErrorResponse,
   HttpHeaders,
   HttpParams,
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -49,9 +50,14 @@ export class RequestService {
 
   private makeRequest<T>(request: HttpRequest<T>): Observable<T> {
     return this.httpClient.request(request).pipe(
-      map((event) => event as HttpResponse<T>),
-      filter((event) => event.type != 0),
-      map((event) => event.body)
+      map((event) => event as HttpResponse<T> | HttpErrorResponse),
+      filter((event) => event.type !== 0),
+      map((event) => {
+        if (event instanceof HttpErrorResponse) {
+          throw event;
+        }
+        return event.body;
+      })
     );
   }
 }

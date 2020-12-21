@@ -19,6 +19,7 @@ import { AddressPipe } from './pipes/address.pipe';
 import { RatingComponent } from './components/rating/rating.component';
 import { FlexModule } from '@angular/flex-layout';
 import { ImageCarouselComponent } from './components/image-carousel/image-carousel.component';
+import { AlertService } from './services/alert.service';
 
 @NgModule({
   declarations: [
@@ -59,5 +60,6 @@ import { ImageCarouselComponent } from './components/image-carousel/image-carous
     RatingComponent,
     ImageCarouselComponent,
   ],
+  providers: [AlertService],
 })
 export class SharedModule {}

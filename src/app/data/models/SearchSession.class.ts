@@ -86,11 +86,6 @@ export class SearchSession {
     newRecommendation: Recommendation,
     currentRecommendationAction: RecommendationAction
   ) {
-    if (this.currentRecommendation == null) {
-      throw new Error(
-        'The current recommendation for an active session should not be null'
-      );
-    }
     switch (currentRecommendationAction) {
       case RecommendationAction.MAYBE:
         this.maybeRecommendations.push(this.currentRecommendation);

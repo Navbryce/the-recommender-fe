@@ -15,6 +15,9 @@ import { SEARCH_SERVICE_TOKEN } from '../../data/services/service-injection-toke
 import { first } from 'rxjs/operators';
 import { SearchSession } from '../../data/models/SearchSession.class';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from '../../shared/services/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorCode } from '../../data/services/ErrorCode.enum';
 
 @Component({
   selector: 'app-search-session',
@@ -35,7 +38,8 @@ export class SearchSessionComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService
+    @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService,
+    private alertService: AlertService
   ) {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     const searchSession:
@@ -66,40 +70,81 @@ export class SearchSessionComponent {
         this.currentSession.currentRecommendation.businessId
       );
     } else {
-      this.getNextRecommendation(action);
+      void this.getNextRecommendation(action);
     }
   }
 
-  private getNextRecommendation(recommendationAction: RecommendationAction) {
+  private async getNextRecommendation(
+    recommendationAction: RecommendationAction
+  ) {
     this.loadingRecommendation = true;
-    return this.searchService
-      .nextRecommendation(
-        this.sessionId,
-        this.currentRecommendation.businessId,
-        recommendationAction
-      )
-      .pipe(first())
-      .subscribe((recommendation) => {
-        this.currentSession.setNewCurrentRecommendation(
-          recommendation,
+    try {
+      const newRecommendation = await this.searchService
+        .nextRecommendation(
+          this.sessionId,
+          this.currentRecommendation.businessId,
           recommendationAction
-        );
-        this.currentRecommendation = recommendation;
-        this.loadingRecommendation = false;
-      });
+        )
+        .toPromise();
+
+      this.currentRecommendation = newRecommendation;
+      this.currentSession.setNewCurrentRecommendation(
+        newRecommendation,
+        recommendationAction
+      );
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse)) {
+        throw error;
+      }
+
+      switch (error.error.errorCode) {
+        case ErrorCode.NO_BUSINESSES_FOUND:
+          this.currentRecommendation = null;
+          this.currentSession.setNewCurrentRecommendation(
+            null,
+            recommendationAction
+          );
+          this.handleNoBusinessesFoundError();
+          break;
+        default:
+          throw error;
+      }
+    }
+    this.loadingRecommendation = false;
+  }
+
+  private handleNoBusinessesFoundError() {
+    if (this.currentSession.maybeRecommendations.length > 0) {
+      this.alertService.warnAlert(
+        'No businesses found',
+        "Restart your search or accept a 'maybe' recommendation."
+      );
+    } else {
+      this.alertService.warnAlert(
+        'No businesses found',
+        'Currently, it is filtering by open businesses. Try expanding the parameters of your search. Your search will be restarted',
+        () => this.router.navigate(['/'])
+      );
+    }
   }
 
   onMaybeRecommendationAction({
-    action,
+    recommendationActionForMaybe,
     businessId,
   }: {
-    action: RecommendationAction;
+    recommendationActionForMaybe: RecommendationAction;
     businessId: string;
   }) {
-    if (action === RecommendationAction.ACCEPT) {
+    if (recommendationActionForMaybe === RecommendationAction.ACCEPT) {
       this.onAcceptRecommendation(businessId);
     } else {
       this.rejectMaybeRecommendation(businessId);
+      if (
+        !this.currentRecommendation &&
+        this.currentSession.maybeRecommendations.length === 0
+      ) {
+        this.handleNoBusinessesFoundError();
+      }
     }
   }
 
