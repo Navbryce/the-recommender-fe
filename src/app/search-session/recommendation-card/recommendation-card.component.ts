@@ -9,6 +9,7 @@ import {
 import { Business } from '../../data/models/Business.interface';
 import { Recommendation } from '../../data/models/Recommendation.interface';
 import { RecommendationAction } from '../../data/services/SearchService.interface';
+import { VIEW_CONFIG } from '../../view-config.const';
 
 @Component({
   selector: 'app-recommendation-card',
@@ -16,6 +17,11 @@ import { RecommendationAction } from '../../data/services/SearchService.interfac
   styleUrls: ['./recommendation-card.component.scss'],
 })
 export class RecommendationCardComponent implements OnInit, OnChanges {
+  public readonly VIEW_CONFIG = VIEW_CONFIG;
+  get CARD_HEIGHT_STRING(): string {
+    return `${VIEW_CONFIG.cardImageHeight}px`;
+  }
+
   @Input() recommendation: Recommendation;
   @Input() withActions = true;
   @Input() disableReconsider = false;

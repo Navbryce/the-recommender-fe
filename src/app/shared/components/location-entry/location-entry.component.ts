@@ -100,6 +100,10 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
     latitude: number;
     longitude: number;
   }) {
+    if (!$event) {
+      return;
+    }
+
     this.updateCurrentCoordinates({
       lat: $event.latitude,
       long: $event.longitude,

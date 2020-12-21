@@ -5,6 +5,7 @@ import {
   Input,
   OnChanges,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { Recommendation } from '../../data/models/Recommendation.interface';
 import {
@@ -12,12 +13,13 @@ import {
   SearchService,
 } from '../../data/services/SearchService.interface';
 import { SEARCH_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
-import { first } from 'rxjs/operators';
+import { VIEW_CONFIG } from '../../view-config.const';
 import { SearchSession } from '../../data/models/SearchSession.class';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../shared/services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorCode } from '../../data/services/ErrorCode.enum';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-search-session',
@@ -25,6 +27,10 @@ import { ErrorCode } from '../../data/services/ErrorCode.enum';
   styleUrls: ['./search-session.component.scss'],
 })
 export class SearchSessionComponent {
+  public readonly VIEW_CONFIG = VIEW_CONFIG;
+
+  @ViewChild('drawer') maybeRecommendationDrawer: MatDrawer;
+
   @Output() sessionCompleted = new EventEmitter<SearchSession>();
 
   public currentSession: SearchSession;
@@ -129,22 +135,16 @@ export class SearchSessionComponent {
   }
 
   onMaybeRecommendationAction({
-    recommendationActionForMaybe,
+    action: recommendationActionForMaybe,
     businessId,
   }: {
-    recommendationActionForMaybe: RecommendationAction;
+    action: RecommendationAction;
     businessId: string;
   }) {
     if (recommendationActionForMaybe === RecommendationAction.ACCEPT) {
       this.onAcceptRecommendation(businessId);
     } else {
       this.rejectMaybeRecommendation(businessId);
-      if (
-        !this.currentRecommendation &&
-        this.currentSession.maybeRecommendations.length === 0
-      ) {
-        this.handleNoBusinessesFoundError();
-      }
     }
   }
 
@@ -163,8 +163,18 @@ export class SearchSessionComponent {
   private rejectMaybeRecommendation(recommendationId: string): void {
     this.searchService
       .rejectMaybeRecommendation(this.sessionId, recommendationId)
-      .subscribe(() => {
+      .subscribe(async () => {
+        if (this.currentSession.maybeRecommendations.length === 1) {
+          await this.maybeRecommendationDrawer.close();
+        }
         this.currentSession.rejectMaybeRecommendation(recommendationId);
+
+        if (
+          !this.currentRecommendation &&
+          this.currentSession.maybeRecommendations.length === 0
+        ) {
+          this.handleNoBusinessesFoundError();
+        }
       });
   }
 }

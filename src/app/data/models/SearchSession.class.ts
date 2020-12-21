@@ -68,6 +68,7 @@ export class SearchSession {
 
     this.currentRecommendation = null;
     this.maybeRecommendations = [];
+    console.log(this);
   }
 
   public rejectMaybeRecommendation(businessIdToReject: string) {

@@ -33,7 +33,7 @@
   >
     <app-image-carousel
       [images]="formattedImages"
-      height="400px"
+      [height]="CARD_HEIGHT_STRING"
     ></app-image-carousel>
   </div>
   <mat-card-content>
@@ -68,7 +68,7 @@
       <div>
         <p>
           <mat-icon>link</mat-icon>
-          <a href="{{ recommendedBusiness.url }}">
+          <a href="{{ recommendedBusiness.url }}" target="_blank">
             <button mat-raised-button color="primary">View Site</button>
           </a>
         </p>

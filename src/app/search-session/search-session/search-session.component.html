@@ -8,7 +8,10 @@
         *ngFor="let recommendation of currentSession.maybeRecommendations"
         style="box-sizing: border-box; padding: 50px;"
       >
-        <div class="recommended-business">
+        <div
+          class="recommended-business"
+          [style.width.px]="VIEW_CONFIG.cardWidth"
+        >
           <app-recommendation-card
             [recommendation]="recommendation"
             (onAction)="onMaybeRecommendationAction($event)"
@@ -37,7 +40,11 @@
         </button>
       </div>
       <div class="full" fxLayout="column" fxLayoutAlign="center center">
-        <div *ngIf="currentSession" class="recommended-business">
+        <div
+          *ngIf="currentSession"
+          [style.width.px]="VIEW_CONFIG.cardWidth"
+          class="recommended-business"
+        >
           <div
             *ngIf="loadingRecommendation"
             class="full loading-wrapper"
@@ -58,7 +65,7 @@
             <mat-card-title>No current recommendation</mat-card-title>
             <div
               mat-card-image
-              style="height: 400px;"
+              [style.height.ptx]="VIEW_CONFIG.cardImageHeight"
               fxLayout="column"
               fxLayoutAlign="center center"
             >
@@ -66,12 +73,12 @@
                 style="font-size: 100px; height: auto; width: auto;"
                 color="accent"
                 fxFlexAlign="center"
-                >priority_high</mat-icon
-              >
+                >priority_high
+              </mat-icon>
             </div>
             <mat-card-content
-              >Look at maybe recommendations or restart search</mat-card-content
-            >
+              >Look at maybe recommendations or restart search
+            </mat-card-content>
           </mat-card>
         </div>
       </div>

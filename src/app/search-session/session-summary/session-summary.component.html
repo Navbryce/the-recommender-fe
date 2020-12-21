@@ -12,7 +12,7 @@
     </p>
     <a mat-raised-button href="/" color="accent">New Session</a>
   </div>
-  <div class="recommended-business" fxFlexAlign="center">
+  <div fxFlexAlign="center" [style.width.px]="VIEW_CONFIG.cardWidth">
     <app-recommendation-card
       [recommendation]="acceptedRecommendation"
       [withActions]="false"

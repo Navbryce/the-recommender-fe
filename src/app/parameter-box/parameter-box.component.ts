@@ -27,7 +27,7 @@ export class ParameterBoxComponent implements OnInit {
 
   readonly priceCategoryValues: PriceCategory[] = Object.keys(
     PriceCategory
-  ) as PriceCategory[];
+  ).filter((category) => category !== PriceCategory.FREE) as PriceCategory[];
   readonly toPriceCategoryString = toPriceCategoryString;
 
   searchParametersFormGroup: FormGroup;

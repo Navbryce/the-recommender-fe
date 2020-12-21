@@ -29,24 +29,24 @@
     </mat-select>
   </mat-form-field>
   <br />
-  <mat-form-field>
-    <div>
-      <input
-        type="text"
-        placeholder="Pick one"
-        aria-label="Number"
-        matInput
-        formControlName="attributes"
-        [matAutocomplete]="attributesAutoComplete.matAutocomplete | async"
-      />
-      <app-filtered-autocomplete
-        [inputControl]="searchParametersFormGroup.controls.attributes"
-        [options]="ATTRIBUTE_OPTIONS"
-        #attributesAutoComplete
-      >
-      </app-filtered-autocomplete>
-    </div>
-  </mat-form-field>
+  <!--  <mat-form-field>-->
+  <!--    <div>-->
+  <!--      <input-->
+  <!--        type="text"-->
+  <!--        placeholder="Pick one"-->
+  <!--        aria-label="Number"-->
+  <!--        matInput-->
+  <!--        formControlName="attributes"-->
+  <!--        [matAutocomplete]="attributesAutoComplete.matAutocomplete | async"-->
+  <!--      />-->
+  <!--      <app-filtered-autocomplete-->
+  <!--        [inputControl]="searchParametersFormGroup.controls.attributes"-->
+  <!--        [options]="ATTRIBUTE_OPTIONS"-->
+  <!--        #attributesAutoComplete-->
+  <!--      >-->
+  <!--      </app-filtered-autocomplete>-->
+  <!--    </div>-->
+  <!--  </mat-form-field>-->
   <br />
   <mat-form-field>
     <mat-label>Max radius</mat-label>

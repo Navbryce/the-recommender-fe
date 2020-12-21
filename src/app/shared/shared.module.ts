@@ -20,6 +20,7 @@ import { RatingComponent } from './components/rating/rating.component';
 import { FlexModule } from '@angular/flex-layout';
 import { ImageCarouselComponent } from './components/image-carousel/image-carousel.component';
 import { AlertService } from './services/alert.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { AlertService } from './services/alert.service';
     MatIconModule,
     MatAutocompleteModule,
     FlexModule,
+    MatTooltipModule,
   ],
   exports: [
     AddressPipe,
