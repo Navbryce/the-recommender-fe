@@ -2,7 +2,8 @@ mat-option {
   user-select: none !important;
 }
 .field-wrapper {
-  @extend .full;
+  width: 100%;
+  height: 100%;
 }
 .submit-button-wrapper {
   margin-top: 20px;
