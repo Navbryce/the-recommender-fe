@@ -59,6 +59,7 @@ export class RecommendationEngineComponent implements OnInit {
           );
           break;
         default:
+          this.generatingSession = false;
           throw error;
       }
     }

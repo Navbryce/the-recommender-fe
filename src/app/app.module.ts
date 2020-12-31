@@ -20,13 +20,8 @@ import { SearchSessionModule } from './search-session/search-session.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FlexModule } from '@angular/flex-layout';
 import { AppRoutingModule } from './app-routing.module';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { ErrorHandlerService } from './error-handler.service';
-
-export function provideSwal() {
-  return import('sweetalert2/src/sweetalert2.js'); // instead of import('sweetalert2')
-}
 
 @NgModule({
   declarations: [
@@ -53,9 +48,6 @@ export function provideSwal() {
     MatProgressBarModule,
     FlexModule,
     AppRoutingModule,
-    SweetAlert2Module.forRoot({
-      provideSwal,
-    }),
   ],
   providers: [
     {
