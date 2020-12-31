@@ -1,14 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "~@splidejs/splide/dist/css/splide.min.css";
-@import "swa2-theme.scss";
+@import "../../node_modules/@splidejs/splide/dist/css/splide.min.css";
+@import "swa2-theme";
 
 html,
 body {
   height: 100%;
-}
-
-body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -29,4 +26,8 @@ body {
 
 .full-width {
   width: 100%;
+}
+
+.scroll-y {
+  overflow-y: auto;
 }

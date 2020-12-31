@@ -5,8 +5,8 @@
   >
     <mat-drawer mode="side" #drawer>
       <div
+        class="maybe-business-wrapper"
         *ngFor="let recommendation of currentSession.maybeRecommendations"
-        style="box-sizing: border-box; padding: 50px;"
       >
         <div
           class="recommended-business"
@@ -39,52 +39,61 @@
           </p>
         </button>
       </div>
-      <div class="full" fxLayout="column" fxLayoutAlign="center center">
-        <div
-          *ngIf="currentSession"
-          [style.width.px]="VIEW_CONFIG.cardWidth"
-          class="recommended-business"
-        >
+      <div class="full-height" fxLayout="column" fxLayoutAlign="center center">
+        <div class="scroll-y">
           <div
-            *ngIf="loadingRecommendation"
-            class="full loading-wrapper"
-            fxLayout="row"
-            fxLayoutAlign="center center"
+            [style.width.px]="VIEW_CONFIG.cardWidth"
+            class="recommended-business"
           >
-            <div>
-              <mat-spinner></mat-spinner>
-            </div>
-          </div>
-          <app-recommendation-card
-            *ngIf="currentRecommendation"
-            class="full-width"
-            [recommendation]="currentRecommendation"
-            (onAction)="onCurrentRecommendationAction($event)"
-          ></app-recommendation-card>
-          <mat-card *ngIf="!currentRecommendation" class="full-width">
-            <mat-card-title>No current recommendation</mat-card-title>
             <div
-              mat-card-image
-              [style.height.ptx]="VIEW_CONFIG.cardImageHeight"
-              fxLayout="column"
+              *ngIf="loadingRecommendation"
+              class="full loading-wrapper"
+              fxLayout="row"
               fxLayoutAlign="center center"
             >
-              <mat-icon
-                style="font-size: 100px; height: auto; width: auto;"
-                color="accent"
-                fxFlexAlign="center"
-                >priority_high
-              </mat-icon>
+              <div>
+                <mat-spinner></mat-spinner>
+              </div>
             </div>
-            <mat-card-content
-              >Look at maybe recommendations or restart search
-            </mat-card-content>
-          </mat-card>
+
+            <app-recommendation-card
+              *ngIf="currentRecommendation"
+              class="full-width"
+              [recommendation]="currentRecommendation"
+              (onAction)="onCurrentRecommendationAction($event)"
+            ></app-recommendation-card>
+            <mat-card *ngIf="!currentRecommendation" class="full-width">
+              <mat-card-title>No current recommendation</mat-card-title>
+              <div
+                mat-card-image
+                [style.height.ptx]="VIEW_CONFIG.cardImageHeight"
+                fxLayout="column"
+                fxLayoutAlign="center center"
+              >
+                <mat-icon
+                  style="font-size: 100px; height: auto; width: auto;"
+                  color="accent"
+                  fxFlexAlign="center"
+                  >priority_high
+                </mat-icon>
+              </div>
+              <mat-card-content
+                >Look at maybe recommendations or restart search
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
       </div>
     </mat-drawer-content>
   </mat-drawer-container>
-  <div *ngIf="!!currentSession.acceptedRecommendation" class="full">
-    <app-session-summary [session]="currentSession"></app-session-summary>
+  <div
+    *ngIf="!!currentSession.acceptedRecommendation"
+    class="full"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
+    <div class="scroll-y">
+      <app-session-summary [session]="currentSession"></app-session-summary>
+    </div>
   </div>
 </div>

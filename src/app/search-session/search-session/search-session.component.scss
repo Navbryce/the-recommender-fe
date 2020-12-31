@@ -1,7 +1,23 @@
-@import "src/colors";
+@import "colors.scss";
+@import "viewport-variables.scss";
 
 mat-drawer {
   background-color: $dark-background;
+  width: 100%;
+
+  .maybe-business-wrapper {
+    padding-bottom: 50px;
+    padding-top: 50px;
+  }
+
+  @media (min-width: $min-desktop) {
+    width: auto;
+
+    .maybe-business-wrapper {
+      box-sizing: border-box;
+      padding: 50px;
+    }
+  }
 }
 
 .loading-wrapper {
