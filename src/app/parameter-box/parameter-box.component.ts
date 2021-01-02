@@ -39,12 +39,13 @@ export class ParameterBoxComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
+    console.log(this.MAX_RADIUS);
     this.searchParametersFormGroup = this.formBuilder.group({
       location: ['', Validators.required],
       priceCategories: [''],
       searchTerm: [''],
       attributes: [''],
-      searchRadius: [this.DEFAULT_RADIUS, Validators.max(40)],
+      searchRadius: [this.DEFAULT_RADIUS, Validators.max(this.MAX_RADIUS)],
     });
   }
 

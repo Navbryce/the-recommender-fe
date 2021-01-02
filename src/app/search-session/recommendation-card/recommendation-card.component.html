@@ -78,6 +78,7 @@
 </mat-card>
 <div *ngIf="withActions" fxLayout="row" class="buttons full-width">
   <button
+    class="reject-button"
     mat-raised-button
     (click)="onRejectCurrentRecommendation()"
     color="warn"
@@ -86,18 +87,19 @@
     Reject
   </button>
   <button
+    class="reconsider-button"
     mat-raised-button
     (click)="onMaybeRecommendation()"
     [disabled]="disableReconsider"
     color="accent"
     fxFlex="100%"
   >
-    Reconsider later
+    Reconsider
   </button>
   <button
+    class="accept-button"
     mat-raised-button
     (click)="onAcceptRecommendation()"
-    color="primary"
     fxFlex="100%"
   >
     Accept

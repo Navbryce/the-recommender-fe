@@ -1,3 +1,5 @@
+@import "colors.scss";
+
 .buttons {
   button {
     border-radius: 0px;
@@ -28,4 +30,12 @@
     user-select: none;
     vertical-align: middle;
   }
+}
+
+.reconsider-button {
+  background-color: $reconsider;
+}
+
+.accept-button {
+  background-color: $accept;
 }

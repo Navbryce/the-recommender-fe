@@ -4,27 +4,60 @@
     class="full"
   >
     <mat-drawer mode="side" #drawer>
-      <div
-        class="maybe-business-wrapper"
-        *ngFor="let recommendation of currentSession.maybeRecommendations"
-      >
+      <div class="full-width" fxLayout="column" fxLayoutAlign="center center">
         <div
-          class="recommended-business"
-          [style.width.px]="VIEW_CONFIG.cardWidth"
+          class="maybe-business-wrapper"
+          *ngFor="let recommendation of currentSession.maybeRecommendations"
         >
-          <app-recommendation-card
-            [recommendation]="recommendation"
-            (onAction)="onMaybeRecommendationAction($event)"
-            [disableReconsider]="true"
+          <div
+            class="recommended-business"
+            [style.width.px]="VIEW_CONFIG.cardWidth"
           >
-          </app-recommendation-card>
+            <app-recommendation-card
+              [recommendation]="recommendation"
+              (onAction)="onMaybeRecommendationAction($event)"
+              [disableReconsider]="true"
+            >
+            </app-recommendation-card>
+          </div>
         </div>
       </div>
+      <div
+        class="full-width"
+        style="position: absolute; z-index: 2; bottom: 0; left: 0;"
+      >
+        <button
+          (click)="drawer.toggle()"
+          class="full-width"
+          color="accent"
+          mat-raised-button
+        >
+          <mat-icon>keyboard_return</mat-icon>
+          Back to current recommendation
+        </button>
+      </div>
     </mat-drawer>
-    <mat-drawer-content>
+    <mat-drawer-content class="full">
       <div style="position: absolute; bottom: 50vh; top: 50vh; z-index: 2;">
         <button
+          *ngIf="layoutService.desktop$ | async"
           mat-stroked-button
+          color="accent"
+          (click)="drawer.toggle()"
+          [disabled]="currentSession.maybeRecommendations.length == 0"
+        >
+          <mat-icon style="display: inline; vertical-align: middle;"
+            >repeat
+          </mat-icon>
+          <p
+            style="padding-left: 5px; display: inline; vertical-align: middle;"
+          >
+            Reconsider
+          </p>
+        </button>
+        <button
+          *ngIf="!(layoutService.desktop$ | async)"
+          mat-raised-button
           color="accent"
           (click)="drawer.toggle()"
           [disabled]="currentSession.maybeRecommendations.length == 0"

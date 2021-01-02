@@ -9,6 +9,7 @@ import { ROUTES } from '../../routes.const';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorCode } from '../data/services/ErrorCode.enum';
 import { AlertService } from '../shared/services/alert.service';
+import { VIEW_CONFIG } from '../view-config.const';
 
 @Component({
   selector: 'app-recommendation-engine',
@@ -16,6 +17,8 @@ import { AlertService } from '../shared/services/alert.service';
   styleUrls: ['./recommendation-engine.component.scss'],
 })
 export class RecommendationEngineComponent implements OnInit {
+  public VIEW_CONFIG = VIEW_CONFIG;
+
   public searchSessionUpdated: Observable<SearchSession>;
 
   public recommendationSessionUpdated: BehaviorSubject<SearchSession>;

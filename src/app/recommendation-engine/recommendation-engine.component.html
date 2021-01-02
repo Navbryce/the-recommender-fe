@@ -16,7 +16,10 @@
     fxLayout="row"
     fxLayoutAlign="center center"
   >
-    <mat-card class="search-box center-search">
+    <mat-card
+      class="search-box center-search"
+      [style.width.px]="VIEW_CONFIG.cardWidth"
+    >
       <mat-card-header>
         <mat-card-title>Search</mat-card-title>
       </mat-card-header>

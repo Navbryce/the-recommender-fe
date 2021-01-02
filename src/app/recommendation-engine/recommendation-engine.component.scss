@@ -4,9 +4,9 @@
   display: flex;
 
   .search-box {
+    box-sizing: border-box;
     padding: 50px;
     position: absolute;
-    width: 300px;
 
     mat-card-content {
       width: 100%;

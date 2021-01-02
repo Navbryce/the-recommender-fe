@@ -20,6 +20,7 @@ import { AlertService } from '../../shared/services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorCode } from '../../data/services/ErrorCode.enum';
 import { MatDrawer } from '@angular/material/sidenav';
+import { LayoutService } from '../../shared/services/layout.service';
 
 @Component({
   selector: 'app-search-session',
@@ -45,7 +46,8 @@ export class SearchSessionComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public layoutService: LayoutService
   ) {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     const searchSession:
