@@ -3,6 +3,8 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RequestService } from '../data/services/request.service';
 import { environment } from '../../environments/environment';
+import { SuccessResponse } from '../data/models/SucccessResponse.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -15,20 +17,30 @@ export class SearchApiClient {
   constructor(private requestService: RequestService) {}
 
   get<T>(apiPath: string, body?: any, httpParams?: HttpParams): Observable<T> {
-    return this.requestService.get(
-      this.generateRequestUrl(apiPath),
-      body,
-      httpParams
+    return this.mapSuccessResponseToData(
+      this.requestService.get(
+        this.generateRequestUrl(apiPath),
+        body,
+        httpParams
+      )
     );
   }
 
   post<T>(apiPath: string, body: any, params?: HttpParams): Observable<T> {
-    return this.requestService.post(
-      this.generateRequestUrl(apiPath),
-      body,
-      params,
-      this.addDefaultsToHttpHeaders(SearchApiClient.DEFAULT_POST_HEADERS)
+    return this.mapSuccessResponseToData(
+      this.requestService.post(
+        this.generateRequestUrl(apiPath),
+        body,
+        params,
+        this.addDefaultsToHttpHeaders(SearchApiClient.DEFAULT_POST_HEADERS)
+      )
     );
+  }
+
+  private mapSuccessResponseToData<T>(
+    response$: Observable<SuccessResponse<T>>
+  ): Observable<T> {
+    return response$.pipe(map((response) => response.data));
   }
 
   private generateRequestUrl(apiPath: string): string {
