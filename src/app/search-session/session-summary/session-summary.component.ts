@@ -14,7 +14,7 @@ export class SessionSummaryComponent implements OnInit {
   @Input() session: SearchSession;
 
   get acceptedRecommendation(): Recommendation {
-    return this.session.acceptedRecommendation;
+    return this.session.acceptedRecommendations[0];
   }
 
   constructor() {}

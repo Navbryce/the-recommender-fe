@@ -38,6 +38,17 @@ export class RequestService {
     );
   }
 
+  put<T>(
+    url: string,
+    body: any,
+    params?: HttpParams,
+    headers?: HttpHeaders
+  ): Observable<T> {
+    return this.makeRequest(
+      this.buildRequest('put', url, body, params, headers)
+    );
+  }
+
   private buildRequest<T>(
     method: string,
     url: string,

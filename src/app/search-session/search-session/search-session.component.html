@@ -1,8 +1,5 @@
 <div *ngIf="!!currentSession" class="recommendation-session-wrapper full">
-  <mat-drawer-container
-    *ngIf="!currentSession.acceptedRecommendation"
-    class="full"
-  >
+  <mat-drawer-container *ngIf="!currentSession.complete" class="full">
     <mat-drawer mode="side" #drawer>
       <div class="full-width" fxLayout="column" fxLayoutAlign="center center">
         <div
@@ -120,7 +117,7 @@
     </mat-drawer-content>
   </mat-drawer-container>
   <div
-    *ngIf="!!currentSession.acceptedRecommendation"
+    *ngIf="currentSession.complete"
     class="full"
     fxLayout="column"
     fxLayoutAlign="center center"

@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class SearchApiClient {
+export class AppClientService {
   private static readonly DEFAULT_POST_HEADERS = {
     'Content-Type': 'application/json',
   };
@@ -32,7 +32,18 @@ export class SearchApiClient {
         this.generateRequestUrl(apiPath),
         body,
         params,
-        this.addDefaultsToHttpHeaders(SearchApiClient.DEFAULT_POST_HEADERS)
+        this.addDefaultsToHttpHeaders(AppClientService.DEFAULT_POST_HEADERS)
+      )
+    );
+  }
+
+  put<T>(apiPath: string, body: any, params?: HttpParams): Observable<T> {
+    return this.mapSuccessResponseToData(
+      this.requestService.put(
+        this.generateRequestUrl(apiPath),
+        body,
+        params,
+        this.addDefaultsToHttpHeaders(AppClientService.DEFAULT_POST_HEADERS)
       )
     );
   }

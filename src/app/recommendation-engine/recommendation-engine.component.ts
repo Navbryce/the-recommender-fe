@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorCode } from '../data/services/ErrorCode.enum';
 import { AlertService } from '../shared/services/alert.service';
 import { VIEW_CONFIG } from '../view-config.const';
+import { SearchSessionParameters } from '../data/models/SearchSessionParameters.interface';
 
 @Component({
   selector: 'app-recommendation-engine',
@@ -37,15 +38,15 @@ export class RecommendationEngineComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  async onSearchParameters(searchParameters: BusinessSearchParameters) {
+  async onSearchParameters(searchParameters: SearchSessionParameters) {
     this.generatingSession = true;
     try {
       const session = await this.searchService
         .newSearch(searchParameters)
         .toPromise();
-      this.router.navigate([`${ROUTES.searchSession}/${session.id}`], {
+      this.router.navigate([`${ROUTES.searchSession.path}/${session.id}`], {
         state: {
-          searchSession: session,
+          [ROUTES.searchSession.payloadField]: session,
         },
       });
     } catch (error) {

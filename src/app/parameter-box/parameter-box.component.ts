@@ -7,11 +7,11 @@ import {
   FormBuilder,
   FormGroup,
   FormGroupDirective,
-  NgForm,
   Validators,
 } from '@angular/forms';
 import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
 import { convert } from '../shared/pipes/unit-converter.pipe';
+import { SearchSessionParameters } from '../data/models/SearchSessionParameters.interface';
 
 @Component({
   selector: 'app-parameter-box',
@@ -33,19 +33,21 @@ export class ParameterBoxComponent implements OnInit {
   searchParametersFormGroup: FormGroup;
 
   @Output('searchParameters') searchParametersEmitter: EventEmitter<
-    BusinessSearchParameters
-  > = new EventEmitter<BusinessSearchParameters>();
+    SearchSessionParameters
+  > = new EventEmitter<SearchSessionParameters>();
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    console.log(this.MAX_RADIUS);
     this.searchParametersFormGroup = this.formBuilder.group({
-      location: ['', Validators.required],
-      priceCategories: [''],
-      searchTerm: [''],
-      attributes: [''],
-      searchRadius: [this.DEFAULT_RADIUS, Validators.max(this.MAX_RADIUS)],
+      businessSearchParameters: this.formBuilder.group({
+        location: ['', Validators.required],
+        priceCategories: [''],
+        searchTerm: [''],
+        attributes: [''],
+        searchRadius: [this.DEFAULT_RADIUS, Validators.max(this.MAX_RADIUS)],
+      }),
+      dinnerPartyActiveId: [''],
     });
   }
 
@@ -59,18 +61,26 @@ export class ParameterBoxComponent implements OnInit {
 
   private generateSearchParameters(
     form: FormGroupDirective
-  ): BusinessSearchParameters {
+  ): SearchSessionParameters {
     if (!form.valid) {
       throw new Error('Form must be valid');
     }
 
+    const businessSearchParameters: BusinessSearchParameters =
+      form.value.businessSearchParameters;
     return {
-      ...form.value,
-      searchRadius: convert(
-        form.value.searchRadius,
-        this.INPUT_UNIT,
-        this.TARGET_UNIT
-      ),
+      dinnerPartyActiveId:
+        form.value.dinnerPartyActiveId.length != 0
+          ? form.value.dinnerPartyActiveId
+          : null,
+      businessSearchParameters: {
+        ...businessSearchParameters,
+        searchRadius: convert(
+          businessSearchParameters.searchRadius,
+          this.INPUT_UNIT,
+          this.TARGET_UNIT
+        ),
+      },
     };
   }
 }

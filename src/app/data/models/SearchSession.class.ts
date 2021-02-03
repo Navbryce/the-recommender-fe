@@ -1,38 +1,48 @@
 import { BusinessSearchParameters } from './BusinessSearchParameters.interface';
 import { Recommendation } from './Recommendation.interface';
 import { RecommendationAction } from '../services/SearchService.interface';
+import { SearchSessionStatus } from './SearchSessionStatus';
 
 export interface SearchSessionObject {
   id: string;
   searchRequest: BusinessSearchParameters;
-  acceptedRecommendation?: Recommendation | null;
+  acceptedRecommendations?: [Recommendation] | null;
   currentRecommendation: Recommendation | null;
   maybeRecommendations?: Recommendation[];
   rejectedRecommendations?: Recommendation[];
+  sessionStatus?: SearchSessionStatus;
 }
 
 export class SearchSession {
+  private sessionStatus: SearchSessionStatus;
+
   readonly id: string;
   readonly searchRequest: BusinessSearchParameters;
-  acceptedRecommendation: Recommendation | null;
+  acceptedRecommendations: Recommendation[] | null;
   currentRecommendation: Recommendation | null;
   maybeRecommendations: Recommendation[];
   rejectedRecommendations: Recommendation[];
 
+  get complete(): boolean {
+    return this.sessionStatus == SearchSessionStatus.COMPLETE;
+  }
+
   constructor({
     id,
     searchRequest,
-    acceptedRecommendation,
+    acceptedRecommendations,
     currentRecommendation,
     maybeRecommendations,
     rejectedRecommendations,
+    sessionStatus,
   }: SearchSessionObject) {
     this.id = id;
     this.searchRequest = searchRequest;
-    this.acceptedRecommendation = acceptedRecommendation ?? null;
+    this.acceptedRecommendations = acceptedRecommendations ?? [];
     this.currentRecommendation = currentRecommendation;
     this.maybeRecommendations = maybeRecommendations ?? [];
     this.rejectedRecommendations = rejectedRecommendations ?? [];
+    this.sessionStatus = sessionStatus ?? SearchSessionStatus.IN_PROGRESS;
   }
 
   public acceptRecommendation(businessIdToAccept: string) {
@@ -44,7 +54,8 @@ export class SearchSession {
   }
 
   public acceptCurrentRecommendation() {
-    this.acceptedRecommendation = this.currentRecommendation;
+    this.acceptedRecommendations.push(this.currentRecommendation);
+    this.sessionStatus = SearchSessionStatus.COMPLETE;
     this.currentRecommendation = null;
   }
 
@@ -58,7 +69,7 @@ export class SearchSession {
       );
     }
 
-    this.acceptedRecommendation = this.maybeRecommendations[businessIndex];
+    this.acceptedRecommendations.push(this.maybeRecommendations[businessIndex]);
     this.maybeRecommendations.splice(businessIndex, 1);
     this.rejectedRecommendations = [
       ...this.rejectedRecommendations,
@@ -68,7 +79,6 @@ export class SearchSession {
 
     this.currentRecommendation = null;
     this.maybeRecommendations = [];
-    console.log(this);
   }
 
   public rejectMaybeRecommendation(businessIdToReject: string) {

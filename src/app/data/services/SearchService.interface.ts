@@ -2,12 +2,13 @@ import { BusinessSearchParameters } from '../models/BusinessSearchParameters.int
 import { Observable } from 'rxjs';
 import { Recommendation } from '../models/Recommendation.interface';
 import { SearchSession } from '../models/SearchSession.class';
+import { SearchSessionParameters } from '../models/SearchSessionParameters.interface';
 
 export interface SearchService {
   getSearchSession(sessionId: string): Observable<SearchSession>;
 
   newSearch(
-    searchParameters: BusinessSearchParameters
+    searchSessionParameters: SearchSessionParameters
   ): Observable<SearchSession>;
 
   nextRecommendation(

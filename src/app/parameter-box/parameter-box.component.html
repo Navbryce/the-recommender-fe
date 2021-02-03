@@ -4,61 +4,79 @@
   [formGroup]="searchParametersFormGroup"
   (ngSubmit)="onFormSubmit(form)"
 >
-  <app-location-entry
-    formControlName="location"
-    class="full-width"
-  ></app-location-entry>
-  <div [appInputErrorMessage]="searchParametersFormGroup.get('location')">
-    <p>Location is required</p>
+  <div formGroupName="businessSearchParameters">
+    <app-location-entry
+      formControlName="location"
+      class="full-width"
+    ></app-location-entry>
+    <div
+      [appInputErrorMessage]="
+        searchParametersFormGroup
+          .get('businessSearchParameters')
+          .get('location')
+      "
+    >
+      <p>Location is required</p>
+    </div>
+    <br />
+    <mat-form-field appearance="standard" class="full-width">
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="Search term" formControlName="searchTerm" />
+      <mat-hint>A term associated with the business</mat-hint>
+    </mat-form-field>
+    <br />
+    <mat-form-field class="full-width">
+      <mat-label>Price</mat-label>
+      <mat-select multiple formControlName="priceCategories">
+        <mat-option
+          *ngFor="let priceCategory of priceCategoryValues"
+          [value]="priceCategory"
+          >{{ toPriceCategoryString(priceCategory) }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <br />
+    <!--  <mat-form-field>-->
+    <!--    <div>-->
+    <!--      <input-->
+    <!--        type="text"-->
+    <!--        placeholder="Pick one"-->
+    <!--        aria-label="Number"-->
+    <!--        matInput-->
+    <!--        formControlName="attributes"-->
+    <!--        [matAutocomplete]="attributesAutoComplete.matAutocomplete | async"-->
+    <!--      />-->
+    <!--      <app-filtered-autocomplete-->
+    <!--        [inputControl]="searchParametersFormGroup.controls.attributes"-->
+    <!--        [options]="ATTRIBUTE_OPTIONS"-->
+    <!--        #attributesAutoComplete-->
+    <!--      >-->
+    <!--      </app-filtered-autocomplete>-->
+    <!--    </div>-->
+    <!--  </mat-form-field>-->
+    <br />
+    <mat-form-field>
+      <mat-label>Max radius</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="searchRadius"
+        max="{{ MAX_RADIUS }}"
+      />
+      <span matSuffix>{{ INPUT_UNIT }}</span>
+      <mat-hint>Max distance from your current location</mat-hint>
+    </mat-form-field>
   </div>
-  <br />
   <mat-form-field appearance="standard" class="full-width">
-    <mat-label>Search</mat-label>
-    <input matInput placeholder="Search term" formControlName="searchTerm" />
-    <mat-hint>A term associated with the business</mat-hint>
-  </mat-form-field>
-  <br />
-  <mat-form-field class="full-width">
-    <mat-label>Price</mat-label>
-    <mat-select multiple formControlName="priceCategories">
-      <mat-option
-        *ngFor="let priceCategory of priceCategoryValues"
-        [value]="priceCategory"
-        >{{ toPriceCategoryString(priceCategory) }}</mat-option
-      >
-    </mat-select>
-  </mat-form-field>
-  <br />
-  <!--  <mat-form-field>-->
-  <!--    <div>-->
-  <!--      <input-->
-  <!--        type="text"-->
-  <!--        placeholder="Pick one"-->
-  <!--        aria-label="Number"-->
-  <!--        matInput-->
-  <!--        formControlName="attributes"-->
-  <!--        [matAutocomplete]="attributesAutoComplete.matAutocomplete | async"-->
-  <!--      />-->
-  <!--      <app-filtered-autocomplete-->
-  <!--        [inputControl]="searchParametersFormGroup.controls.attributes"-->
-  <!--        [options]="ATTRIBUTE_OPTIONS"-->
-  <!--        #attributesAutoComplete-->
-  <!--      >-->
-  <!--      </app-filtered-autocomplete>-->
-  <!--    </div>-->
-  <!--  </mat-form-field>-->
-  <br />
-  <mat-form-field>
-    <mat-label>Max radius</mat-label>
+    <mat-label>Dinner Party ID</mat-label>
     <input
       matInput
-      type="number"
-      formControlName="searchRadius"
-      max="{{ MAX_RADIUS }}"
+      placeholder="AAAAA1"
+      formControlName="dinnerPartyActiveId"
     />
-    <span matSuffix>{{ INPUT_UNIT }}</span>
-    <mat-hint>Max distance from your current location</mat-hint>
+    <mat-hint>ID for Dinner Party</mat-hint>
   </mat-form-field>
+  <br />
   <div class="form-group submit-button-wrapper">
     <button type="submit" mat-raised-button color="primary">
       Recommend a place!

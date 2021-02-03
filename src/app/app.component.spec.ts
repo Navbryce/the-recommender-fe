@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { SearchClientModule } from './search-client/search-client.module';
+import { AppClientModule } from './app-client/search-client.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -23,7 +23,7 @@ describe('AppComponent', () => {
         MatAutocompleteModule,
         MatInputModule,
         MatSelectModule,
-        SearchClientModule,
+        AppClientModule,
       ],
     }).compileComponents();
   }));

@@ -1,6 +1,10 @@
 import { ErrorHandler, Injectable } from '@angular/core';
 import { AlertService } from './shared/services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import {
+  AppErrorResponse,
+  isAppErrorResponse,
+} from './data/services/AppErrorResponse.interface';
 
 type PromiseRejection = {
   rejection: any;
@@ -28,6 +32,14 @@ export class ErrorHandlerService implements ErrorHandler {
       this.alertService.errorAlert(
         'Could not connect',
         'The backend could not be reached. Please try again later.'
+      );
+      return;
+    }
+    if (error instanceof HttpErrorResponse && isAppErrorResponse(error.error)) {
+      const appError: AppErrorResponse = error.error;
+      this.alertService.errorAlert(
+        'Unhandled Known Error',
+        `${appError.message} (errorCode=${appError.errorCode ?? 'NONE'})`
       );
       return;
     }

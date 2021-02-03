@@ -2,8 +2,6 @@ import {
   Component,
   EventEmitter,
   Inject,
-  Input,
-  OnChanges,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -21,6 +19,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorCode } from '../../data/services/ErrorCode.enum';
 import { MatDrawer } from '@angular/material/sidenav';
 import { LayoutService } from '../../shared/services/layout.service';
+import { getOrFetchObjectFromBrowserRoute } from '../../shared/utilities/RouteComponentUtilities';
+import { ROUTES } from '../../../routes.const';
 
 @Component({
   selector: 'app-search-session',
@@ -49,22 +49,14 @@ export class SearchSessionComponent {
     private alertService: AlertService,
     public layoutService: LayoutService
   ) {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    const searchSession:
-      | SearchSession
-      | undefined = router.getCurrentNavigation().extras.state?.searchSession;
-    if (searchSession) {
-      if (id !== searchSession.id) {
-        throw new Error(
-          `The id on the route ${id} conflicts with the search session provided ${searchSession.id}`
-        );
-      }
-      this.onNewCurrentSession(searchSession);
-    } else {
-      this.searchService
-        .getSearchSession(id)
-        .subscribe((session) => this.onNewCurrentSession(session));
-    }
+    getOrFetchObjectFromBrowserRoute(
+      router,
+      activatedRoute,
+      'id',
+      ROUTES.searchSession.payloadField,
+      'id',
+      (id) => this.searchService.getSearchSession(id)
+    )[1].subscribe((session) => this.onNewCurrentSession(session));
   }
 
   private onNewCurrentSession(session: SearchSession) {

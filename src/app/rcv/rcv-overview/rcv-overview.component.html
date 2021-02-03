@@ -1,0 +1,13 @@
+<div
+  *ngIf="!!currentElection"
+  class="full"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+>
+  <mat-card class="election-code-card">
+    <mat-card-content
+      ><h2>Your RCV code is:</h2>
+      <h1>{{ currentElection.activeId }}</h1>
+    </mat-card-content>
+  </mat-card>
+</div>

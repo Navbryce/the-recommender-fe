@@ -1,0 +1,12 @@
+@import "colors.scss";
+.election-code-card {
+  background-color: $dark-background;
+  padding: 20px;
+  h1 {
+    font-size: 100px;
+    line-height: 100px;
+  }
+  h2 {
+    font-style: italic;
+  }
+}

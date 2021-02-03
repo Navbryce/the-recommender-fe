@@ -20,5 +20,5 @@ export const TEST_SESSION = new SearchSession({
 export const TEST_SESSION_COMPLETED = new SearchSession({
   ...TEST_SESSION,
   currentRecommendation: null,
-  acceptedRecommendation: TEST_RECOMMENDATION,
+  acceptedRecommendations: [TEST_RECOMMENDATION],
 });

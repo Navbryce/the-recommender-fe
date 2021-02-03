@@ -3,27 +3,27 @@ import {
   RecommendationAction,
   SearchService,
 } from '../data/services/SearchService.interface';
-import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
-import { Observable, pipe } from 'rxjs';
-import { SearchApiClient } from './search-api-client.service';
+import { Observable } from 'rxjs';
+import { AppClientService } from './app-client.service';
 import { Recommendation } from '../data/models/Recommendation.interface';
 import {
   SearchSession,
   SearchSessionObject,
 } from '../data/models/SearchSession.class';
 import { map } from 'rxjs/operators';
+import { SearchSessionParameters } from '../data/models/SearchSessionParameters.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SearchServiceSearchApi implements SearchService {
+export class AppSearchClient implements SearchService {
   private static readonly BASE_PATH = '/business-search';
 
-  constructor(private searchApiClient: SearchApiClient) {}
+  constructor(private searchApiClient: AppClientService) {}
 
   getSearchSession(sessionId: string): Observable<SearchSession> {
     return this.searchApiClient
-      .get(`${SearchServiceSearchApi.BASE_PATH}/${sessionId}`)
+      .get(`${AppSearchClient.BASE_PATH}/${sessionId}`)
       .pipe(
         map(
           (sessionObject: SearchSessionObject) =>
@@ -35,10 +35,10 @@ export class SearchServiceSearchApi implements SearchService {
   }
 
   newSearch(
-    searchParameters: BusinessSearchParameters
+    searchParameters: SearchSessionParameters
   ): Observable<SearchSession> {
     return this.searchApiClient
-      .post(SearchServiceSearchApi.BASE_PATH, searchParameters)
+      .post(AppSearchClient.BASE_PATH, searchParameters)
       .pipe(
         map(
           ({
@@ -50,7 +50,7 @@ export class SearchServiceSearchApi implements SearchService {
           }) =>
             new SearchSession({
               id: sessionId,
-              searchRequest: searchParameters,
+              searchRequest: searchParameters.businessSearchParameters,
               currentRecommendation: recommendation,
             })
         )
@@ -113,7 +113,7 @@ export class SearchServiceSearchApi implements SearchService {
     }
 
     return this.searchApiClient.post(
-      `${SearchServiceSearchApi.BASE_PATH}/${sessionId}`,
+      `${AppSearchClient.BASE_PATH}/${sessionId}`,
       body
     );
   }

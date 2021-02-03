@@ -1,0 +1,18 @@
+<div fxLayout="center" fxLayoutAlign="center center" class="full">
+  <mat-card
+    class="search-box center-search"
+    [style.width.px]="VIEW_CONFIG.cardWidth"
+  >
+    <mat-card-content>
+      <form #form="ngForm" [formGroup]="rcvCreationFormGroup">
+        <mat-label>Party Location</mat-label>
+        <app-location-entry formControlName="location"></app-location-entry>
+        <div class="form-group submit-button-wrapper">
+          <button color="primary" type="submit" mat-raised-button>
+            Launch party!
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
