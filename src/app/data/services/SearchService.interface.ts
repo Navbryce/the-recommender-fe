@@ -1,4 +1,3 @@
-import { BusinessSearchParameters } from '../models/BusinessSearchParameters.interface';
 import { Observable } from 'rxjs';
 import { Recommendation } from '../models/Recommendation.interface';
 import { SearchSession } from '../models/SearchSession.class';
@@ -11,17 +10,16 @@ export interface SearchService {
     searchSessionParameters: SearchSessionParameters
   ): Observable<SearchSession>;
 
-  nextRecommendation(
+  applyRecommendationActionToCurrent(
     sessionId: string,
     businessId: string,
     recommendationAction: RecommendationAction
-  ): Observable<Recommendation>;
+  ): Observable<Recommendation | null>;
 
-  acceptRecommendation(sessionId: string, businessId: string): Observable<null>;
-
-  rejectMaybeRecommendation(
+  applyRecommendationActionToMaybe(
     sessionId: string,
-    businessId: string
+    businessId: string,
+    recommendationAction: RecommendationAction
   ): Observable<null>;
 }
 

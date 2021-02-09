@@ -32,8 +32,6 @@ export class SearchSessionComponent {
 
   @ViewChild('drawer') maybeRecommendationDrawer: MatDrawer;
 
-  @Output() sessionCompleted = new EventEmitter<SearchSession>();
-
   public currentSession: SearchSession;
   public currentRecommendation: Recommendation;
   public loadingRecommendation = false;
@@ -64,34 +62,21 @@ export class SearchSessionComponent {
     this.currentRecommendation = this.currentSession.currentRecommendation;
   }
 
-  onCurrentRecommendationAction({ action }: { action: RecommendationAction }) {
-    if (action === RecommendationAction.ACCEPT) {
-      this.onAcceptRecommendation(
-        this.currentSession.currentRecommendation.businessId
-      );
-    } else {
-      void this.getNextRecommendation(action);
-    }
-  }
-
-  private async getNextRecommendation(
-    recommendationAction: RecommendationAction
-  ) {
+  async onCurrentRecommendationAction({
+    action,
+  }: {
+    action: RecommendationAction;
+  }) {
     this.loadingRecommendation = true;
+    let newRecommendationMaybe: Recommendation | null;
     try {
-      const newRecommendation = await this.searchService
-        .nextRecommendation(
+      newRecommendationMaybe = await this.searchService
+        .applyRecommendationActionToCurrent(
           this.sessionId,
           this.currentRecommendation.businessId,
-          recommendationAction
+          action
         )
         .toPromise();
-
-      this.currentRecommendation = newRecommendation;
-      this.currentSession.setNewCurrentRecommendation(
-        newRecommendation,
-        recommendationAction
-      );
     } catch (error) {
       if (!(error instanceof HttpErrorResponse)) {
         throw error;
@@ -100,75 +85,81 @@ export class SearchSessionComponent {
       switch (error.error.errorCode) {
         case ErrorCode.NO_BUSINESSES_FOUND:
           this.currentRecommendation = null;
-          this.currentSession.setNewCurrentRecommendation(
-            null,
-            recommendationAction
-          );
+          this.currentSession.applyRecommendationActionToCurrent(null, action);
           this.handleNoBusinessesFoundError();
           break;
         default:
           throw error;
       }
+
+      this.loadingRecommendation = false;
+      return;
     }
+
+    this.currentSession.applyRecommendationActionToCurrent(
+      newRecommendationMaybe,
+      action
+    );
+    if (!newRecommendationMaybe && !this.currentSession.complete) {
+      throw new Error(
+        'No new recommendation but the search session is not complete'
+      );
+    }
+
+    if (!!newRecommendationMaybe) {
+      this.currentRecommendation = newRecommendationMaybe as Recommendation;
+    }
+
     this.loadingRecommendation = false;
   }
 
-  private handleNoBusinessesFoundError() {
+  private async handleNoBusinessesFoundError() {
     if (this.currentSession.maybeRecommendations.length > 0) {
-      this.alertService.warnAlert(
+      void this.alertService.warnAlert(
         'No businesses found',
         "Restart your search or accept a 'maybe' recommendation."
       );
     } else {
-      this.alertService.warnAlert(
+      await this.alertService.warnAlert(
         'No businesses found',
-        'Currently, it is filtering by open businesses. Try expanding the parameters of your search. Your search will be restarted',
-        () => this.router.navigate(['/'])
+        'Currently, it is filtering by open businesses. Try expanding the parameters of your search. Your search will be restarted'
       );
+      void this.router.navigate(['/']);
     }
   }
 
-  onMaybeRecommendationAction({
+  async onMaybeRecommendationAction({
     action: recommendationActionForMaybe,
     businessId,
   }: {
     action: RecommendationAction;
     businessId: string;
   }) {
-    if (recommendationActionForMaybe === RecommendationAction.ACCEPT) {
-      this.onAcceptRecommendation(businessId);
-    } else {
-      this.rejectMaybeRecommendation(businessId);
+    if (this.currentSession.isDinnerParty) {
+      throw new Error('Cannot maybe a recommendation for a dinner party');
     }
-  }
-
-  private onAcceptRecommendation(recommendationId: string): void {
-    this.searchService
-      .acceptRecommendation(
+    await this.searchService
+      .applyRecommendationActionToMaybe(
         this.sessionId,
-        this.currentRecommendation.businessId
+        businessId,
+        recommendationActionForMaybe
       )
-      .subscribe(() => {
-        this.currentSession.acceptRecommendation(recommendationId);
-        this.sessionCompleted.emit(this.currentSession);
-      });
-  }
+      .toPromise();
 
-  private rejectMaybeRecommendation(recommendationId: string): void {
-    this.searchService
-      .rejectMaybeRecommendation(this.sessionId, recommendationId)
-      .subscribe(async () => {
-        if (this.currentSession.maybeRecommendations.length === 1) {
-          await this.maybeRecommendationDrawer.close();
-        }
-        this.currentSession.rejectMaybeRecommendation(recommendationId);
+    this.currentSession.applyRecommendationActionToMaybe(
+      businessId,
+      recommendationActionForMaybe
+    );
 
-        if (
-          !this.currentRecommendation &&
-          this.currentSession.maybeRecommendations.length === 0
-        ) {
-          this.handleNoBusinessesFoundError();
-        }
-      });
+    if (this.currentSession.maybeRecommendations.length === 0) {
+      await this.maybeRecommendationDrawer.close();
+    }
+
+    if (
+      !this.currentRecommendation &&
+      this.currentSession.maybeRecommendations.length === 0
+    ) {
+      this.handleNoBusinessesFoundError();
+    }
   }
 }

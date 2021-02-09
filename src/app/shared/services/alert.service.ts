@@ -1,43 +1,88 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 
-export interface Alert {
+export interface Alert<T> {
   title?: string;
-  message: string;
   icon: string;
-  close?: ($event) => void;
+  close?: ($event: AlertResult<T>) => void;
+  specializedAlertConfig: MessageAlert | InputAlert;
 }
+
+export interface MessageAlert {
+  text: string;
+}
+
+export class InputAlert {
+  input: string;
+  inputLabel: string;
+  inputPlaceHolder: string;
+  inputValidator: InputValidator;
+}
+
+export type InputValidator = (string: string) => string | null;
+
+export interface AlertResult<T> {
+  isConfirmed: boolean;
+  isDenied: boolean;
+  isDismissed: boolean;
+  value: T;
+  dismiss: string;
+}
+
+export type DialogResult = AlertResult<boolean>;
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlertService {
-  private alertSubject = new ReplaySubject<Alert>();
-  public readonly alert$: Observable<Alert> = this.alertSubject.asObservable();
+  private alertSubject = new ReplaySubject<Alert<any>>();
+  public readonly alert$: Observable<
+    Alert<any>
+  > = this.alertSubject.asObservable();
 
-  public warnAlert(title: string, message: string, onClose?: ($event) => void) {
-    this.alertSubject.next({
-      title,
-      message,
-      icon: 'warning',
-      close: onClose,
-    });
+  public warnAlert(title: string, message: string): Promise<DialogResult> {
+    return new Promise<DialogResult>((resolve) =>
+      this.alertSubject.next({
+        title,
+        specializedAlertConfig: { text: message },
+        icon: 'warning',
+        close: resolve,
+      })
+    );
   }
 
   public errorAlert(
     title: string,
-    errorMessage: string,
-    onClose?: ($event) => void
-  ) {
-    this.alertSubject.next({
-      title,
-      message: errorMessage,
-      icon: 'error',
-      close: onClose,
-    });
+    errorMessage: string
+  ): Promise<DialogResult> {
+    return new Promise<DialogResult>((resolve) =>
+      this.alertSubject.next({
+        title,
+        specializedAlertConfig: { text: errorMessage },
+        icon: 'error',
+        close: resolve,
+      })
+    );
   }
 
-  public alert(alert: Alert) {
-    this.alertSubject.next(alert);
+  public inputTextAlert(
+    title: string,
+    inputLabel: string,
+    inputPlaceHolder: string,
+    inputValidator: InputValidator
+  ): Promise<AlertResult<string>> {
+    return new Promise<AlertResult<string>>((resolve) =>
+      this.alertSubject.next({
+        title,
+        specializedAlertConfig: {
+          input: 'text',
+          inputLabel,
+          inputPlaceHolder,
+          inputValidator,
+        },
+        icon: 'error',
+        close: resolve,
+      })
+    );
   }
 }

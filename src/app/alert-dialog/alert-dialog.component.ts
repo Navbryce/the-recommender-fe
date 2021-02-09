@@ -23,20 +23,18 @@ export class AlertDialogComponent implements OnInit {
       .subscribe(() => {});
   }
 
-  private async onAlert(alert: Alert): Promise<void> {
+  private async onAlert(alert: Alert<any>): Promise<void> {
     return new Promise((resolve) => {
       const alertConfig = {
         title: alert.title,
-        text: alert.message,
         icon: alert.icon,
-        onClose: ($event) => {
-          resolve();
-          if (alert.close) {
-            alert.close($event);
-          }
-        },
+        ...alert.specializedAlertConfig,
       };
-      this.ngZone.runOutsideAngular(() => Swal.fire(alertConfig));
+      this.ngZone.runOutsideAngular(async () => {
+        const result = await Swal.fire(alertConfig);
+        resolve(result);
+        alert.close(result);
+      });
     });
   }
 

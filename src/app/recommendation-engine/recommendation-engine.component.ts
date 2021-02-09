@@ -56,11 +56,11 @@ export class RecommendationEngineComponent implements OnInit {
 
       switch (error.error.errorCode) {
         case ErrorCode.NO_BUSINESSES_FOUND:
-          this.alertService.warnAlert(
+          await this.alertService.warnAlert(
             'No businesses found',
-            'Try expanding the criteria of your search. Currently, it is filtering by currently open businesses',
-            () => (this.generatingSession = false)
+            'Try expanding the criteria of your search. Currently, it is filtering by currently open businesses'
           );
+          this.generatingSession = false;
           break;
         default:
           this.generatingSession = false;

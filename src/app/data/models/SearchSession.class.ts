@@ -6,22 +6,29 @@ import { SearchSessionStatus } from './SearchSessionStatus';
 export interface SearchSessionObject {
   id: string;
   searchRequest: BusinessSearchParameters;
+  dinnerPartyId: string | null;
+  sessionStatus?: SearchSessionStatus;
+
   acceptedRecommendations?: [Recommendation] | null;
   currentRecommendation: Recommendation | null;
   maybeRecommendations?: Recommendation[];
   rejectedRecommendations?: Recommendation[];
-  sessionStatus?: SearchSessionStatus;
 }
 
 export class SearchSession {
-  private sessionStatus: SearchSessionStatus;
-
   readonly id: string;
   readonly searchRequest: BusinessSearchParameters;
+  readonly dinnerPartyId: string | null;
+  sessionStatus: SearchSessionStatus;
+
   acceptedRecommendations: Recommendation[] | null;
   currentRecommendation: Recommendation | null;
   maybeRecommendations: Recommendation[];
   rejectedRecommendations: Recommendation[];
+
+  get isDinnerParty(): boolean {
+    return !!this.dinnerPartyId;
+  }
 
   get complete(): boolean {
     return this.sessionStatus == SearchSessionStatus.COMPLETE;
@@ -30,38 +37,86 @@ export class SearchSession {
   constructor({
     id,
     searchRequest,
+    dinnerPartyId,
+    sessionStatus,
     acceptedRecommendations,
     currentRecommendation,
     maybeRecommendations,
     rejectedRecommendations,
-    sessionStatus,
   }: SearchSessionObject) {
     this.id = id;
     this.searchRequest = searchRequest;
+    this.sessionStatus = sessionStatus ?? SearchSessionStatus.IN_PROGRESS;
+    this.dinnerPartyId = dinnerPartyId;
     this.acceptedRecommendations = acceptedRecommendations ?? [];
     this.currentRecommendation = currentRecommendation;
     this.maybeRecommendations = maybeRecommendations ?? [];
     this.rejectedRecommendations = rejectedRecommendations ?? [];
-    this.sessionStatus = sessionStatus ?? SearchSessionStatus.IN_PROGRESS;
   }
 
-  public acceptRecommendation(businessIdToAccept: string) {
-    if (this.currentRecommendation.businessId === businessIdToAccept) {
-      this.acceptCurrentRecommendation();
-    } else {
-      this.acceptMaybeRecommendation(businessIdToAccept);
+  public applyRecommendationActionToCurrent(
+    newRecommendation: Recommendation | null,
+    currentRecommendationAction: RecommendationAction
+  ) {
+    switch (currentRecommendationAction) {
+      case RecommendationAction.MAYBE:
+        if (this.isDinnerParty) {
+          throw new Error(
+            'Cannot maybe a recommendation for a dinner party session'
+          );
+        }
+
+        this.maybeRecommendations.push(this.currentRecommendation);
+        break;
+      case RecommendationAction.REJECT:
+        this.rejectedRecommendations.push(this.currentRecommendation);
+        break;
+      case RecommendationAction.ACCEPT:
+        if (!!newRecommendation && !this.isDinnerParty) {
+          throw new Error(
+            'Cannot accept and a recommendation and get a new standard session for a standard search session'
+          );
+        }
+        this.acceptCurrentRecommendation();
+        break;
+      default:
+        throw new Error(
+          'Cannot accept the current recommendation when setting a new recommendation for the session'
+        );
     }
+    this.currentRecommendation = newRecommendation;
   }
 
   public acceptCurrentRecommendation() {
     this.acceptedRecommendations.push(this.currentRecommendation);
-    this.sessionStatus = SearchSessionStatus.COMPLETE;
     this.currentRecommendation = null;
+
+    if (!this.isDinnerParty) {
+      this.completeSession();
+    }
+  }
+
+  public applyRecommendationActionToMaybe(
+    recommendationId: string,
+    recommendationAction: RecommendationAction
+  ) {
+    switch (recommendationAction) {
+      case RecommendationAction.REJECT:
+        this.rejectMaybeRecommendation(recommendationId);
+        break;
+      case RecommendationAction.ACCEPT:
+        this.acceptMaybeRecommendation(recommendationId);
+        break;
+      default:
+        throw new Error(
+          `Unsupported recommendation action for maybe recommendation: ${recommendationAction}`
+        );
+    }
   }
 
   public acceptMaybeRecommendation(businessIdToAccept: string) {
     const businessIndex = this.maybeRecommendations.findIndex(
-      ({ businessId }) => businessIdToAccept
+      ({ businessId }) => businessIdToAccept == businessId
     );
     if (businessIndex === -1) {
       throw new Error(
@@ -71,14 +126,7 @@ export class SearchSession {
 
     this.acceptedRecommendations.push(this.maybeRecommendations[businessIndex]);
     this.maybeRecommendations.splice(businessIndex, 1);
-    this.rejectedRecommendations = [
-      ...this.rejectedRecommendations,
-      ...this.maybeRecommendations,
-      this.currentRecommendation,
-    ];
-
-    this.currentRecommendation = null;
-    this.maybeRecommendations = [];
+    this.completeSession();
   }
 
   public rejectMaybeRecommendation(businessIdToReject: string) {
@@ -93,23 +141,16 @@ export class SearchSession {
     }
   }
 
-  public setNewCurrentRecommendation(
-    newRecommendation: Recommendation,
-    currentRecommendationAction: RecommendationAction
-  ) {
-    switch (currentRecommendationAction) {
-      case RecommendationAction.MAYBE:
-        this.maybeRecommendations.push(this.currentRecommendation);
-        break;
-      case RecommendationAction.REJECT:
-        this.rejectedRecommendations.push(this.currentRecommendation);
-        break;
-      default:
-        throw new Error(
-          'Cannot accept the current recommendation when setting a new recommendation for the session'
-        );
+  private completeSession() {
+    this.maybeRecommendations = [];
+    this.rejectedRecommendations = [
+      ...this.rejectedRecommendations,
+      ...this.maybeRecommendations,
+    ];
+    if (!!this.currentRecommendation) {
+      this.rejectedRecommendations.push(this.currentRecommendation);
+      this.currentRecommendation = null;
     }
-    this.rejectedRecommendations.push(this.currentRecommendation);
-    this.currentRecommendation = newRecommendation;
+    this.sessionStatus = SearchSessionStatus.COMPLETE;
   }
 }

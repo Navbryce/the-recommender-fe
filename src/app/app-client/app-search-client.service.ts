@@ -44,20 +44,23 @@ export class AppSearchClient implements SearchService {
           ({
             sessionId,
             recommendation,
+            dinnerPartyId,
           }: {
             sessionId: string;
             recommendation: Recommendation;
+            dinnerPartyId: string;
           }) =>
             new SearchSession({
               id: sessionId,
               searchRequest: searchParameters.businessSearchParameters,
               currentRecommendation: recommendation,
+              dinnerPartyId: dinnerPartyId,
             })
         )
       );
   }
 
-  nextRecommendation(
+  applyRecommendationActionToCurrent(
     sessionId: string,
     businessId: string,
     recommendationAction: RecommendationAction
@@ -70,25 +73,15 @@ export class AppSearchClient implements SearchService {
     ) as Observable<null>;
   }
 
-  acceptRecommendation(
+  applyRecommendationActionToMaybe(
     sessionId: string,
-    businessId: string
+    businessId: string,
+    recommendationAction: RecommendationAction
   ): Observable<null> {
     return this.applyRecommendationAction(
       sessionId,
       businessId,
-      RecommendationAction.ACCEPT
-    ) as Observable<null>;
-  }
-
-  rejectMaybeRecommendation(
-    sessionId: string,
-    businessId: string
-  ): Observable<null> {
-    return this.applyRecommendationAction(
-      sessionId,
-      businessId,
-      RecommendationAction.REJECT,
+      recommendationAction,
       false
     ) as Observable<null>;
   }
@@ -97,7 +90,7 @@ export class AppSearchClient implements SearchService {
     sessionId,
     businessId: string,
     recommendationAction: RecommendationAction,
-    isCurrent?: boolean
+    isCurrent: boolean
   ): Observable<Recommendation | null> {
     const body: {
       recommendationId: string;
