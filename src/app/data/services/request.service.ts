@@ -10,6 +10,28 @@ import {
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
+export class ObservableEventSource {
+  private existingObservables: Map<string, Observable<any>>;
+
+  constructor(private serverSource: EventSource) {
+    this.existingObservables = new Map<string, Observable<any>>();
+  }
+
+  getObservableForEvent<T>(event: string): Observable<T> {
+    // not perfectly thread safe, not criticl
+    if (this.existingObservables.has(event)) {
+      return this.existingObservables.get(event);
+    }
+    const observable = new Observable<T>((subscriber) => {
+      this.serverSource.addEventListener(event, (event) => {
+        subscriber.next(JSON.parse((event as any).data));
+      });
+    });
+    this.existingObservables[event] = observable;
+    return observable;
+  }
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -20,10 +42,11 @@ export class RequestService {
     url: string,
     body?: any,
     params?: HttpParams,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
+    withCredentials?: boolean
   ): Observable<T> {
     return this.makeRequest(
-      this.buildRequest('get', url, body, params, headers)
+      this.buildRequest('get', url, body, params, headers, withCredentials)
     );
   }
 
@@ -31,10 +54,11 @@ export class RequestService {
     url: string,
     body: any,
     params?: HttpParams,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
+    withCredentials?: boolean
   ): Observable<T> {
     return this.makeRequest(
-      this.buildRequest('post', url, body, params, headers)
+      this.buildRequest('post', url, body, params, headers, withCredentials)
     );
   }
 
@@ -42,10 +66,11 @@ export class RequestService {
     url: string,
     body: any,
     params?: HttpParams,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
+    withCredentials?: boolean
   ): Observable<T> {
     return this.makeRequest(
-      this.buildRequest('put', url, body, params, headers)
+      this.buildRequest('put', url, body, params, headers, withCredentials)
     );
   }
 
@@ -54,9 +79,14 @@ export class RequestService {
     url: string,
     body?: any,
     params?: HttpParams,
-    headers?: HttpHeaders
+    headers?: HttpHeaders,
+    withCredentials?: boolean
   ): HttpRequest<T> {
-    return new HttpRequest<T>(method, url, body, { params, headers });
+    return new HttpRequest<T>(method, url, body, {
+      params,
+      headers,
+      withCredentials,
+    });
   }
 
   private makeRequest<T>(request: HttpRequest<T>): Observable<T> {
@@ -70,5 +100,15 @@ export class RequestService {
         return event.body;
       })
     );
+  }
+
+  public getServerSentEvents<T>(
+    url: string,
+    withCredentials?: boolean
+  ): ObservableEventSource {
+    const eventSource = new EventSource(url, {
+      withCredentials,
+    });
+    return new ObservableEventSource(eventSource);
   }
 }

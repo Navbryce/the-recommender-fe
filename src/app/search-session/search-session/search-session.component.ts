@@ -29,6 +29,10 @@ import { ROUTES } from '../../../routes.const';
 })
 export class SearchSessionComponent {
   public readonly VIEW_CONFIG = VIEW_CONFIG;
+  public readonly DINNER_PARTY_LABELS = {
+    accept: 'Nominate',
+    reject: 'Nope',
+  };
 
   @ViewChild('drawer') maybeRecommendationDrawer: MatDrawer;
 

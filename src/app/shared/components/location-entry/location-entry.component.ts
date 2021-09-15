@@ -3,6 +3,7 @@ import { GeoCoordinates } from '../../../data/models/GeoCoordinates.interface';
 import { Observable, Subject } from 'rxjs';
 import { MatInput } from '@angular/material/input';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-location-entry',
@@ -35,7 +36,7 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
 
   @ViewChild(MatInput) locationInput: MatInput;
 
-  constructor() {}
+  constructor(private alertService: AlertService) {}
 
   ngOnInit(): void {}
 
@@ -72,6 +73,10 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
       (error) => {
         console.log('Failed to get user position');
         console.log(error);
+        void this.alertService.errorAlert(
+          'Failed to get current location',
+          'Make sure location services are enabled. Alternatively, manually enter the address'
+        );
         this.updateAsTouchedIfNotAlreadyTouched();
       }
     );

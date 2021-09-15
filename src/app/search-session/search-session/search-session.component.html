@@ -91,6 +91,7 @@
               class="full-width"
               [recommendation]="currentRecommendation"
               [disableReconsider]="currentSession.isDinnerParty"
+              [labels]="currentSession.isDinnerParty ? DINNER_PARTY_LABELS : {}"
               (onAction)="onCurrentRecommendationAction($event)"
             ></app-recommendation-card>
             <mat-card *ngIf="!currentRecommendation" class="full-width">

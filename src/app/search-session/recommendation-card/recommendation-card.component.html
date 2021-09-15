@@ -84,7 +84,7 @@
     color="warn"
     fxFlex="100%"
   >
-    Reject
+    {{labels.reject ?? "Reject"}}
   </button>
   <button
     class="reconsider-button"
@@ -94,7 +94,7 @@
     color="accent"
     fxFlex="100%"
   >
-    Reconsider
+    {{labels.maybe ?? "Reconsider"}}
   </button>
   <button
     class="accept-button"
@@ -102,6 +102,6 @@
     (click)="onAcceptRecommendation()"
     fxFlex="100%"
   >
-    Accept
+    {{labels.accept ?? "Accept"}}
   </button>
 </div>

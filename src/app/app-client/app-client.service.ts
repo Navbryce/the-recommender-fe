@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RequestService } from '../data/services/request.service';
+import {
+  ObservableEventSource,
+  RequestService,
+} from '../data/services/request.service';
 import { environment } from '../../environments/environment';
 import { SuccessResponse } from '../data/models/SucccessResponse.interface';
 import { map } from 'rxjs/operators';
@@ -21,7 +24,9 @@ export class AppClientService {
       this.requestService.get(
         this.generateRequestUrl(apiPath),
         body,
-        httpParams
+        httpParams,
+        null,
+        true
       )
     );
   }
@@ -32,7 +37,8 @@ export class AppClientService {
         this.generateRequestUrl(apiPath),
         body,
         params,
-        this.addDefaultsToHttpHeaders(AppClientService.DEFAULT_POST_HEADERS)
+        this.addDefaultsToHttpHeaders(AppClientService.DEFAULT_POST_HEADERS),
+        true
       )
     );
   }
@@ -43,7 +49,8 @@ export class AppClientService {
         this.generateRequestUrl(apiPath),
         body,
         params,
-        this.addDefaultsToHttpHeaders(AppClientService.DEFAULT_POST_HEADERS)
+        this.addDefaultsToHttpHeaders(AppClientService.DEFAULT_POST_HEADERS),
+        true
       )
     );
   }
@@ -67,5 +74,12 @@ export class AppClientService {
       result.append(key, value);
     });
     return result;
+  }
+
+  public getServerSentEvents<T>(url: string): ObservableEventSource {
+    return this.requestService.getServerSentEvents(
+      environment.searchApiUrl + url,
+      true
+    );
   }
 }

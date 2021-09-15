@@ -9,7 +9,12 @@ import { AppClientService } from './app-client/app-client.service';
 import { RCVService } from './data/services/RCVService.interface';
 import { Router } from '@angular/router';
 import { ROUTES } from '../routes.const';
-import { RCV_SERVICE_TOKEN } from './data/services/service-injection-tokens';
+import {
+  AUTH_SERVICE_TOKEN,
+  RCV_SERVICE_TOKEN,
+} from './data/services/service-injection-tokens';
+import { AuthService } from './data/services/AuthService.interface';
+import { AlertService } from './shared/services/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -22,18 +27,27 @@ export class AppComponent implements OnInit {
   sessionCompleted = TEST_SESSION_COMPLETED;
 
   constructor(
-    private searchApiClient: AppClientService,
+    private alertService: AlertService,
+    @Inject(AUTH_SERVICE_TOKEN) private authService: AuthService,
+    private appClientService: AppClientService,
     @Inject(RCV_SERVICE_TOKEN) private rcvClientService: RCVService,
     private router: Router
   ) {
     if (environment.useWake) {
-      this.searchApiClient.get('/wake').subscribe(() => {});
+      this.appClientService.get('/wake').subscribe(() => {});
     }
   }
 
   ngOnInit(): void {}
 
-  onRCVCreateClick() {
+  async onRCVCreateClick() {
+    if (!this.authService.currentUser) {
+      const newUserMaybe = await this.alertService.registerBasicUserAlert();
+      if (!newUserMaybe) {
+        return;
+      }
+    }
+
     this.rcvClientService.createElection().subscribe((newElection) =>
       this.router.navigate(
         [`${ROUTES.electionOverview.path}/${newElection.id}`],

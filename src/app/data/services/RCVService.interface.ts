@@ -1,7 +1,9 @@
-import { Election } from '../models/Election.class';
+import { ElectionMetadata } from '../models/ElectionMetadata.class';
 import { Observable } from 'rxjs';
+import { ObservableEventSource } from './request.service';
 
 export interface RCVService {
-  createElection(): Observable<Election>;
-  getElectionById(electionId: string): Observable<Election>;
+  createElection(): Observable<ElectionMetadata>;
+  getElectionEventStream(electionId: string): ObservableEventSource;
+  getElectionMetadata(electionId: string): Observable<ElectionMetadata>;
 }

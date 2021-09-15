@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { RCVService } from '../data/services/RCVService.interface';
 import { AppClientService } from './app-client.service';
-import { Election, ElectionObject } from '../data/models/Election.class';
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { ElectionStatus } from '../data/models/ElectionStatus.enum';
+import {
+  ElectionMetadata,
+  ElectionMetadataObject,
+} from '../data/models/ElectionMetadata.class';
+import { ElectionEvent } from '../data/models/ElectionEvent.interface';
+import { ObservableEventSource } from '../data/services/request.service';
+import { map } from 'rxjs/operators';
+
+export enum ElectionEvents {}
 
 @Injectable({
   providedIn: 'root',
@@ -14,31 +20,23 @@ export class AppRCVClientService implements RCVService {
 
   constructor(private appClient: AppClientService) {}
 
-  createElection(): Observable<Election> {
-    return this.appClient
-      .put<{ election: { id: string; activeId: string } }>(
-        AppRCVClientService.BASE_PATH,
-        {
-          location,
-        }
-      )
-      .pipe(
-        map(
-          ({ election: { id, activeId } }) =>
-            new Election({
-              id,
-              activeId,
-              electionStatus: ElectionStatus.IN_CREATION,
-            })
-        )
-      );
+  createElection(): Observable<ElectionMetadata> {
+    return this.appClient.put<ElectionMetadata>(AppRCVClientService.BASE_PATH, {
+      location,
+    });
   }
 
-  getElectionById(id: string): Observable<Election> {
+  getElectionEventStream(id: string): ObservableEventSource {
+    return this.appClient.getServerSentEvents<ElectionEvent>(
+      `${AppRCVClientService.BASE_PATH}/${id}/updates`
+    );
+  }
+
+  getElectionMetadata(id: string): Observable<ElectionMetadata> {
     return this.appClient
-      .get<ElectionObject>(`${AppRCVClientService.BASE_PATH}/${id}`, {
+      .get<ElectionMetadata>(`${AppRCVClientService.BASE_PATH}/${id}`, {
         location,
       })
-      .pipe(map((electionObject) => new Election(electionObject)));
+      .pipe(map((value) => new ElectionMetadata(value)));
   }
 }
