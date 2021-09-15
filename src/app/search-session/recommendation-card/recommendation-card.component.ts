@@ -25,7 +25,7 @@ export class RecommendationCardComponent implements OnInit, OnChanges {
   @Input() recommendation: Recommendation;
   @Input() withActions = true;
   @Input() disableReconsider = false;
-  @Input() labels: { accept?: string; maybe?: string; reject?: string };
+  @Input() labels: { accept?: string; maybe?: string; reject?: string } = {};
 
   @Output() onAction = new EventEmitter<{
     businessId: string;

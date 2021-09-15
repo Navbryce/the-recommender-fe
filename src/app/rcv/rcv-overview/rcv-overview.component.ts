@@ -3,8 +3,12 @@ import { getOrFetchObjectFromBrowserRoute } from '../../shared/utilities/RouteCo
 import { ActivatedRoute, Router } from '@angular/router';
 import { RCV_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
 import { RCVService } from '../../data/services/RCVService.interface';
-import { ElectionMetadata } from '../../data/models/ElectionMetadata.class';
+import {
+  CandidateMetadata,
+  ElectionMetadata,
+} from '../../data/models/ElectionMetadata.class';
 import { ElectionEventType } from '../../data/models/ElectionEvent.interface';
+import { ElectionStatus } from '../../data/models/ElectionStatus.enum';
 
 @Component({
   selector: 'app-rcv-overview',
@@ -12,6 +16,8 @@ import { ElectionEventType } from '../../data/models/ElectionEvent.interface';
   styleUrls: ['./rcv-overview.component.scss'],
 })
 export class RcvOverviewComponent implements OnInit {
+  public electionStatusEnum = ElectionStatus;
+
   public currentElection: ElectionMetadata;
 
   constructor(
@@ -37,7 +43,18 @@ export class RcvOverviewComponent implements OnInit {
       election.id
     );
     electionEventSource
-      .getObservableForEvent(ElectionEventType.CANDIDATE_ADDED)
-      .subscribe((event) => console.log(event));
+      .getObservableForEvent<CandidateMetadata>(
+        ElectionEventType.CANDIDATE_ADDED
+      )
+      .subscribe((candidate) =>
+        this.currentElection.addCandidateMetadata(candidate)
+      );
+  }
+
+  async updateElectionStatus(electionStatus: ElectionStatus) {
+    await this.rcvService
+      .updateElectionState(this.currentElection.id, electionStatus)
+      .toPromise();
+    this.currentElection.electionStatus = electionStatus;
   }
 }

@@ -9,6 +9,7 @@ import {
 import { ElectionEvent } from '../data/models/ElectionEvent.interface';
 import { ObservableEventSource } from '../data/services/request.service';
 import { map } from 'rxjs/operators';
+import { ElectionStatus } from '../data/models/ElectionStatus.enum';
 
 export enum ElectionEvents {}
 
@@ -38,5 +39,17 @@ export class AppRCVClientService implements RCVService {
         location,
       })
       .pipe(map((value) => new ElectionMetadata(value)));
+  }
+
+  updateElectionState(
+    electionId: string,
+    newState: ElectionStatus
+  ): Observable<void> {
+    return this.appClient.put<void>(
+      `${AppRCVClientService.BASE_PATH}/${electionId}/state`,
+      {
+        state: newState,
+      }
+    );
   }
 }

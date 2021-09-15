@@ -9,6 +9,7 @@ export interface Alert<T> {
   icon: string;
   close?: ($event: AlertResult<T>) => void;
   specializedAlertConfig: MessageAlert | InputAlert;
+  allowOutsideClick?: boolean;
 }
 
 export interface MessageAlert {
@@ -70,12 +71,15 @@ export class AlertService {
     );
   }
 
-  public async registerBasicUserAlert(): Promise<User | null> {
+  public async registerBasicUserAlert(
+    cancelable?: boolean
+  ): Promise<User | null> {
     const { value: name }: { value: string } = await this.inputTextAlert({
       title: 'What is your name?',
       inputPlaceholder: 'Your Name',
       inputValidator: (value) =>
         value.length > 0 ? null : 'Input must be at least 1 character',
+      allowOutsideClick: cancelable,
     });
     if (!name) {
       return null;
@@ -89,11 +93,13 @@ export class AlertService {
     inputLabel,
     inputPlaceholder,
     inputValidator,
+    allowOutsideClick,
   }: {
     title: string;
     inputLabel?: string;
     inputPlaceholder?: string;
     inputValidator?: InputValidator;
+    allowOutsideClick?: boolean;
   }): Promise<AlertResult<string>> {
     return new Promise<AlertResult<string>>((resolve) =>
       this.alertSubject.next({
@@ -106,6 +112,7 @@ export class AlertService {
         },
         icon: 'question',
         close: resolve,
+        allowOutsideClick,
       })
     );
   }

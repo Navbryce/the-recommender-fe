@@ -45,7 +45,7 @@ export class AppAuthService implements AuthService {
   registerBasicUser(nickname: string): Observable<User> {
     return this.appClientService
       .put<UserObject>(`${this.BASE_PATH}/register`, {
-        nickname: name,
+        nickname,
       })
       .pipe(
         map((value) => new User(value)),

@@ -1,6 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
-import { SEARCH_SERVICE_TOKEN } from '../data/services/service-injection-tokens';
+import {
+  AUTH_SERVICE_TOKEN,
+  SEARCH_SERVICE_TOKEN,
+} from '../data/services/service-injection-tokens';
 import { SearchService } from '../data/services/SearchService.interface';
 import { SearchSession } from '../data/models/SearchSession.class';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -11,6 +14,7 @@ import { ErrorCode } from '../data/services/ErrorCode.enum';
 import { AlertService } from '../shared/services/alert.service';
 import { VIEW_CONFIG } from '../view-config.const';
 import { SearchSessionParameters } from '../data/models/SearchSessionParameters.interface';
+import { AuthService } from '../data/services/AuthService.interface';
 
 @Component({
   selector: 'app-recommendation-engine',
@@ -26,6 +30,7 @@ export class RecommendationEngineComponent implements OnInit {
   public generatingSession = false;
 
   constructor(
+    @Inject(AUTH_SERVICE_TOKEN) private authService: AuthService,
     @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService,
     private router: Router,
     private alertService: AlertService
@@ -41,6 +46,14 @@ export class RecommendationEngineComponent implements OnInit {
   async onSearchParameters(searchParameters: SearchSessionParameters) {
     this.generatingSession = true;
     try {
+      // user needs to be logged-in if joining a dinner-party
+      if (
+        searchParameters.dinnerPartyActiveId &&
+        !this.authService.currentUser
+      ) {
+        await this.alertService.registerBasicUserAlert(false);
+      }
+
       const session = await this.searchService
         .newSearch(searchParameters)
         .toPromise();

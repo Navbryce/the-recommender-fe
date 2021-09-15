@@ -4,7 +4,7 @@ import { PriceCategory } from '../models/PriceCategory.enum';
 
 export const TEST_SESSION = new SearchSession({
   id: TEST_RECOMMENDATION.sessionId,
-  dinnerPartyId: null,
+  dinnerPartyElectionId: null,
   currentRecommendation: TEST_RECOMMENDATION,
   searchRequest: {
     location: {

@@ -58,7 +58,7 @@ export class AppClientService {
   private mapSuccessResponseToData<T>(
     response$: Observable<SuccessResponse<T>>
   ): Observable<T> {
-    return response$.pipe(map((response) => response.data));
+    return response$.pipe(map((response) => response?.data));
   }
 
   private generateRequestUrl(apiPath: string): string {

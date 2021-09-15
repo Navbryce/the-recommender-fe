@@ -1,16 +1,14 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { Recommendation } from '../../data/models/Recommendation.interface';
 import {
   RecommendationAction,
   SearchService,
 } from '../../data/services/SearchService.interface';
-import { SEARCH_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
+import {
+  AUTH_SERVICE_TOKEN,
+  RCV_SERVICE_TOKEN,
+  SEARCH_SERVICE_TOKEN,
+} from '../../data/services/service-injection-tokens';
 import { VIEW_CONFIG } from '../../view-config.const';
 import { SearchSession } from '../../data/models/SearchSession.class';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +19,9 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { LayoutService } from '../../shared/services/layout.service';
 import { getOrFetchObjectFromBrowserRoute } from '../../shared/utilities/RouteComponentUtilities';
 import { ROUTES } from '../../../routes.const';
+import { RCVService } from '../../data/services/RCVService.interface';
+import { ElectionEventType } from '../../data/models/ElectionEvent.interface';
+import { AuthService } from '../../data/services/AuthService.interface';
 
 @Component({
   selector: 'app-search-session',
@@ -48,6 +49,8 @@ export class SearchSessionComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     @Inject(SEARCH_SERVICE_TOKEN) private searchService: SearchService,
+    @Inject(RCV_SERVICE_TOKEN) private rcvService: RCVService,
+    @Inject(AUTH_SERVICE_TOKEN) private authService: AuthService,
     private alertService: AlertService,
     public layoutService: LayoutService
   ) {
@@ -61,9 +64,19 @@ export class SearchSessionComponent {
     )[1].subscribe((session) => this.onNewCurrentSession(session));
   }
 
-  private onNewCurrentSession(session: SearchSession) {
+  private async onNewCurrentSession(session: SearchSession) {
     this.currentSession = session;
     this.currentRecommendation = this.currentSession.currentRecommendation;
+    if (session.isDinnerParty) {
+      this.rcvService
+        .getElectionEventStream(session.dinnerPartyElectionId)
+        .getObservableForEvent(ElectionEventType.STATUS_CHANGED)
+        .subscribe((status) =>
+          this.router.navigate([
+            `/election/${session.dinnerPartyElectionId}/vote`,
+          ])
+        );
+    }
   }
 
   async onCurrentRecommendationAction({

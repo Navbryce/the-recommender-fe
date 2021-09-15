@@ -82,7 +82,7 @@ export class LocationEntryComponent implements ControlValueAccessor, OnInit {
     );
   }
 
-  private onCurrentGeoLocationFind(position: Position) {
+  private onCurrentGeoLocationFind(position: GeolocationPosition) {
     this.updateCurrentCoordinates({
       lat: position.coords.latitude,
       long: position.coords.longitude,

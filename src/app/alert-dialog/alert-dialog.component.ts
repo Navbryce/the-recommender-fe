@@ -28,6 +28,8 @@ export class AlertDialogComponent implements OnInit {
       const alertConfig = {
         title: alert.title,
         icon: alert.icon,
+        allowOutsideClick:
+          alert.allowOutsideClick == undefined || alert.allowOutsideClick,
         ...alert.specializedAlertConfig,
       };
       this.ngZone.runOutsideAngular(async () => {

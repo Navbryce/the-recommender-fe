@@ -6,7 +6,7 @@ import { SearchSessionStatus } from './SearchSessionStatus';
 export interface SearchSessionObject {
   id: string;
   searchRequest: BusinessSearchParameters;
-  dinnerPartyId: string | null;
+  dinnerPartyElectionId: string | null;
   sessionStatus?: SearchSessionStatus;
 
   acceptedRecommendations?: [Recommendation] | null;
@@ -18,7 +18,11 @@ export interface SearchSessionObject {
 export class SearchSession {
   readonly id: string;
   readonly searchRequest: BusinessSearchParameters;
-  readonly dinnerPartyId: string | null;
+  readonly dinnerParty: {
+    activeId: string;
+    electionId: string;
+  } | null;
+  readonly dinnerPartyElectionId: string | null;
   sessionStatus: SearchSessionStatus;
 
   acceptedRecommendations: Recommendation[] | null;
@@ -27,7 +31,7 @@ export class SearchSession {
   rejectedRecommendations: Recommendation[];
 
   get isDinnerParty(): boolean {
-    return !!this.dinnerPartyId;
+    return !!this.dinnerPartyElectionId;
   }
 
   get complete(): boolean {
@@ -37,7 +41,7 @@ export class SearchSession {
   constructor({
     id,
     searchRequest,
-    dinnerPartyId,
+    dinnerPartyElectionId,
     sessionStatus,
     acceptedRecommendations,
     currentRecommendation,
@@ -47,7 +51,7 @@ export class SearchSession {
     this.id = id;
     this.searchRequest = searchRequest;
     this.sessionStatus = sessionStatus ?? SearchSessionStatus.IN_PROGRESS;
-    this.dinnerPartyId = dinnerPartyId;
+    this.dinnerPartyElectionId = dinnerPartyElectionId;
     this.acceptedRecommendations = acceptedRecommendations ?? [];
     this.currentRecommendation = currentRecommendation;
     this.maybeRecommendations = maybeRecommendations ?? [];

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
+  HttpEventType,
   HttpHeaders,
   HttpParams,
   HttpRequest,
@@ -92,7 +93,7 @@ export class RequestService {
   private makeRequest<T>(request: HttpRequest<T>): Observable<T> {
     return this.httpClient.request(request).pipe(
       map((event) => event as HttpResponse<T> | HttpErrorResponse),
-      filter((event) => event.type !== 0),
+      filter((event) => event.type === HttpEventType.Response),
       map((event) => {
         if (event instanceof HttpErrorResponse) {
           throw event;

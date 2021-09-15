@@ -54,7 +54,7 @@ export class AppSearchClient implements SearchService {
               id: sessionId,
               searchRequest: searchParameters.businessSearchParameters,
               currentRecommendation: recommendation,
-              dinnerPartyId: dinnerPartyId,
+              dinnerPartyElectionId: dinnerPartyId,
             })
         )
       );
