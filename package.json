@@ -13,8 +13,8 @@
   },
   "private": true,
   "dependencies": {
-    "@agm/core": "^1.1.0",
-    "@angular-material-extensions/google-maps-autocomplete": "^3.2.1",
+    "@agm/core": "3.0.0-beta.0",
+    "@angular-material-extensions/google-maps-autocomplete": "^6.2.2",
     "@angular/animations": "^9.1.13",
     "@angular/cdk": "^9.2.4",
     "@angular/common": "~9.1.13",
