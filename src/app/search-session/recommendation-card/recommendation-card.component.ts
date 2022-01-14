@@ -7,9 +7,9 @@ import {
   Output,
 } from '@angular/core';
 import { Business } from '../../data/models/Business.interface';
-import { Recommendation } from '../../data/models/Recommendation.interface';
 import { RecommendationAction } from '../../data/services/SearchService.interface';
 import { VIEW_CONFIG } from '../../view-config.const';
+import { LocalizedBusiness } from '../../data/models/LocalizedBusiness.interface';
 
 @Component({
   selector: 'app-recommendation-card',
@@ -22,7 +22,7 @@ export class RecommendationCardComponent implements OnInit, OnChanges {
     return `${VIEW_CONFIG.cardImageHeight}px`;
   }
 
-  @Input() recommendation: Recommendation;
+  @Input() recommendation: LocalizedBusiness;
   @Input() withActions = true;
   @Input() disableReconsider = false;
   @Input() labels: { accept?: string; maybe?: string; reject?: string } = {};

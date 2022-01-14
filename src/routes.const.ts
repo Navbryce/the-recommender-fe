@@ -1,15 +1,23 @@
-export const ROUTES: {
-  [path: string]: {
+type RouteDefinitions = {
+  [route: string]: {
     path: string;
-    payloadField: string;
+    payloadField?: string;
+    routes?: RouteDefinitions;
   };
-} = {
+};
+
+export const ROUTES: RouteDefinitions = {
   searchSession: {
     path: 'search-session',
     payloadField: 'searchSession',
   },
-  electionOverview: {
+  election: {
     path: 'rcv',
-    payloadField: 'electionOverview',
+    payloadField: 'election',
+    routes: {
+      vote: {
+        path: 'vote',
+      },
+    },
   },
 };

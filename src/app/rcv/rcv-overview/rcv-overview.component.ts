@@ -9,6 +9,7 @@ import {
 } from '../../data/models/ElectionMetadata.class';
 import { ElectionEventType } from '../../data/models/ElectionEvent.interface';
 import { ElectionStatus } from '../../data/models/ElectionStatus.enum';
+import { ROUTES } from '../../../routes.const';
 
 @Component({
   selector: 'app-rcv-overview',
@@ -29,7 +30,7 @@ export class RcvOverviewComponent implements OnInit {
       router,
       activatedRoute,
       'id',
-      'searchSession',
+      ROUTES.election.payloadField,
       'id',
       (id) => this.rcvService.getElectionMetadata(id)
     )[1].subscribe((election) => this.onNewCurrentElection(election));

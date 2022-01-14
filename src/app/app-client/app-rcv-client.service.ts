@@ -22,9 +22,11 @@ export class AppRCVClientService implements RCVService {
   constructor(private appClient: AppClientService) {}
 
   createElection(): Observable<ElectionMetadata> {
-    return this.appClient.put<ElectionMetadata>(AppRCVClientService.BASE_PATH, {
-      location,
-    });
+    return this.appClient
+      .put<ElectionMetadata>(AppRCVClientService.BASE_PATH, {
+        location,
+      })
+      .pipe(map((value) => new ElectionMetadata(value)));
   }
 
   getElectionEventStream(id: string): ObservableEventSource {

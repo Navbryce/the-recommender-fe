@@ -1,0 +1,27 @@
+<div *ngIf="!!currentElection" class="full" fxLayout="row">
+  <div *ngFor="let _ of currentElection.candidates; let index = index">
+    <mat-card>{{ index }}</mat-card>
+  </div>
+  <div
+    cdkDropList
+    (cdkDropListDropped)="onCandidateDrop($event)"
+    class="candidate-list"
+  >
+    <mat-card
+      *ngFor="let candidate of candidateOrdering"
+      cdkDrag
+      class="candidate"
+      [class.selected]="candidate == selectedCandidate"
+      (click)="onCandidateSelect(candidate)"
+      >{{ candidate.name }}</mat-card
+    >
+  </div>
+  <div [style.width.px]="VIEW_CONFIG.cardWidth">
+    <app-recommendation-card
+      *ngIf="!!selectedLocalizedBusiness"
+      class="full-width"
+      [recommendation]="selectedLocalizedBusiness"
+    >
+    </app-recommendation-card>
+  </div>
+</div>

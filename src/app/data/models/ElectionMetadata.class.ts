@@ -1,16 +1,16 @@
 import { ElectionStatus } from './ElectionStatus.enum';
 
+export interface CandidateMetadata {
+  name: string;
+  businessId: string;
+  nominatorNickname: string;
+}
+
 export interface ElectionMetadataObject {
   id: string;
   activeId: string;
   electionStatus: ElectionStatus;
   candidates: CandidateMetadata[];
-}
-
-export interface CandidateMetadata {
-  name: string;
-  businessId: string;
-  nominatorNickname: string;
 }
 
 export class ElectionMetadata {

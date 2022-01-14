@@ -49,14 +49,11 @@ export class AppComponent implements OnInit {
     }
 
     this.rcvClientService.createElection().subscribe((newElection) =>
-      this.router.navigate(
-        [`${ROUTES.electionOverview.path}/${newElection.id}`],
-        {
-          state: {
-            [ROUTES.electionOverview.payloadField]: newElection,
-          },
-        }
-      )
+      this.router.navigate([`${ROUTES.election.path}/${newElection.id}`], {
+        state: {
+          [ROUTES.election.payloadField]: newElection,
+        },
+      })
     );
   }
 }

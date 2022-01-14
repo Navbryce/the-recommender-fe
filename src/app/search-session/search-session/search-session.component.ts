@@ -73,7 +73,7 @@ export class SearchSessionComponent {
         .getObservableForEvent(ElectionEventType.STATUS_CHANGED)
         .subscribe((status) =>
           this.router.navigate([
-            `/election/${session.dinnerPartyElectionId}/vote`,
+            `/${ROUTES.election.path}/${session.dinnerPartyElectionId}/${ROUTES.election.routes.vote.path}`,
           ])
         );
     }

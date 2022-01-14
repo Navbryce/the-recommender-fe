@@ -8,9 +8,12 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { FlexModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
+import { RcvVoteComponent } from './rcv-vote/rcv-vote.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SearchSessionModule } from '../search-session/search-session.module';
 
 @NgModule({
-  declarations: [RcvOverviewComponent, RcvCreationComponent],
+  declarations: [RcvOverviewComponent, RcvCreationComponent, RcvVoteComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -20,6 +23,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     FlexModule,
     MatButtonModule,
+    DragDropModule,
+    SearchSessionModule,
   ],
 })
 export class RcvModule {}
