@@ -4,7 +4,6 @@ import { LocalizedBusiness } from '../data/models/LocalizedBusiness.interface';
 import { Observable } from 'rxjs';
 import { AppClientService } from './app-client.service';
 import { HttpParams } from '@angular/common/http';
-import { flatten } from '@angular/compiler';
 import { first, flatMap } from 'rxjs/operators';
 
 @Injectable({
