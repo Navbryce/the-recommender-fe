@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  placesApiKey: 'AIzaSyBo0sc5w1uNU88UUdPgyhpq1MZAlKxux4M', // restricted to my ip
+  placesApiKey: 'AIzaSyACeNpPQNEwCjWIqE0X_nrSnihWXAyf8QQ', // restricted to my ip
   searchApiUrl: 'http://localhost:8080',
   useWake: false,
 };
