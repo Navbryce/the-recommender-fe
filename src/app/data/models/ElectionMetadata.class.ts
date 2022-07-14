@@ -1,4 +1,9 @@
 import { ElectionStatus } from './ElectionStatus.enum';
+import {
+  CandidateRoundResult,
+  ElectionResult,
+  RoundAction,
+} from './ElectionResult.interface';
 
 export interface CandidateMetadata {
   name: string;
@@ -11,6 +16,7 @@ export interface ElectionMetadataObject {
   activeId: string;
   electionStatus: ElectionStatus;
   candidates: CandidateMetadata[];
+  results: ElectionResult | null;
 }
 
 export class ElectionMetadata {
@@ -19,6 +25,7 @@ export class ElectionMetadata {
   electionStatus: ElectionStatus;
   readonly candidates: CandidateMetadata[];
   readonly candidateIds: Set<string>;
+  results: ElectionResult | null;
 
   constructor({
     id,
@@ -41,5 +48,16 @@ export class ElectionMetadata {
     }
     this.candidates.push(candidate);
     this.candidateIds.add(candidate.businessId);
+  }
+
+  public setElectionResults(results: ElectionResult) {
+    this.results = results;
+  }
+
+  public getCandidateMetadata(id: string): CandidateMetadata {
+    if (!this.candidateIds.has(id)) {
+      throw new Error('Candidate does not exist');
+    }
+    return this.candidates.find((candidate) => candidate.businessId == id);
   }
 }

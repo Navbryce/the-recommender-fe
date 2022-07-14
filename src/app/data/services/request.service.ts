@@ -19,7 +19,6 @@ export class ObservableEventSource {
   }
 
   getObservableForEvent<T>(event: string): Observable<T> {
-    // not perfectly thread safe, not criticl
     if (this.existingObservables.has(event)) {
       return this.existingObservables.get(event);
     }

@@ -5,6 +5,7 @@ import { SearchSessionComponent } from './search-session/search-session/search-s
 import { ROUTES } from '../routes.const';
 import { RcvOverviewComponent } from './rcv/rcv-overview/rcv-overview.component';
 import { RcvVoteComponent } from './rcv/rcv-vote/rcv-vote.component';
+import { RcvWaitComponent } from './rcv/rcv-wait/rcv-wait.component';
 
 // TODO: Maybe generate this from the routes definition const or consolidate the two
 const routes: Routes = [
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: `${ROUTES.election.path}/:id/${ROUTES.election.routes.vote.path}`,
     component: RcvVoteComponent,
+  },
+  {
+    path: `${ROUTES.election.path}/:id/${ROUTES.election.routes.wait.path}`,
+    component: RcvWaitComponent,
   },
 ];
 

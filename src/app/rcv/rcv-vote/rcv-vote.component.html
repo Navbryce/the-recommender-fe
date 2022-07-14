@@ -1,26 +1,80 @@
-<div *ngIf="!!currentElection" class="full" fxLayout="row">
-  <div *ngFor="let _ of currentElection.candidates; let index = index">
-    <mat-card>{{ index }}</mat-card>
+<div *ngIf="!!currentElection">
+  <div style="padding: 5px; margin: 9px;">
+    <h3>
+      Please vote by ranking your choices from 1 (best) to
+      {{ currentElection.candidates.length }} (worst). Then, hit the "vote"
+      button at the bottom.
+    </h3>
+    <mat-divider></mat-divider>
+  </div>
+  <div class="full" fxLayout="row">
+    <div>
+      <mat-card
+        [style.height.px]="RANK_BOX_HEIGHT_PX"
+        [style.marginBottom.px]="RANK_BOX_VERTICAL_MARGIN_PX"
+        *ngFor="let _ of currentElection.candidates; let index = index"
+        class="rank"
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        ><p>{{ index + 1 }}</p></mat-card
+      >
+    </div>
+    <div
+      cdkDropList
+      (cdkDropListDropped)="onCandidateDrop($event)"
+      class="candidate-list"
+    >
+      <mat-card
+        *ngFor="let candidate of candidateOrdering"
+        cdkDrag
+        cdkDragLockAxis="y"
+        class="candidate"
+        [class.selected]="candidate == selectedCandidate"
+        [style.height.px]="RANK_BOX_HEIGHT_PX"
+        [style.marginBottom.px]="RANK_BOX_VERTICAL_MARGIN_PX"
+        (click)="onCandidateSelect(candidate)"
+        >{{ candidate.name }}</mat-card
+      >
+    </div>
+    <div
+      *ngIf="layoutService.desktop$ | async"
+      [style.width.px]="VIEW_CONFIG.cardWidth"
+    >
+      <app-recommendation-card
+        *ngIf="!!selectedLocalizedBusiness"
+        class="full-width"
+        [recommendation]="selectedLocalizedBusiness"
+        [withActions]="false"
+      >
+      </app-recommendation-card>
+    </div>
   </div>
   <div
-    cdkDropList
-    (cdkDropListDropped)="onCandidateDrop($event)"
-    class="candidate-list"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    class="full-width vote-wrapper"
   >
-    <mat-card
-      *ngFor="let candidate of candidateOrdering"
-      cdkDrag
-      class="candidate"
-      [class.selected]="candidate == selectedCandidate"
-      (click)="onCandidateSelect(candidate)"
-      >{{ candidate.name }}</mat-card
-    >
+    <button mat-raised-button class="accept-bg" (click)="onVote()">Vote</button>
   </div>
-  <div [style.width.px]="VIEW_CONFIG.cardWidth">
+  <div
+    *ngIf="!(layoutService.desktop$ | async) && !!selectedLocalizedBusiness"
+    class="business-wrapper-mobile"
+    [@businessDetailsAnimation]
+  >
+    <button
+      mat-mini-fab
+      color="accent"
+      (click)="onCloseLocalizedBusiness()"
+      aria-label="Back to ranking"
+      class="exit-button"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <app-recommendation-card
       *ngIf="!!selectedLocalizedBusiness"
       class="full-width"
       [recommendation]="selectedLocalizedBusiness"
+      [withActions]="false"
     >
     </app-recommendation-card>
   </div>

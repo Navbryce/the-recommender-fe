@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {}
 
   async onRCVCreateClick() {
-    if (!this.authService.currentUser) {
+    if (!(await this.authService.currentUser.toPromise())) {
       const newUserMaybe = await this.alertService.registerBasicUserAlert();
       if (!newUserMaybe) {
         return;

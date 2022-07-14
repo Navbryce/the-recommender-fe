@@ -17,7 +17,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorCode } from '../../data/services/ErrorCode.enum';
 import { MatDrawer } from '@angular/material/sidenav';
 import { LayoutService } from '../../shared/services/layout.service';
-import { getOrFetchObjectFromBrowserRoute } from '../../shared/utilities/RouteComponentUtilities';
+import {
+  getDinnerPartyVoteURL,
+  getOrFetchObjectFromBrowserRoute,
+} from '../../shared/utilities/routing';
 import { ROUTES } from '../../../routes.const';
 import { RCVService } from '../../data/services/RCVService.interface';
 import { ElectionEventType } from '../../data/models/ElectionEvent.interface';
@@ -71,9 +74,9 @@ export class SearchSessionComponent {
       this.rcvService
         .getElectionEventStream(session.dinnerPartyElectionId)
         .getObservableForEvent(ElectionEventType.STATUS_CHANGED)
-        .subscribe((status) =>
+        .subscribe(() =>
           this.router.navigate([
-            `/${ROUTES.election.path}/${session.dinnerPartyElectionId}/${ROUTES.election.routes.vote.path}`,
+            getDinnerPartyVoteURL(session.dinnerPartyElectionId),
           ])
         );
     }

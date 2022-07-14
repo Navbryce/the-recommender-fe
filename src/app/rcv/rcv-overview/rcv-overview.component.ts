@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { getOrFetchObjectFromBrowserRoute } from '../../shared/utilities/RouteComponentUtilities';
+import { getOrFetchObjectFromBrowserRoute } from '../../shared/utilities/routing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RCV_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
 import { RCVService } from '../../data/services/RCVService.interface';

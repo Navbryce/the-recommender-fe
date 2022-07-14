@@ -1,5 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
+import { ROUTES } from '../../../routes.const';
 
 export function getOrFetchObjectFromBrowserRoute<T>(
   router: Router,
@@ -24,4 +25,12 @@ export function getOrFetchObjectFromBrowserRoute<T>(
   }
 
   return [id, fetchFunction(id)];
+}
+
+export function getDinnerPartyVoteURL(electionId: string) {
+  return `/${ROUTES.election.path}/${electionId}/${ROUTES.election.routes.vote.path}`;
+}
+
+export function getDinnerPartyWaitURL(electionId: string) {
+  return `/${ROUTES.election.path}/${electionId}/${ROUTES.election.routes.wait.path}`;
 }

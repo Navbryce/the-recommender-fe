@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../data/services/AuthService.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { User } from '../data/models/User.class';
 import { AppClientService } from './app-client.service';
-import { map, tap } from 'rxjs/operators';
+import { map, single, tap } from 'rxjs/operators';
 
 interface UserObject {
   id: string;
@@ -22,12 +22,18 @@ export class AppAuthService implements AuthService {
   private readonly BASE_PATH = '/auth';
 
   private _currentUser: User;
-  private readonly userBehaviorSubject = new BehaviorSubject<User>(null);
 
-  readonly $user: Observable<User> = this.userBehaviorSubject;
+  get currentUser(): Observable<User> {
+    if (this._currentUser) {
+      return of(this._currentUser);
+    }
 
-  get currentUser(): User {
-    return this._currentUser;
+    return this.getUserFromExistingSession().pipe(
+      single(),
+      tap((user) => {
+        this.setNewUser(user);
+      })
+    );
   }
 
   constructor(private appClientService: AppClientService) {
@@ -59,6 +65,5 @@ export class AppAuthService implements AuthService {
 
   private setNewUser(user: User | null) {
     this._currentUser = user;
-    this.userBehaviorSubject.next(user);
   }
 }

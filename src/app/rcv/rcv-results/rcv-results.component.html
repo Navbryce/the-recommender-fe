@@ -1,0 +1,31 @@
+<ng-container *ngIf="election && election.results">
+  <mat-card
+    *ngFor="let round of election.results.rounds; let index = index"
+    class="round"
+  >
+    <mat-card-header> Round {{ index + 1 }} </mat-card-header>
+    <ol>
+      <li
+        *ngFor="let candidate of getSortedCandidatesForRound(round)"
+        [style.textDecoration]="
+          isEffectivelyEliminated(index, round[candidate.businessId])
+            ? 'line-through'
+            : ''
+        "
+      >
+        {{ candidate.name }} ({{
+          round[candidate.businessId].numberOfRankOneVotes
+        }})
+        <ng-container *ngIf="wonViaTieBreaker(round[candidate.businessId])">
+          - Won via coin flip
+        </ng-container>
+      </li>
+    </ol>
+  </mat-card>
+  <app-recommendation-card
+    *ngIf="winner"
+    [recommendation]="winner"
+    [withActions]="false"
+  >
+  </app-recommendation-card>
+</ng-container>

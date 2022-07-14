@@ -15,6 +15,8 @@ import { AlertService } from '../shared/services/alert.service';
 import { VIEW_CONFIG } from '../view-config.const';
 import { SearchSessionParameters } from '../data/models/SearchSessionParameters.interface';
 import { AuthService } from '../data/services/AuthService.interface';
+import { ElectionStatus } from '../data/models/ElectionStatus.enum';
+import { getDinnerPartyVoteURL } from '../shared/utilities/routing';
 
 @Component({
   selector: 'app-recommendation-engine',
@@ -49,7 +51,7 @@ export class RecommendationEngineComponent implements OnInit {
       // user needs to be logged-in if joining a dinner-party
       if (
         searchParameters.dinnerPartyActiveId &&
-        !this.authService.currentUser
+        !(await this.authService.currentUser.toPromise())
       ) {
         await this.alertService.registerBasicUserAlert(false);
       }
@@ -57,17 +59,29 @@ export class RecommendationEngineComponent implements OnInit {
       const session = await this.searchService
         .newSearch(searchParameters)
         .toPromise();
-      this.router.navigate([`${ROUTES.searchSession.path}/${session.id}`], {
-        state: {
-          [ROUTES.searchSession.payloadField]: session,
-        },
-      });
+      void this.router.navigate(
+        [`${ROUTES.searchSession.path}/${session.id}`],
+        {
+          state: {
+            [ROUTES.searchSession.payloadField]: session,
+          },
+        }
+      );
     } catch (error) {
       if (!(error instanceof HttpErrorResponse)) {
         throw error;
       }
 
       switch (error.error.errorCode) {
+        case ErrorCode.INVALID_ELECTION_STATUS:
+          if (error.error.status == ElectionStatus.VOTING) {
+            void this.router.navigate([
+              getDinnerPartyVoteURL(error.error.electionId),
+            ]);
+            return;
+          }
+          this.generatingSession = false;
+          throw error;
         case ErrorCode.NO_BUSINESSES_FOUND:
           await this.alertService.warnAlert(
             'No businesses found',

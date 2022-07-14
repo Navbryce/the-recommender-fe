@@ -18,6 +18,9 @@ export const ROUTES: RouteDefinitions = {
       vote: {
         path: 'vote',
       },
+      wait: {
+        path: 'wait',
+      },
     },
   },
 };
