@@ -48,7 +48,7 @@ export class AppRCVClientService implements RCVService {
         `${AppRCVClientService.BASE_PATH}/${id}/results`,
         null
       )
-      .pipe(map((value) => new ElectionResult(value)));
+      .pipe(map((value) => (value ? new ElectionResult(value) : null)));
   }
 
   updateElectionState(
