@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { VIEW_CONFIG } from '../../view-config.const';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
@@ -15,9 +15,9 @@ import {
 export class RcvCreationComponent implements OnInit {
   public readonly VIEW_CONFIG = VIEW_CONFIG;
 
-  public readonly rcvCreationFormGroup: FormGroup;
+  public readonly rcvCreationFormGroup: UntypedFormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
     this.rcvCreationFormGroup = this.formBuilder.group({
       location: ['', Validators.required],
     });

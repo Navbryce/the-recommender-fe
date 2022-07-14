@@ -4,8 +4,8 @@ import {
   toPriceCategoryString,
 } from '../data/models/PriceCategory.enum';
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
@@ -30,13 +30,13 @@ export class ParameterBoxComponent implements OnInit {
   ).filter((category) => category !== PriceCategory.FREE) as PriceCategory[];
   readonly toPriceCategoryString = toPriceCategoryString;
 
-  searchParametersFormGroup: FormGroup;
+  searchParametersFormGroup: UntypedFormGroup;
 
   @Output('searchParameters') searchParametersEmitter: EventEmitter<
     SearchSessionParameters
   > = new EventEmitter<SearchSessionParameters>();
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.searchParametersFormGroup = this.formBuilder.group({
