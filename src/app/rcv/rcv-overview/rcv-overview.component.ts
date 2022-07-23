@@ -1,5 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { getOrFetchObjectFromBrowserRoute } from '../../shared/utilities/routing';
+import {
+  getDinnerPartyResultsCommands,
+  getOrFetchObjectFromBrowserRoute,
+} from '../../shared/utilities/routing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RCV_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
 import { RCVService } from '../../data/services/RCVService.interface';
@@ -17,9 +20,14 @@ import { ROUTES } from '../../../routes.const';
   styleUrls: ['./rcv-overview.component.scss'],
 })
 export class RcvOverviewComponent implements OnInit {
-  public electionStatusEnum = ElectionStatus;
+  public readonly ElectionStatus = ElectionStatus;
 
   public currentElection: ElectionMetadata;
+  public nextStageDisplayStr = '';
+  public readonly currentStatusToDisplayString = {
+    [ElectionStatus.IN_CREATION]: 'Start voting!',
+    [ElectionStatus.VOTING]: 'Get the results!',
+  };
 
   constructor(
     private router: Router,
@@ -52,10 +60,22 @@ export class RcvOverviewComponent implements OnInit {
       );
   }
 
-  async updateElectionStatus(electionStatus: ElectionStatus) {
+  async moveToNextStage() {
+    return this.updateElectionStatus(this.currentElection.nextStage);
+  }
+
+  private async updateElectionStatus(electionStatus: ElectionStatus) {
     await this.rcvService
       .updateElectionState(this.currentElection.id, electionStatus)
       .toPromise();
     this.currentElection.electionStatus = electionStatus;
+    if (this.currentElection.electionStatus === ElectionStatus.COMPLETE) {
+      void this.router.navigate(
+        getDinnerPartyResultsCommands(
+          this.currentElection.id,
+          this.currentElection
+        )
+      );
+    }
   }
 }

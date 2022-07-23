@@ -1,4 +1,4 @@
-import { Component, DoCheck, Inject, Input, OnChanges } from '@angular/core';
+import { Component, DoCheck, Inject, Input } from '@angular/core';
 import {
   CandidateMetadata,
   ElectionMetadata,
@@ -12,6 +12,7 @@ import {
 import { LocalizedBusiness } from '../../data/models/LocalizedBusiness.interface';
 import { BusinessService } from '../../data/services/BusinessService.interface';
 import { BUSINESS_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
+import { VIEW_CONFIG } from '../../view-config.const';
 
 @Component({
   selector: 'app-rcv-results',
@@ -19,6 +20,16 @@ import { BUSINESS_SERVICE_TOKEN } from '../../data/services/service-injection-to
   styleUrls: ['./rcv-results.component.scss'],
 })
 export class RcvResultsComponent implements DoCheck {
+  public readonly viewConfig = VIEW_CONFIG;
+  public readonly loadingPhrases = [
+    'Waiting for the election to end...',
+    'A lot of people need to cast their votes...',
+    'This is taking a while...',
+    "Nice weather we're having?",
+    "I'm getting a little hangry",
+    'Take some deep breaths',
+  ];
+
   public electionResults: ElectionResult;
   public winner: LocalizedBusiness;
 
@@ -81,7 +92,13 @@ export class RcvResultsComponent implements DoCheck {
     );
   }
 
+  public wonElection(result: CandidateRoundResult): boolean {
+    return (
+      result.roundAction === RoundAction.WON || this.wonViaTieBreaker(result)
+    );
+  }
+
   public wonViaTieBreaker(result: CandidateRoundResult): boolean {
-    return result.roundAction == RoundAction.WON_VIA_TIEBREAKER;
+    return result.roundAction === RoundAction.WON_VIA_TIEBREAKER;
   }
 }

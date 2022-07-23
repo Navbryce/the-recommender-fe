@@ -13,7 +13,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SearchSessionModule } from '../search-session/search-session.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { RcvWaitComponent } from './rcv-wait/rcv-wait.component';
+import { RcvResultsScreenComponent } from './rcv-results-screen/rcv-results-screen.component';
 import { RcvResultsComponent } from './rcv-results/rcv-results.component';
 
 @NgModule({
@@ -21,7 +21,7 @@ import { RcvResultsComponent } from './rcv-results/rcv-results.component';
     RcvOverviewComponent,
     RcvCreationComponent,
     RcvVoteComponent,
-    RcvWaitComponent,
+    RcvResultsScreenComponent,
     RcvResultsComponent,
   ],
   imports: [
@@ -38,5 +38,6 @@ import { RcvResultsComponent } from './rcv-results/rcv-results.component';
     MatIconModule,
     MatDividerModule,
   ],
+  exports: [RcvVoteComponent, RcvResultsScreenComponent],
 })
 export class RcvModule {}

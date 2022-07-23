@@ -1,15 +1,17 @@
 import { ElectionStatus } from './ElectionStatus.enum';
-import {
-  CandidateRoundResult,
-  ElectionResult,
-  RoundAction,
-} from './ElectionResult.interface';
+import { ElectionResult } from './ElectionResult.interface';
 
 export interface CandidateMetadata {
   name: string;
   businessId: string;
   nominatorNickname: string;
 }
+
+const ELECTION_STATE_MACHINE = {
+  [ElectionStatus.IN_CREATION]: ElectionStatus.VOTING,
+  [ElectionStatus.VOTING]: ElectionStatus.COMPLETE,
+  [ElectionStatus.COMPLETE]: ElectionStatus.COMPLETE,
+};
 
 export interface ElectionMetadataObject {
   id: string;
@@ -26,6 +28,10 @@ export class ElectionMetadata {
   readonly candidates: CandidateMetadata[];
   readonly candidateIds: Set<string>;
   results: ElectionResult | null;
+
+  get nextStage(): ElectionStatus {
+    return ELECTION_STATE_MACHINE[this.electionStatus];
+  }
 
   constructor({
     id,
@@ -52,12 +58,13 @@ export class ElectionMetadata {
 
   public setElectionResults(results: ElectionResult) {
     this.results = results;
+    this.electionStatus = ElectionStatus.COMPLETE;
   }
 
   public getCandidateMetadata(id: string): CandidateMetadata {
     if (!this.candidateIds.has(id)) {
       throw new Error('Candidate does not exist');
     }
-    return this.candidates.find((candidate) => candidate.businessId == id);
+    return this.candidates.find((candidate) => candidate.businessId === id);
   }
 }

@@ -10,13 +10,14 @@ import {
   ElectionResult,
   ElectionResultObject,
 } from '../../data/models/ElectionResult.interface';
+import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-rcv-wait',
-  templateUrl: './rcv-wait.component.html',
-  styleUrls: ['./rcv-wait.component.scss'],
+  selector: 'app-rcv-results-screen',
+  templateUrl: './rcv-results-screen.component.html',
+  styleUrls: ['./rcv-results-screen.component.scss'],
 })
-export class RcvWaitComponent {
+export class RcvResultsScreenComponent {
   public election: ElectionMetadata;
 
   constructor(
@@ -36,7 +37,12 @@ export class RcvWaitComponent {
 
   private async onNewElection(election: ElectionMetadata) {
     this.election = election;
-    // TODO: ADD SANITY CHECK for election status. Maybe combine this with event stream where observable first pipes sanity check value?
+
+    // TODO: move this logic into into the rcv-results components or add electoin results as an input
+    this.rcvService
+      .getElectionResults(election.id)
+      .pipe(filter((result) => result !== null && result !== undefined))
+      .subscribe((result) => this.onNewResults(new ElectionResult(result)));
     this.rcvService
       .getElectionEventStream(election.id)
       .getObservableForEvent<ElectionResultObject>(

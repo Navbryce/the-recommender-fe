@@ -23,8 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { ErrorHandlerService } from './error-handler.service';
 import { MatIconModule } from '@angular/material/icon';
-import { RcvModule } from './rcv/rcv.module';
-import { RcvCreationComponent } from './rcv/rcv-creation/rcv-creation.component';
+import { RcvModule } from 'src/app/rcv/rcv.module';
 
 @NgModule({
   declarations: [
@@ -53,6 +52,7 @@ import { RcvCreationComponent } from './rcv/rcv-creation/rcv-creation.component'
     AppRoutingModule,
     MatIconModule,
     FormsModule,
+    RcvModule,
   ],
   providers: [
     {

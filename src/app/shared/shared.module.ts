@@ -21,6 +21,7 @@ import { FlexModule } from '@angular/flex-layout';
 import { ImageCarouselComponent } from './components/image-carousel/image-carousel.component';
 import { AlertService } from './services/alert.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PriceCategoryComponent,
     RatingComponent,
     ImageCarouselComponent,
+    SpinnerComponent,
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -61,6 +63,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     UnitConverterPipe,
     RatingComponent,
     ImageCarouselComponent,
+    SpinnerComponent,
   ],
   providers: [AlertService],
 })

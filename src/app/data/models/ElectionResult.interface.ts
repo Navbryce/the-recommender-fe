@@ -21,6 +21,13 @@ export class ElectionResult {
   public readonly calculatedAt: number;
   public readonly winnerId: string;
 
+  get decidedViaTieBreaker(): boolean {
+    return (
+      this.rounds[this.rounds.length - 1][this.winnerId].roundAction ===
+      RoundAction.WON_VIA_TIEBREAKER
+    );
+  }
+
   constructor({ rounds, calculatedAt }: ElectionResultObject) {
     this.rounds = rounds;
     this.calculatedAt = calculatedAt;

@@ -3,15 +3,36 @@
 @import "../../node_modules/@splidejs/splide/dist/css/splide.min.css";
 @import "swa2-theme";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 .accept-bg {
   background-color: $accept;
 }
+
+.border-colorful {
+  @apply relative
+  before:w-[calc(100%+20px)]
+  before:h-[calc(100%+20px)]
+  before:content-['']
+  before:block
+  before:absolute
+  before:translate-x-[-10px]
+  before:translate-y-[-10px]
+  before:bg-gradient-to-r
+  before:from-accept-500
+  before:to-sky-500
+  before:rounded-xl;
+}
+
 .form-warning {
   color: red;
   margin: 0;

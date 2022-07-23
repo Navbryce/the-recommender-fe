@@ -1,31 +1,82 @@
-<ng-container *ngIf="election && election.results">
-  <mat-card
-    *ngFor="let round of election.results.rounds; let index = index"
-    class="round"
-  >
-    <mat-card-header> Round {{ index + 1 }} </mat-card-header>
-    <ol>
-      <li
-        *ngFor="let candidate of getSortedCandidatesForRound(round)"
-        [style.textDecoration]="
-          isEffectivelyEliminated(index, round[candidate.businessId])
-            ? 'line-through'
-            : ''
-        "
-      >
-        {{ candidate.name }} ({{
-          round[candidate.businessId].numberOfRankOneVotes
-        }})
-        <ng-container *ngIf="wonViaTieBreaker(round[candidate.businessId])">
-          - Won via coin flip
-        </ng-container>
-      </li>
-    </ol>
-  </mat-card>
-  <app-recommendation-card
-    *ngIf="winner"
-    [recommendation]="winner"
-    [withActions]="false"
-  >
-  </app-recommendation-card>
+<ng-container *ngIf="!electionResults">
+  <div class="w-full h-full flex justify-center items-center">
+    <app-spinner [loadingPhrases]="loadingPhrases"></app-spinner>
+  </div>
+</ng-container>
+<ng-container *ngIf="electionResults">
+  <div class="w-full flex justify-center p-5">
+    <div class="inline-block">
+      <div class="flex items-center mb-5">
+        <h1 class="!m-0 !text-3xl">Results:</h1>
+        <a
+          class="pl-2"
+          href="https://en.wikipedia.org/wiki/Instant-runoff_voting"
+        >
+          <mat-icon class="!block hover:text-gray-400">help </mat-icon>
+        </a>
+      </div>
+      <div class="flex flex-wrap-reverse justify-center gap-20">
+        <div class="space-y-5">
+          <mat-card
+            *ngFor="let round of electionResults.rounds; let index = index"
+            class="round p-5 max-w-md w-full"
+          >
+            <mat-card-header>
+              <mat-card-title>
+                Round {{ index + 1 }}
+                <ng-container
+                  *ngIf="
+                    index == electionResults.rounds.length - 1 &&
+                    electionResults.decidedViaTieBreaker
+                  "
+                >
+                  - decided via Tiebreaker
+                </ng-container>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <table>
+                <tr class="text-left">
+                  <th>Name</th>
+                  <th>
+                    <mat-icon>ballot_outline</mat-icon>
+                    Votes
+                  </th>
+                </tr>
+                <tr
+                  *ngFor="let candidate of getSortedCandidatesForRound(round)"
+                  class="text-base"
+                  [style.textDecoration]="
+                    isEffectivelyEliminated(index, round[candidate.businessId])
+                      ? 'line-through'
+                      : ''
+                  "
+                  [ngClass]="{
+                    'text-red': isEffectivelyEliminated(
+                      index,
+                      round[candidate.businessId]
+                    ),
+                    'text-accept': wonElection(round[candidate.businessId])
+                  }"
+                >
+                  <td>{{ candidate.name }}</td>
+                  <td>
+                    {{ round[candidate.businessId].numberOfRankOneVotes }}
+                  </td>
+                </tr>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="relative w-card h-[0%] self-end border-colorful mt-2">
+          <app-recommendation-card
+            *ngIf="winner"
+            [recommendation]="winner"
+            [withActions]="false"
+          >
+          </app-recommendation-card>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-container>

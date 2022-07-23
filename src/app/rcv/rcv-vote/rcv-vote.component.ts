@@ -4,10 +4,10 @@ import {
   ElectionMetadata,
 } from '../../data/models/ElectionMetadata.class';
 import {
-  getDinnerPartyWaitURL,
+  getDinnerPartyResultsCommands,
   getOrFetchObjectFromBrowserRoute,
 } from '../../shared/utilities/routing';
-import { ROUTES } from '../../../routes.const';
+import { ROUTES } from 'src/routes.const';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   BUSINESS_SERVICE_TOKEN,
@@ -105,13 +105,11 @@ export class RcvVoteComponent implements OnInit {
         this.candidateOrdering.map((val) => val.businessId)
       )
       .toPromise();
-    void this.router.navigate([
-      getDinnerPartyWaitURL(this.currentElection.id),
-      {
-        state: {
-          election: this.currentElection,
-        },
-      },
-    ]);
+    void this.router.navigate(
+      getDinnerPartyResultsCommands(
+        this.currentElection.id,
+        this.currentElection
+      )
+    );
   }
 }

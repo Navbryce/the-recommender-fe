@@ -1,29 +1,46 @@
-<div
-  *ngIf="!!currentElection"
-  class="full"
-  fxLayout="row"
-  fxLayoutAlign="center center"
->
-  <mat-card class="election-code-card">
-    <mat-card-content
-      ><h2>Your RCV code is:</h2>
-      <h1>{{ currentElection.activeId }}</h1>
-    </mat-card-content>
-  </mat-card>
-  <mat-card>
-    <h3>Candidates</h3>
-    <ul>
-      <li *ngFor="let candidate of currentElection.candidates">
-        {{ candidate.name }} ({{ candidate.nominatorNickname }})
-      </li>
-    </ul>
-  </mat-card>
-  <mat-card>
-    <button (click)="updateElectionStatus(electionStatusEnum.VOTING)">
-      Move to voting
-    </button>
-  </mat-card>
-  <mat-card>
-    <h5>{{ currentElection.electionStatus }}</h5>
-  </mat-card>
-</div>
+<ng-container *ngIf="currentElection">
+  <div class="w-full h-full flex justify-center">
+    <div class="w-[26rem] flex items-center flex-col">
+      <div class="inline-block border-colorful m-5">
+        <mat-card>
+          <mat-card-content>
+            <div class="inline-block">
+              <h2 class="!text-base">Your RCV code is:</h2>
+              <h1 class="!text-9xl">{{ currentElection.activeId }}</h1>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <button
+        (click)="moveToNextStage()"
+        class="inline-block w-full relative cursor-pointer group after:content-[''] after:block after:absolute after:z-0 after:w-full after:h-full after:top-0 after:left-0 after:rounded-xl after:border after:border-accept-500 after:hover:border-accept-700 after:translate-x-[-5px] after:translate-y-[-5px]"
+        [ngClass]="{
+          'after:border-accept-500 after:hover:border-accept-700':
+            currentElection.electionStatus === ElectionStatus.IN_CREATION,
+          'after:border-accent-500 after:hover:border-accent-700':
+            currentElection.electionStatus === ElectionStatus.VOTING
+        }"
+      >
+        <div
+          class="w-full relative z-10 p-5 rounded-xl font-bold"
+          [ngClass]="{
+            'bg-accept-500 group-hover:bg-accept-700':
+              currentElection.electionStatus === ElectionStatus.IN_CREATION,
+            'bg-accent-500 group-hover:bg-accent-700':
+              currentElection.electionStatus === ElectionStatus.VOTING
+          }"
+        >
+          {{ currentStatusToDisplayString[currentElection.electionStatus] }}
+        </div>
+      </button>
+      <div class="mt-5 w-full">
+        <h1 class="text-6xl font-extrabold">Places to eat:</h1>
+        <ul>
+          <li *ngFor="let candidate of currentElection.candidates">
+            {{ candidate.name }} ({{ candidate.nominatorNickname }})
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-container>
