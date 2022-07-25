@@ -1,11 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ElectionMetadata } from '../../data/models/ElectionMetadata.class';
 import { getOrFetchObjectFromBrowserRoute } from '../../shared/utilities/routing';
 import { ROUTES } from '../../../routes.const';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RCVService } from '../../data/services/RCVService.interface';
 import { RCV_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
-import { ElectionEventType } from '../../data/models/ElectionEvent.interface';
+import {
+  ElectionEventType,
+  VoteCastEvent,
+} from '../../data/models/ElectionEvent.interface';
 import {
   ElectionResult,
   ElectionResultObject,
@@ -19,6 +22,7 @@ import { filter } from 'rxjs/operators';
 })
 export class RcvResultsScreenComponent {
   public election: ElectionMetadata;
+  public votersLog: VoteCastEvent[] = [];
 
   constructor(
     private router: Router,
@@ -39,21 +43,31 @@ export class RcvResultsScreenComponent {
     this.election = election;
 
     // TODO: move this logic into into the rcv-results components or add electoin results as an input
-    this.rcvService
-      .getElectionResults(election.id)
-      .pipe(filter((result) => result !== null && result !== undefined))
-      .subscribe((result) => this.onNewResults(new ElectionResult(result)));
-    this.rcvService
-      .getElectionEventStream(election.id)
+    const electionEventStream = this.rcvService.getElectionEventStream(
+      election.id
+    );
+
+    electionEventStream
       .getObservableForEvent<ElectionResultObject>(
         ElectionEventType.RESULTS_UPDATED
       )
       .subscribe((results) => {
         void this.onNewResults(new ElectionResult(results));
       });
-    void this.onNewResults(
-      await this.rcvService.getElectionResults(election.id).toPromise()
-    );
+
+    electionEventStream
+      .getObservableForEvent<VoteCastEvent>(ElectionEventType.VOTE_CAST)
+      .subscribe((vote) => {
+        this.votersLog.push(vote);
+        setTimeout(() => {
+          this.votersLog.pop();
+        }, 5000);
+      });
+
+    this.rcvService
+      .getElectionResults(election.id)
+      .pipe(filter((result) => result !== null && result !== undefined))
+      .subscribe((result) => this.onNewResults(new ElectionResult(result)));
   }
 
   private async onNewResults(results: ElectionResult) {

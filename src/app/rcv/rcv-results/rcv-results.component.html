@@ -1,6 +1,15 @@
 <ng-container *ngIf="!electionResults">
-  <div class="w-full h-full flex justify-center items-center">
+  <div class="w-full h-full flex flex-col justify-center items-center">
     <app-spinner [loadingPhrases]="loadingPhrases"></app-spinner>
+    <div>
+      <span
+        *ngFor="let voter of votersLog"
+        @votersLogAnimation
+        class="text-xl text-transparent bg-clip-text bg-gradient-to-br from-accent-500 to-primary-200"
+      >
+        {{ voter.nickname }} just voted!
+      </span>
+    </div>
   </div>
 </ng-container>
 <ng-container *ngIf="electionResults">
@@ -12,7 +21,7 @@
           class="pl-2"
           href="https://en.wikipedia.org/wiki/Instant-runoff_voting"
         >
-          <mat-icon class="!block hover:text-gray-400">help </mat-icon>
+          <mat-icon class="!block hover:text-gray-400">help</mat-icon>
         </a>
       </div>
       <div class="flex flex-wrap-reverse justify-center gap-20">

@@ -1,15 +1,17 @@
+import { ElectionStatus } from 'src/app/data/models/ElectionStatus.enum';
+
 export enum ElectionEventType {
   STATUS_CHANGED = 'STATUS_CHANGED',
   CANDIDATE_ADDED = 'CANDIDATE_ADDED',
+  VOTE_CAST = 'VOTE_CAST',
   RESULTS_UPDATED = 'RESULTS_UPDATED',
 }
 
-export interface CandidateAddedPayload {
-  businessId: string;
-  name: string;
-}
+export type StatusEvent = {
+  status: ElectionStatus;
+};
 
-export interface ElectionEvent {
-  event: ElectionEventType;
-  data: CandidateAddedPayload;
-}
+export type VoteCastEvent = {
+  userId: string;
+  nickname: string;
+};

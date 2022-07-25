@@ -11,9 +11,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
         style({ opacity: 0 }),
         animate('500ms', style({ opacity: 1 })),
       ]),
-      transition('true=>false', [
-        animate('500ms 1000ms', style({ opacity: 0 })),
-      ]),
+      transition('true=>false', [animate('500ms', style({ opacity: 0 }))]),
     ]),
   ],
 })

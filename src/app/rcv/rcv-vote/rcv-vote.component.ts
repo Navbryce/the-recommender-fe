@@ -4,7 +4,7 @@ import {
   ElectionMetadata,
 } from '../../data/models/ElectionMetadata.class';
 import {
-  getDinnerPartyResultsCommands,
+  buildDinnerPartyResultsCmds,
   getOrFetchObjectFromBrowserRoute,
 } from '../../shared/utilities/routing';
 import { ROUTES } from 'src/routes.const';
@@ -21,6 +21,10 @@ import { BusinessService } from '../../data/services/BusinessService.interface';
 import { VIEW_CONFIG } from '../../view-config.const';
 import { LayoutService } from '../../shared/services/layout.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import {
+  ElectionEventType,
+  StatusEvent,
+} from 'src/app/data/models/ElectionEvent.interface';
 
 @Component({
   selector: 'app-rcv-vote',
@@ -70,11 +74,23 @@ export class RcvVoteComponent implements OnInit {
   ngOnInit(): void {}
 
   private onNewCurrentElection(election: ElectionMetadata | null) {
-    if (election == null || election.electionStatus != ElectionStatus.VOTING) {
+    if (election == null) {
       void this.router.navigate(['/']);
       return;
     }
+    if (election.electionStatus === ElectionStatus.COMPLETE) {
+      void this.router.navigate(buildDinnerPartyResultsCmds(election.id));
+      return;
+    }
     this.currentElection = election;
+    this.rcvService
+      .getElectionEventStream(this.currentElection.id)
+      .getObservableForEvent<StatusEvent>(ElectionEventType.STATUS_CHANGED)
+      .subscribe((event) => {
+        if (event.status === ElectionStatus.COMPLETE) {
+          void this.router.navigate(buildDinnerPartyResultsCmds(election.id));
+        }
+      });
     this.candidateOrdering = Object.assign([], election.candidates);
   }
 
@@ -106,10 +122,7 @@ export class RcvVoteComponent implements OnInit {
       )
       .toPromise();
     void this.router.navigate(
-      getDinnerPartyResultsCommands(
-        this.currentElection.id,
-        this.currentElection
-      )
+      buildDinnerPartyResultsCmds(this.currentElection.id, this.currentElection)
     );
   }
 }

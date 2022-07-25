@@ -1,5 +1,6 @@
 import { ElectionStatus } from './ElectionStatus.enum';
 import { ElectionResult } from './ElectionResult.interface';
+import { VoteCastEvent } from 'src/app/data/models/ElectionEvent.interface';
 
 export interface CandidateMetadata {
   name: string;
@@ -19,15 +20,19 @@ export interface ElectionMetadataObject {
   electionStatus: ElectionStatus;
   candidates: CandidateMetadata[];
   results: ElectionResult | null;
+  voters?: VoteCastEvent[];
 }
 
 export class ElectionMetadata {
   readonly id: string;
   readonly activeId: string;
-  electionStatus: ElectionStatus;
   readonly candidates: CandidateMetadata[];
   readonly candidateIds: Set<string>;
+
+  electionStatus: ElectionStatus;
   results: ElectionResult | null;
+  voters?: VoteCastEvent[];
+  voterIds?: Set<string>;
 
   get nextStage(): ElectionStatus {
     return ELECTION_STATE_MACHINE[this.electionStatus];
@@ -38,6 +43,7 @@ export class ElectionMetadata {
     activeId,
     electionStatus,
     candidates,
+    voters,
   }: ElectionMetadataObject) {
     this.id = id;
     this.activeId = activeId;
@@ -46,6 +52,10 @@ export class ElectionMetadata {
     this.candidateIds = new Set(
       this.candidates.map((candidate) => candidate.businessId)
     );
+    this.voters = voters;
+    if (this.voters) {
+      this.voterIds = new Set(voters.map((voter) => voter.userId));
+    }
   }
 
   public addCandidateMetadata(candidate: CandidateMetadata) {
@@ -54,6 +64,19 @@ export class ElectionMetadata {
     }
     this.candidates.push(candidate);
     this.candidateIds.add(candidate.businessId);
+  }
+
+  public addVoter(voter: VoteCastEvent) {
+    if (!this.voters) {
+      this.voters = [voter];
+      this.voterIds = new Set<string>(voter.userId);
+      return;
+    }
+    if (this.voterIds.has(voter.userId)) {
+      return;
+    }
+    this.voters.push(voter);
+    this.voterIds.add(voter.userId);
   }
 
   public setElectionResults(results: ElectionResult) {

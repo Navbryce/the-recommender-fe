@@ -32,7 +32,7 @@ export function getDinnerPartyVoteURL(electionId: string) {
   return `/${ROUTES.election.path}/${electionId}/${ROUTES.election.routes.vote.path}`;
 }
 
-export function getDinnerPartyResultsCommands(
+export function buildDinnerPartyResultsCmds(
   electionId: string,
   election?: ElectionMetadata
 ) {

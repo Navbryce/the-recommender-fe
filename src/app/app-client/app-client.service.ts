@@ -76,7 +76,7 @@ export class AppClientService {
     return result;
   }
 
-  public getServerSentEvents<T>(url: string): ObservableEventSource {
+  public getServerSentEvents(url: string): ObservableEventSource {
     return this.requestService.getServerSentEvents(
       environment.searchApiUrl + url,
       true

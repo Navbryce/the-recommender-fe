@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-  getDinnerPartyResultsCommands,
+  buildDinnerPartyResultsCmds,
   getOrFetchObjectFromBrowserRoute,
 } from '../../shared/utilities/routing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,10 @@ import {
   CandidateMetadata,
   ElectionMetadata,
 } from '../../data/models/ElectionMetadata.class';
-import { ElectionEventType } from '../../data/models/ElectionEvent.interface';
+import {
+  ElectionEventType,
+  VoteCastEvent,
+} from '../../data/models/ElectionEvent.interface';
 import { ElectionStatus } from '../../data/models/ElectionStatus.enum';
 import { ROUTES } from '../../../routes.const';
 
@@ -58,6 +61,9 @@ export class RcvOverviewComponent implements OnInit {
       .subscribe((candidate) =>
         this.currentElection.addCandidateMetadata(candidate)
       );
+    electionEventSource
+      .getObservableForEvent<VoteCastEvent>(ElectionEventType.VOTE_CAST)
+      .subscribe((voter) => this.currentElection.addVoter(voter));
   }
 
   async moveToNextStage() {
@@ -71,7 +77,7 @@ export class RcvOverviewComponent implements OnInit {
     this.currentElection.electionStatus = electionStatus;
     if (this.currentElection.electionStatus === ElectionStatus.COMPLETE) {
       void this.router.navigate(
-        getDinnerPartyResultsCommands(
+        buildDinnerPartyResultsCmds(
           this.currentElection.id,
           this.currentElection
         )

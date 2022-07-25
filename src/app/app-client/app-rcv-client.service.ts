@@ -3,7 +3,6 @@ import { RCVService } from '../data/services/RCVService.interface';
 import { AppClientService } from './app-client.service';
 import { Observable } from 'rxjs';
 import { ElectionMetadata } from '../data/models/ElectionMetadata.class';
-import { ElectionEvent } from '../data/models/ElectionEvent.interface';
 import { ObservableEventSource } from '../data/services/request.service';
 import { map } from 'rxjs/operators';
 import { ElectionStatus } from '../data/models/ElectionStatus.enum';
@@ -29,7 +28,7 @@ export class AppRCVClientService implements RCVService {
   }
 
   getElectionEventStream(id: string): ObservableEventSource {
-    return this.appClient.getServerSentEvents<ElectionEvent>(
+    return this.appClient.getServerSentEvents(
       `${AppRCVClientService.BASE_PATH}/${id}/updates`
     );
   }

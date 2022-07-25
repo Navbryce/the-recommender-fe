@@ -13,11 +13,25 @@ import { LocalizedBusiness } from '../../data/models/LocalizedBusiness.interface
 import { BusinessService } from '../../data/services/BusinessService.interface';
 import { BUSINESS_SERVICE_TOKEN } from '../../data/services/service-injection-tokens';
 import { VIEW_CONFIG } from '../../view-config.const';
+import { VoteCastEvent } from 'src/app/data/models/ElectionEvent.interface';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-rcv-results',
   templateUrl: './rcv-results.component.html',
   styleUrls: ['./rcv-results.component.scss'],
+  animations: [
+    trigger('votersLogAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1, transform: 'translateX(0)' }),
+        animate('500ms', style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class RcvResultsComponent implements DoCheck {
   public readonly viewConfig = VIEW_CONFIG;
@@ -34,6 +48,7 @@ export class RcvResultsComponent implements DoCheck {
   public winner: LocalizedBusiness;
 
   @Input() election: ElectionMetadata;
+  @Input() votersLog: VoteCastEvent[];
 
   constructor(
     @Inject(BUSINESS_SERVICE_TOKEN) private businessService: BusinessService

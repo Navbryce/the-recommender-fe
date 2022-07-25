@@ -5,7 +5,7 @@
         <mat-card>
           <mat-card-content>
             <div class="inline-block">
-              <h2 class="!text-base">Your RCV code is:</h2>
+              <h2 class="!text-base">The party code is:</h2>
               <h1 class="!text-9xl">{{ currentElection.activeId }}</h1>
             </div>
           </mat-card-content>
@@ -13,7 +13,7 @@
       </div>
       <button
         (click)="moveToNextStage()"
-        class="inline-block w-full relative cursor-pointer group after:content-[''] after:block after:absolute after:z-0 after:w-full after:h-full after:top-0 after:left-0 after:rounded-xl after:border after:border-accept-500 after:hover:border-accept-700 after:translate-x-[-5px] after:translate-y-[-5px]"
+        class="inline-block w-full relative cursor-pointer group mt-2 after:content-[''] after:block after:absolute after:z-0 after:w-full after:h-full after:top-0 after:left-0 after:rounded-xl after:border after:border-accept-500 after:hover:border-accept-700 after:translate-x-[-5px] after:translate-y-[-5px]"
         [ngClass]="{
           'after:border-accept-500 after:hover:border-accept-700':
             currentElection.electionStatus === ElectionStatus.IN_CREATION,
@@ -34,12 +34,29 @@
         </div>
       </button>
       <div class="mt-5 w-full">
-        <h1 class="text-6xl font-extrabold">Places to eat:</h1>
-        <ul>
-          <li *ngFor="let candidate of currentElection.candidates">
-            {{ candidate.name }} ({{ candidate.nominatorNickname }})
-          </li>
-        </ul>
+        <ng-container
+          *ngIf="currentElection.electionStatus === ElectionStatus.IN_CREATION"
+        >
+          <h1 class="!text-3xl font-extrabold">Places to eat:</h1>
+          <ul class="text-xl">
+            <li *ngFor="let candidate of currentElection.candidates">
+              {{ candidate.name }} ({{ candidate.nominatorNickname }})
+            </li>
+          </ul>
+        </ng-container>
+        <ng-container
+          *ngIf="
+            currentElection.electionStatus === ElectionStatus.VOTING &&
+            currentElection.voters
+          "
+        >
+          <h1 class="!text-3xl !font-extrabold !mb-0">Has voted:</h1>
+          <ul class="text-xl">
+            <li *ngFor="let voter of currentElection.voters">
+              {{ voter.nickname }}
+            </li>
+          </ul>
+        </ng-container>
       </div>
     </div>
   </div>
