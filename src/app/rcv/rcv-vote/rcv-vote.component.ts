@@ -45,7 +45,7 @@ import {
 })
 export class RcvVoteComponent implements OnInit {
   public readonly VIEW_CONFIG = VIEW_CONFIG;
-  readonly RANK_BOX_HEIGHT_PX = 100;
+  readonly RANK_BOX_HEIGHT_PX = 80;
   readonly RANK_BOX_VERTICAL_MARGIN_PX = 10;
 
   public currentElection: ElectionMetadata;

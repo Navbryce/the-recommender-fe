@@ -16,6 +16,7 @@ import {
 } from '../../data/models/ElectionEvent.interface';
 import { ElectionStatus } from '../../data/models/ElectionStatus.enum';
 import { ROUTES } from '../../../routes.const';
+import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
   selector: 'app-rcv-overview',
@@ -35,6 +36,7 @@ export class RcvOverviewComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private alertService: AlertService,
     @Inject(RCV_SERVICE_TOKEN) private rcvService: RCVService
   ) {
     getOrFetchObjectFromBrowserRoute(
@@ -66,7 +68,17 @@ export class RcvOverviewComponent implements OnInit {
       .subscribe((voter) => this.currentElection.addVoter(voter));
   }
 
-  async moveToNextStage() {
+  async onMoveToNextStageClick() {
+    if (
+      this.currentElection.nextStage === ElectionStatus.VOTING &&
+      this.currentElection.candidates.length === 0
+    ) {
+      void this.alertService.warnAlert(
+        'No candidates',
+        "No restaurants have been added to the election yet. You probably don't want to start voting till your friends have nominated places."
+      );
+      return;
+    }
     return this.updateElectionStatus(this.currentElection.nextStage);
   }
 

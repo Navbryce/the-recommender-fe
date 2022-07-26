@@ -20,31 +20,10 @@
   }
 }
 
-.candidate-list {
-  width: 500px;
-  max-width: 100%;
-  min-height: 60px;
-  display: block;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
 .candidate {
   @extend .rank-box;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
   cursor: ns-resize;
   font-size: 14px;
-
-  &:last-child {
-    border: none;
-  }
-
-  &.selected {
-    background-color: black;
-  }
 }
 
 .cdk-drag-preview {

@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { BusinessSearchParameters } from '../data/models/BusinessSearchParameters.interface';
 import {
   AUTH_SERVICE_TOKEN,
   SEARCH_SERVICE_TOKEN,
@@ -74,7 +73,7 @@ export class RecommendationEngineComponent implements OnInit {
 
       switch (error.error.errorCode) {
         case ErrorCode.INVALID_ELECTION_STATUS:
-          if (error.error.status == ElectionStatus.VOTING) {
+          if (error.error.status === ElectionStatus.VOTING) {
             void this.router.navigate([
               getDinnerPartyVoteURL(error.error.electionId),
             ]);
@@ -83,12 +82,18 @@ export class RecommendationEngineComponent implements OnInit {
           this.generatingSession = false;
           throw error;
         case ErrorCode.NO_BUSINESSES_FOUND:
-          await this.alertService.warnAlert(
+          void this.alertService.warnAlert(
             'No businesses found',
             'Try expanding the criteria of your search. Currently, it is filtering by currently open businesses'
           );
           this.generatingSession = false;
           break;
+        case ErrorCode.NO_ELECTION_FOUND:
+          void this.alertService.warnAlert(
+            'Election not found',
+            `The dinner party with code, ${searchParameters.dinnerPartyActiveId}, was not found.`
+          );
+          this.generatingSession = false;
         default:
           this.generatingSession = false;
           throw error;

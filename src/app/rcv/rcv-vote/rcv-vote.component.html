@@ -1,47 +1,73 @@
-<div *ngIf="!!currentElection">
+<div
+  *ngIf="!!currentElection"
+  class="block max-h-full"
+  [ngClass]="{
+    'overflow-y-hidden':
+      !(layoutService.desktop$ | async) && selectedLocalizedBusiness
+  }"
+>
   <div style="padding: 5px; margin: 9px;">
     <h3>
       Please vote by ranking your choices from 1 (best) to
-      {{ currentElection.candidates.length }} (worst). Then, hit the "vote"
-      button at the bottom.
+      {{ currentElection.candidates.length }} (worst) by dragging. Then, hit the
+      "vote" button at the bottom.
     </h3>
     <mat-divider></mat-divider>
   </div>
-  <div class="full" fxLayout="row">
-    <div>
-      <mat-card
-        [style.height.px]="RANK_BOX_HEIGHT_PX"
-        [style.marginBottom.px]="RANK_BOX_VERTICAL_MARGIN_PX"
-        *ngFor="let _ of currentElection.candidates; let index = index"
-        class="rank"
-        fxLayout="row"
-        fxLayoutAlign="center center"
-        ><p>{{ index + 1 }}</p></mat-card
-      >
+  <div class="w-full flex gap-5 m-5">
+    <div class="flex-1 max-w-md">
+      <div class="flex">
+        <div>
+          <mat-card
+            [style.height.px]="RANK_BOX_HEIGHT_PX"
+            [style.marginBottom.px]="RANK_BOX_VERTICAL_MARGIN_PX"
+            *ngFor="let _ of currentElection.candidates; let index = index"
+            class="rank !flex flex-col items-center justify-center"
+          >
+            <p class="block p-0 !m-0">{{ index + 1 }}</p>
+            <p class="block p-0 !m-0">
+              <ng-container *ngIf="index == 0">
+                (Best)
+              </ng-container>
+              <ng-container
+                *ngIf="index == currentElection.candidates.length - 1"
+              >
+                (Worst)
+              </ng-container>
+            </p>
+          </mat-card>
+        </div>
+        <div
+          cdkDropList
+          (cdkDropListDropped)="onCandidateDrop($event)"
+          class="w-full candidate-list"
+        >
+          <mat-card
+            *ngFor="let candidate of candidateOrdering"
+            cdkDrag
+            cdkDragLockAxis="y"
+            class="!flex justify-center items-center candidate"
+            (mousedown)="onCandidateSelect(candidate)"
+            [ngClass]="{
+              'bg-gradient-to-r from-accent-500 to-primary-500':
+                candidate == selectedCandidate
+            }"
+            [style.height.px]="RANK_BOX_HEIGHT_PX"
+            [style.marginBottom.px]="RANK_BOX_VERTICAL_MARGIN_PX"
+            >{{ candidate.name }}
+          </mat-card>
+        </div>
+      </div>
+      <button mat-raised-button class="accept-bg w-full" (click)="onVote()">
+        Vote
+      </button>
     </div>
     <div
-      cdkDropList
-      (cdkDropListDropped)="onCandidateDrop($event)"
-      class="candidate-list"
-    >
-      <mat-card
-        *ngFor="let candidate of candidateOrdering"
-        cdkDrag
-        cdkDragLockAxis="y"
-        class="candidate"
-        [class.selected]="candidate == selectedCandidate"
-        [style.height.px]="RANK_BOX_HEIGHT_PX"
-        [style.marginBottom.px]="RANK_BOX_VERTICAL_MARGIN_PX"
-        (click)="onCandidateSelect(candidate)"
-        >{{ candidate.name }}</mat-card
-      >
-    </div>
-    <div
-      *ngIf="layoutService.desktop$ | async"
+      *ngIf="(layoutService.desktop$ | async) && !!selectedLocalizedBusiness"
       [style.width.px]="VIEW_CONFIG.cardWidth"
+      class="!sticky top-5 self-start border-colorful before:bg-gradient-r before:from-primary-500 before:to-accent-500"
     >
       <app-recommendation-card
-        *ngIf="!!selectedLocalizedBusiness"
         class="full-width"
         [recommendation]="selectedLocalizedBusiness"
         [withActions]="false"
@@ -50,32 +76,28 @@
     </div>
   </div>
   <div
-    fxLayout="row"
-    fxLayoutAlign="center center"
-    class="full-width vote-wrapper"
-  >
-    <button mat-raised-button class="accept-bg" (click)="onVote()">Vote</button>
-  </div>
-  <div
     *ngIf="!(layoutService.desktop$ | async) && !!selectedLocalizedBusiness"
-    class="business-wrapper-mobile"
-    [@businessDetailsAnimation]
+    class="business-wrapper-mobile flex items-center justify-center"
+    @businessDetailsAnimation
   >
-    <button
-      mat-mini-fab
-      color="accent"
-      (click)="onCloseLocalizedBusiness()"
-      aria-label="Back to ranking"
-      class="exit-button"
+    <div
+      class="w-card border-colorful m-5 before:from-primary-500 before:to-accent-500"
     >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <app-recommendation-card
-      *ngIf="!!selectedLocalizedBusiness"
-      class="full-width"
-      [recommendation]="selectedLocalizedBusiness"
-      [withActions]="false"
-    >
-    </app-recommendation-card>
+      <button
+        mat-mini-fab
+        color="accent"
+        (click)="onCloseLocalizedBusiness()"
+        aria-label="Back to ranking"
+        class="exit-button"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <app-recommendation-card
+        class="full-width"
+        [recommendation]="selectedLocalizedBusiness"
+        [withActions]="false"
+      >
+      </app-recommendation-card>
+    </div>
   </div>
 </div>
